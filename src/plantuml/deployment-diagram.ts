@@ -3,7 +3,7 @@ import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
 import { DiagramType } from "../models/diagram";
-import { exec } from "child_process";
+import { escapeString } from "../common/utils";
 
 
 export function getNetworkDiagramType(type: ComponentType): string {
@@ -16,6 +16,8 @@ export function getNetworkDiagramType(type: ComponentType): string {
             return "database";
         case ComponentType.ExecutionEnvironment:
             return "node";
+        case ComponentType.API:
+            return "interface";
         default:
             return "component";
     }
@@ -25,7 +27,8 @@ export function generateComponentMarkup(component: Component) {
     const type = DiagramType.Network;
     let output = '';
     const componentString = getNetworkDiagramType(component.type);
-    output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+    output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
+    if(component.stereotype) output += ` <<${component.stereotype}>>`;
     if(component.color) output += " #" + component.color; 
     if (component.childComponents.length) {
         output += " {\n";
@@ -51,7 +54,8 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
 
 function generateComponents(components: Array<Component>) {
     // Add child components to their execution environments as desginated on instantiated components.
-    components.forEach((component) => {
+    components
+    .forEach((component) => {
         if (component.executionEnvironment) {
             component.executionEnvironment.childComponents.push(component);
         }
@@ -64,8 +68,8 @@ function generateComponents(components: Array<Component>) {
 function generateRelationships(relationships: Array<ComponentRelationship>): string {
     const relationshipsAlreadyAdded = [];
     return relationships
-        .filter((relationship) => relationship.source.type === ComponentType.ExecutionEnvironment && 
-                relationship.target.type === ComponentType.ExecutionEnvironment)
+        .filter((relationship) => relationship.source.type !== ComponentType.ExecutionEnvironment && 
+        relationship.target.type !== ComponentType.ExecutionEnvironment)
         .reduce((output, relationship): string => {
             const newLine = generateRelationshipMarkup(relationship);
             if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
@@ -74,17 +78,13 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
 }
 
 
-export function generateNetworkDiagram(system: System): string {
-    const executionEnvironmentComponents = Object.values(system.components).filter((component) => component.type === ComponentType.ExecutionEnvironment)
-    if (executionEnvironmentComponents.length) {
-        let output: string = startUml(`Network Diagram ${system.name}`);
-        output += titleAndHeader(system.name, "Network");
-        // Identify top level components (ones without execution environments) and generate markup recursively.
-        output += generateComponents(executionEnvironmentComponents);
-        // Filter in relationships that connect to an execution environment & generate markup.
-        output += generateRelationships(Object.values(system.relationships));
-        output += endUml();
-        return output;
-    }
-    return "";
+export function generateDeploymentDiagram(system: System): string {
+    let output: string = startUml(`Deployment Diagram ${system.name}`);
+    output += titleAndHeader(system.name, "Network");
+    // Identify top level components (ones without execution environments) and generate markup recursively.
+    output += generateComponents(Object.values(system.components));
+    // Filter in relationships that connect to an execution environment & generate markup.
+    output += generateRelationships(Object.values(system.relationships));
+    output += endUml();
+    return output;
 }

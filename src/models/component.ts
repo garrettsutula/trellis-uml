@@ -1,55 +1,62 @@
-import { DiagramType } from "./diagram";
-import { generateComponentMarkup as componentMarkup, generateComponentRelationship as componentRelationship } from "../plantuml/component-diagram";
-import { generateNetworkMarkup as networkMarkup, generateNetworkRelationship as networkRelationship } from "../plantuml/network-diagram";
+import { escapeString } from "../common/utils";
+import { ComponentRelationship } from "./component-relationship";
 
-import { labelToId } from "../common/utils";
-
-export class Component {
+export class Component implements ComponentConfiguration {
     label: string;
-    id?: string;
+    private _id: string;
     type: ComponentType;
     stereotype?: string;
     color?: string;
     executionEnvironment?: Component;
     childComponents?: Array<Component>;
-    childRelationships?: Array<ComponentRelationship>
+    childRelationships?: Array<ComponentRelationship>;
     constructor(label: string, config?: ComponentConfiguration) {
         this.label = config?.label || label;
-        this.id = labelToId(config?.id || label);
+        this.id = config?.id || label;
         this.type = config?.type;
-        this.stereotype = config?.stereotype
-        this.color = config?.color;
-        this.childComponents = config?.childComponents;
-        this.childRelationships = config?.childRelationships;
-    }
-    toMarkup(type: DiagramType): string {
-        switch(type) {
-            case DiagramType.Network:
-                return networkMarkup(this);
-            case DiagramType.Component:
-            default:
-                return componentMarkup(this);
+        if (config?.stereotype) {
+            this.stereotype = config.stereotype;
         }
+        this.color = config?.color;
+        this.childComponents = config?.childComponents || new Array();
+        this.childRelationships = config?.childRelationships || new Array();
+        this.executionEnvironment = config?.executionEnvironment;
+    }
+
+    public get id() {
+        return this._id;
+    }
+
+    public set id(newId: string) {
+        this._id = escapeString(newId);
     }
 }
 
 export class Database extends Component {
     executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Database;
+    stereotype: string = "Database";
 }
 
 export class Service extends Component {
     executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Service;
+    stereotype = "Service";
 }
 
 export class UI extends Component {
     executionEnvironment: ExecutionEnvironment;
     type = ComponentType.UI;
+    stereotype = "UI";
+}
+
+export class API extends Component {
+    executionEnvironment: ExecutionEnvironment;
+    type = ComponentType.API;
 }
 
 export class Domain extends Component {
-    type = ComponentType.ExecutionEnvironment;
+    type: ComponentType = ComponentType.ExecutionEnvironment;
     stereotype = "Domain";
 }
 
@@ -63,8 +70,6 @@ export class ExecutionEnvironment extends Domain {
     stereotype = "Execution Environment";
 }
 
-
-
 interface ComponentConfiguration {
     label?: string;
     id?: string;
@@ -73,32 +78,7 @@ interface ComponentConfiguration {
     color?: string;
     executionEnvironment?: Component;
     childComponents?: Array<Component>;
-    childRelationships?: Array<ComponentRelationship>
-}
-
-export interface ComponentRelationship {
-    source: Component;
-    target: Component;
-    toMarkup(type: DiagramType): string;
-}
-
-export class Uses implements ComponentRelationship {
-    source: Component;
-    target: Component;
-    constructor(source: Component, target: Component) {
-        this.source = source;
-        this.target = target;
-    }
-    toMarkup(type: DiagramType): string {
-        switch(type) {
-            case DiagramType.Network:
-                return networkRelationship(this);
-            case DiagramType.Component:
-            default:
-                return componentRelationship(this);
-        }
-        
-    }
+    childRelationships?: Array<ComponentRelationship>;
 }
 
 export enum ComponentType {
@@ -106,4 +86,5 @@ export enum ComponentType {
     Service = "Service",
     Database = "Database",
     ExecutionEnvironment = "Execution Environment",
+    API = "API",
 }

@@ -1,7 +1,10 @@
 import { titleAndHeader, startUml, endUml } from "./chrome";
-import { Component, ComponentType, ComponentRelationship } from "../models/component"
+import { Component, ComponentType } from "../models/component";
+import { ComponentRelationship } from "../models/component-relationship";
+import { generateComponentMarkup as generateSystemMarkup } from "./system-diagram";
 import { System } from "../models/system";
 import { DiagramType } from "../models/diagram";
+import { escapeString } from "../common/utils";
 
 export function getComponentDiagramType(type: ComponentType): string {
     switch(type) {
@@ -13,69 +16,68 @@ export function getComponentDiagramType(type: ComponentType): string {
             return "database";
         case ComponentType.ExecutionEnvironment:
             return "node";
+        case ComponentType.API:
+            return "interface";
         default:
             return "component";
     }
 }
 
 export function generateComponentMarkup(component: Component) {
-    const type = DiagramType.Component;
     let output = '';
     const componentString = getComponentDiagramType(component.type);
-    output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+    output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
+    if(component.stereotype) output += ` <<${component.stereotype}>>`;
     if(component.color) output += " #" + component.color; 
-    if (component.childComponents) {
+    if (component.childComponents.length) {
         output += " {\n";
         component.childComponents.forEach((component) => {
-            output += component.toMarkup(type) + "\n"
+            output += generateComponentMarkup(component) + "\n"
         })
-        if (component.childRelationships) {
+        if (component.childRelationships.length) {
             component.childRelationships.forEach((relationship) => {
-                output += relationship.toMarkup(type) + "\n";
+                output += generateRelationshipMarkup(relationship);
             });
         }
-        output += "\n}\n";
+        output += "}";
     }
     return output;
 }
 
-export function generateComponentRelationship(relationship: ComponentRelationship): string {
-    return `${relationship.source.id} -- ${relationship.target.id}\n`;
+function generateRelationshipMarkup(relationship: ComponentRelationship): string {
+    // TODO: Implement config interface
+    let output = `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
+    if (relationship.description) output += `: ${relationship.description}`;
+    return output + "\n";
+}
+
+function generateComponents(components: Array<Component>) {
+    return components
+    .filter(({type}) => type !== ComponentType.ExecutionEnvironment)
+    .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
+}
+
+
+
+function generateComponentRelationships(relationships: Array<ComponentRelationship>): string {
+    const relationshipsAlreadyAdded = [];
+    return relationships
+    .filter((relationship) => relationship.source.type !== ComponentType.ExecutionEnvironment && 
+            relationship.target.type !== ComponentType.ExecutionEnvironment)
+    .reduce((output, relationship): string => {
+        const newLine = generateRelationshipMarkup(relationship);
+        if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
+        return output;
+    }, '');
 }
 
 export function generateComponentDiagram(system: System): string {
-    let output: string = startUml;
+    let output: string = startUml(`Component Diagram ${system.name}`);
+    output += generateSystemMarkup(system) + "{\n"
     output += titleAndHeader(system.name, "Component");
-    Object.values(system.components)
-        .filter(({type}) => type !== ComponentType.ExecutionEnvironment)
-        .forEach((component: Component) => output += component.toMarkup(DiagramType.Component));
-    Object.values(system.relationships)
-        .filter((relationship) => relationship.source.type !== ComponentType.ExecutionEnvironment && 
-                relationship.target.type !== ComponentType.ExecutionEnvironment)
-        .forEach((relationship: ComponentRelationship) => {
-            output += relationship.toMarkup(DiagramType.Component) + "\n";
-        })
-    output += endUml;
+    output += generateComponents(Object.values(system.components));
+    output += generateComponentRelationships(Object.values(system.relationships));
+    output += "\n}\n";
+    output += endUml();
     return output;
 }
-
-/*
-export function generateComponentDiagram(system: System): string {
-    let output: string = startUml;
-    output += titleAndHeader(system.name, "Component");
-    Object.values(system.components).forEach((component) => {
-        if (component.executionEnvironment) {
-            component.executionEnvironment.childComponents.push(component);
-        }
-    });
-    const topLevelComponents = Object.values(system.components).filter((component) => component.executionEnvironment === undefined);
-    topLevelComponents.forEach((component: Component) => {
-        output += component.toMarkup(DiagramType.Component);
-    })
-    Object.values(system.relationships).forEach((relationship: ComponentRelationship) => {
-        output += relationship.toMarkup(DiagramType.Component) + "\n";
-    })
-    output += endUml;
-    return output;
-}
-*/

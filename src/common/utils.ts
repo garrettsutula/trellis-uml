@@ -1,3 +1,3 @@
-export function labelToId(label: string) {
-    return label.replace(" ", "_");
+export function escapeString(label: string) {
+    return label.replace(/ /g, "_");
 }

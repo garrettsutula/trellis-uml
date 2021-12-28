@@ -1,20 +1,41 @@
-import { Component, ComponentRelationship } from "./component";
-import { generateComponentDiagram } from '../plantuml/component-diagram';
-import { DiagramType } from "./diagram";
+import { Component } from "../models/component";
+import { ComponentRelationship } from "./component-relationship";
+import { escapeString } from "../common/utils";
 
-export class System {
+export class System implements SystemConfiguration {
     name: string;
+    _id: string;
+    color?: string;
     components: { [key: string]: Component };
     relationships: { [key: string]: ComponentRelationship };
-    constructor(name: string, components: { [key: string]: Component }, relationships: { [key: string]: ComponentRelationship }) {
-        this.name = name;
-        this.components = components;
-        this.relationships = relationships;
+    systemDependencies?: {
+        systems?: { [key: string]: System },
+        relationships?: { [key: string]: ComponentRelationship }
     }
-    toMarkup(type: DiagramType): string {
-        switch(type) {
-            default:
-                return generateComponentDiagram(this);
-        }
+    constructor(config: SystemConfiguration) {
+        this.name = config.name;
+        this.id = config.name;
+        this.components = config.components;
+        this.relationships = config.relationships;
+        this.systemDependencies = config?.systemDependencies || { systems: {}, relationships: {}};
+    }
+    public get id() {
+        return this._id;
+    }
+
+    public set id(newId: string) {
+        this._id = escapeString(newId);
+    }
+}
+
+export interface SystemConfiguration {
+    name: string;
+    id?: string;
+    color?: string;
+    components: { [key: string]: Component };
+    relationships: { [key: string]: ComponentRelationship };
+    systemDependencies?: {
+        systems?: { [key: string]: System },
+        relationships?: { [key: string]: ComponentRelationship }
     }
 }
