@@ -7,7 +7,7 @@ export const myApp = new Component("My Application", ComponentType.UI);
 export const myService = new Component("My Service", ComponentType.Service);
 export const myDatabase = new Component("My Database", ComponentType.Database);
 export const db2 = new Component("Database 2", ComponentType.Database);
-myDatabase.childComponents = [db2];
+myDatabase.childComponents.push(db2);
 
 
 export const components = [

@@ -16,6 +16,31 @@ export function getComponentDiagramType(type: ComponentType): string {
     }
 }
 
+export function generateComponentMarkup(component: Component) {
+    const type = DiagramType.Component;
+    let output = '';
+    const componentString = getComponentDiagramType(component.type);
+        output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+        if(component.color) output += " #" + component.color; 
+        if (component.childComponents) {
+            output += " {\n";
+            component.childComponents.forEach((component) => {
+                output += component.toMarkup(type) + "\n"
+            })
+            if (component.childRelationships) {
+                component.childRelationships.forEach((relationship) => {
+                    output += relationship.toMarkup(type) + "\n";
+                });
+            }
+            output += "\n}\n";
+        }
+        return output;
+}
+
+export function generateComponentRelationship(relationship: ComponentRelationship): string {
+    return `${relationship.source.id} -- ${relationship.target.id}`;
+}
+
 export function generateComponentDiagram(system: System): string {
     let output: string = startUml;
     output += titleAndHeader(system.name, "Component");

@@ -1,7 +1,6 @@
 import { DiagramType } from "./diagram";
-import { getComponentDiagramType } from "../plantuml/component-diagram";
+import { generateComponentMarkup as componentMarkup, generateComponentRelationship as componentRelationship } from "../plantuml/component-diagram";
 import { labelToId } from "../common/utils";
-import { components } from "../app";
 
 export class Component {
     label: string;
@@ -17,29 +16,11 @@ export class Component {
         this.type = type;
     }
     toMarkup(type: DiagramType): string {
-        let componentString: string;
-        let output: string = '';
         switch(type) {
             case DiagramType.Component:
             default:
-                componentString = getComponentDiagramType(this.type);
-                break;
+                return componentMarkup(this);
         }
-        output += `${componentString} "${this.label}" as ${this.id} <<${this.stereotype || this.type}>>`;
-        if(this.color) output += " #" + this.color; 
-        if (this.childComponents) {
-            output += " {\n";
-            this.childComponents.forEach((component) => {
-                output += component.toMarkup(type) + "\n"
-            })
-            if (this.childRelationships) {
-                this.childRelationships.forEach((relationship) => {
-                    output += relationship.toMarkup(type) + "\n";
-                });
-            }
-            output += "\n}\n";
-        }
-        return output;
     }
 }
 
@@ -57,7 +38,12 @@ export class Uses implements ComponentRelationship {
         this.target = target;
     }
     toMarkup(type: DiagramType): string {
-        return `${this.source.id} -- ${this.target.id}`;
+        switch(type) {
+            case DiagramType.Component:
+            default:
+                return componentRelationship(this);
+        }
+        
     }
 }
 
