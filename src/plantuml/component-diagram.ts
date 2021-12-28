@@ -3,7 +3,6 @@ import { Component, ComponentType } from "../models/component";
 import { ComponentRelationship } from "../models/component-relationship";
 import { generateComponentMarkup as generateSystemMarkup } from "./system-diagram";
 import { System } from "../models/system";
-import { DiagramType } from "../models/diagram";
 import { escapeString } from "../common/utils";
 
 export function getComponentDiagramType(type: ComponentType): string {
@@ -23,14 +22,18 @@ export function getComponentDiagramType(type: ComponentType): string {
     }
 }
 
-export function generateComponentMarkup(component: Component) {
+export function generateComponentMarkup(component: Component): string {
     let output = '';
+    let renderComponentMarkup = true;
+    if (component.type === ComponentType.ExecutionEnvironment) renderComponentMarkup = false;
     const componentString = getComponentDiagramType(component.type);
-    output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
-    if(component.stereotype) output += ` <<${component.stereotype}>>`;
-    if(component.color) output += " #" + component.color; 
+    if (renderComponentMarkup) {
+        output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
+        if(component.stereotype) output += ` <<${component.stereotype}>>`;
+        if(component.color) output += " #" + component.color;
+    }
     if (component.childComponents.length) {
-        output += " {\n";
+        if (renderComponentMarkup) output += " {\n";
         component.childComponents.forEach((component) => {
             output += generateComponentMarkup(component) + "\n"
         })
@@ -39,7 +42,7 @@ export function generateComponentMarkup(component: Component) {
                 output += generateRelationshipMarkup(relationship);
             });
         }
-        output += "}";
+        if (renderComponentMarkup) output += "}";
     }
     return output;
 }
@@ -53,11 +56,12 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
 
 function generateComponents(components: Array<Component>) {
     return components
-    .filter(({type}) => type !== ComponentType.ExecutionEnvironment)
-    .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
+    .filter((component) => {
+        const test = component.executionEnvironment === undefined
+        return component.executionEnvironment === undefined
+    })
+    .reduce((output, component, newArry): string => output += generateComponentMarkup(component) + "\n", '');
 }
-
-
 
 function generateComponentRelationships(relationships: Array<ComponentRelationship>): string {
     const relationshipsAlreadyAdded = [];

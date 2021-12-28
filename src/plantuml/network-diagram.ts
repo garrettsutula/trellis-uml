@@ -2,9 +2,6 @@ import { titleAndHeader, startUml, endUml } from "./chrome";
 import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
-import { DiagramType } from "../models/diagram";
-import { exec } from "child_process";
-
 
 export function getNetworkDiagramType(type: ComponentType): string {
     switch(type) {
@@ -22,13 +19,16 @@ export function getNetworkDiagramType(type: ComponentType): string {
 }
 
 export function generateComponentMarkup(component: Component) {
-    const type = DiagramType.Network;
     let output = '';
+    let renderComponentMarkup = true;
+    if (component.type !== ComponentType.ExecutionEnvironment) renderComponentMarkup = false;
     const componentString = getNetworkDiagramType(component.type);
-    output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
-    if(component.color) output += " #" + component.color; 
+    if (renderComponentMarkup) {
+        output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+        if(component.color) output += " #" + component.color; 
+    }
     if (component.childComponents.length) {
-        output += " {\n";
+        if (renderComponentMarkup) output += " {\n";
         component.childComponents.forEach((component) => {
             output += generateComponentMarkup(component) + "\n"
         })
@@ -37,7 +37,7 @@ export function generateComponentMarkup(component: Component) {
                 output += generateRelationshipMarkup(relationship);
             });
         }
-        output += "}";
+        if (renderComponentMarkup) output += "}";
     }
     return output;
 }
@@ -50,14 +50,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
 }
 
 function generateComponents(components: Array<Component>) {
-    // Add child components to their execution environments as desginated on instantiated components.
-    components.forEach((component) => {
-        if (component.executionEnvironment) {
-            component.executionEnvironment.childComponents.push(component);
-        }
-    });
     return components
-    .filter((component) => component.executionEnvironment === undefined)
     .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
 }
 

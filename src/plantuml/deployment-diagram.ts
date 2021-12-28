@@ -2,7 +2,6 @@ import { titleAndHeader, startUml, endUml } from "./chrome";
 import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
-import { DiagramType } from "../models/diagram";
 import { escapeString } from "../common/utils";
 
 
@@ -24,7 +23,6 @@ export function getNetworkDiagramType(type: ComponentType): string {
 }
 
 export function generateComponentMarkup(component: Component) {
-    const type = DiagramType.Network;
     let output = '';
     const componentString = getNetworkDiagramType(component.type);
     output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;

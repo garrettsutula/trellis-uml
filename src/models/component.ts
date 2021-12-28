@@ -7,7 +7,7 @@ export class Component implements ComponentConfiguration {
     type: ComponentType;
     stereotype?: string;
     color?: string;
-    executionEnvironment?: Component;
+    private _executionEnvironment?: Component;
     childComponents?: Array<Component>;
     childRelationships?: Array<ComponentRelationship>;
     constructor(label: string, config?: ComponentConfiguration) {
@@ -30,28 +30,41 @@ export class Component implements ComponentConfiguration {
     public set id(newId: string) {
         this._id = escapeString(newId);
     }
+
+    public get executionEnvironment() {
+        return this._executionEnvironment;
+    }
+
+    public set executionEnvironment(newEnvironment: Component) {
+        if ((newEnvironment && newEnvironment?.id) !== this?.executionEnvironment?.id) {
+            const indexOfComponent = this.executionEnvironment?.childComponents.findIndex(({ id }) => this.id === id);
+            if (indexOfComponent > -1) {
+                this.executionEnvironment.childComponents.splice(indexOfComponent, 1);
+            }
+            this._executionEnvironment = newEnvironment;
+        }
+        if (this.executionEnvironment?.childComponents.findIndex(({ id }) => this.id === id) == -1) {
+            this.executionEnvironment.childComponents.push(this);
+        }
+    }
 }
 
 export class Database extends Component {
-    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Database;
     stereotype: string = "Database";
 }
 
 export class Service extends Component {
-    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Service;
     stereotype = "Service";
 }
 
 export class UI extends Component {
-    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.UI;
     stereotype = "UI";
 }
 
 export class API extends Component {
-    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.API;
 }
 
@@ -61,16 +74,14 @@ export class Domain extends Component {
 }
 
 export class Device extends Domain {
-    executionEnvironment: Domain;
     stereotype = "Device";
 }
 
 export class ExecutionEnvironment extends Domain {
-    executionEnvironment: Device;
     stereotype = "Execution Environment";
 }
 
-interface ComponentConfiguration {
+export interface ComponentConfiguration {
     label?: string;
     id?: string;
     type?: ComponentType;

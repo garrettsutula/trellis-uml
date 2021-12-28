@@ -1,65 +1,52 @@
-import { System } from "./models/system";
-import { Domain, Device, UI, Service, ExecutionEnvironment, Database, API } from "./models/component";
-import { ConnectsTo, Provides, Requires, Uses } from "./models/component-relationship";
-import { generateSystemDiagrams } from "./common/generate";
+import * as Commands from './cli';
 
-// Outside Network
-const house = new Domain("My House");
-const myMobile = new Device("My Device", { executionEnvironment: house });
-const myMobileOs = new ExecutionEnvironment("My MobileOS", { executionEnvironment: myMobile });
-const myApp = new UI("My Application", { executionEnvironment: myMobileOs });
+var argv = require('yargs/yargs')(process.argv.slice(2))
+    .usage('Usage: $0 [init|generate|serve]')
+    .demandCommand(1)
+    .argv;
 
-// Internal Network
-const datacenter = new Domain("Datacenter");
-// API Gateway
-const apiGateway = new Device("API Server", { executionEnvironment: datacenter});
-const apiContainer = new ExecutionEnvironment("API Container", {executionEnvironment: apiGateway });
-const corpService = new API("Corporate", { executionEnvironment: apiContainer });
-const publicService = new API("Public", {executionEnvironment: apiContainer});
-// App Server
-const appServer = new Device("App Server", { executionEnvironment: datacenter });
-const appContainer = new ExecutionEnvironment("App Container", { executionEnvironment: appServer });
-const myService = new Service("My Service", { executionEnvironment: appContainer });
-const intService = new API("Internal", { executionEnvironment: appServer });
-// Database
-const dbServer = new Device("DB Server", { executionEnvironment: datacenter });
-const dbms = new ExecutionEnvironment("DBMS", { executionEnvironment: dbServer });
-const myDatabase = new Database("My Database", { executionEnvironment: dbms });
-const myDatabase2 = new Database("My Database2", {executionEnvironment: dbms });
+export { 
+    System,
+    SystemConfiguration,
+    ComponentConfiguration,
+    Database,
+    Service,
+    UI,
+    API,
+    Domain,
+    Device,
+    ExecutionEnvironment,
+    ComponentType,
+    ComponentRelationshipConfiguration,
+    Uses,
+    Accesses,
+    FlowsInto,
+    Provides,
+    Requires,
+    ConnectsTo,
+} from "./models"
 
-export const system = new System({
-    name: "My System", 
-    components: {
-        house,
-        myMobile,
-        myMobileOs,
-        myApp,
-        datacenter,
-        apiGateway,
-        apiContainer,
-        corpService,
-        publicService,
-        appServer,
-        appContainer,
-        myService,
-        intService,
-        dbServer,
-        dbms,
-        myDatabase,
-        myDatabase2,
-    },
-    relationships: {
-        appToCorp: new Requires(myApp, corpService),
-        CorpToInt: new Requires(corpService, intService),
-        PubToInt: new Requires(publicService, intService),
-        intToService: new Provides(myService, intService),
-        serviceToDb: new Uses(myService, myDatabase, "<<CRUD>>"),
-        serviceToDb2: new Uses(myService, myDatabase2, "<<CRUD>>"),
-        deviceToGateway: new ConnectsTo(myMobileOs, apiGateway, "Ports: 443\\nProtocol:TCP"),
-        gatewayToServer: new ConnectsTo(apiGateway, appServer, "Ports: 80\\nProtocol:TCP"),
-        serverToDb: new ConnectsTo(appServer, dbServer, "Ports:1433\\nProtocol:TCP"),
-    }
-});
+const { _: [ command ] = []} = argv;
 
-// Move to a cli command
-generateSystemDiagrams(system);
+let invokedCommand;
+
+switch(command) {
+    case 'init':
+        invokedCommand = Commands.initializeProject();
+        break;
+    case 'generate':
+        invokedCommand = Commands.generateProject();
+        break;
+    case 'serve':
+        invokedCommand = Commands.serveProject();
+        break;
+    default:
+        throw new Error(`Unrecognized command: ${command}.`);
+}
+
+invokedCommand.then(() => {
+    process.exit(0)
+})
+.catch(() => {
+    process.exit(1)
+})
