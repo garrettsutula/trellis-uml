@@ -3,7 +3,7 @@ import { Component, ComponentType, ComponentRelationship } from "../models/compo
 import { System } from "../models/system";
 import { DiagramType } from "../models/diagram";
 
-export function getComponentDiagramType(type: ComponentType): string {
+export function getNetworkDiagramType(type: ComponentType): string {
     switch(type) {
         case ComponentType.UI:
             return "boundary";
@@ -18,12 +18,12 @@ export function getComponentDiagramType(type: ComponentType): string {
     }
 }
 
-export function generateComponentMarkup(component: Component) {
-    const type = DiagramType.Component;
+export function generateNetworkMarkup(component: Component) {
+    const type = DiagramType.Network;
     let renderComponent = true;
-    if(component.type === ComponentType.ExecutionEnvironment) renderComponent = false;
+    if(component.type !== ComponentType.ExecutionEnvironment) renderComponent = false;
     let output = '';
-    const componentString = getComponentDiagramType(component.type);
+    const componentString = getNetworkDiagramType(component.type);
     if (renderComponent) output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
     if(component.color) output += " #" + component.color; 
     if (component.childComponents) {
@@ -41,22 +41,22 @@ export function generateComponentMarkup(component: Component) {
     return output;
 }
 
-export function generateComponentRelationship(relationship: ComponentRelationship): string {
-    if (relationship.source.type !== ComponentType.ExecutionEnvironment && 
-        relationship.target.type !== ComponentType.ExecutionEnvironment) {
+export function generateNetworkRelationship(relationship: ComponentRelationship): string {
+    if (relationship.source.type === ComponentType.ExecutionEnvironment && 
+        relationship.target.type === ComponentType.ExecutionEnvironment) {
             return `${relationship.source.id} -- ${relationship.target.id}\n`;
         }
         return '';
 }
 
-export function generateComponentDiagram(system: System): string {
+export function generateNetworkDiagram(system: System): string {
     let output: string = startUml;
     output += titleAndHeader(system.name, "Component");
     system.components.forEach((component: Component) => {
-        output += component.toMarkup(DiagramType.Component);
+        output += component.toMarkup(DiagramType.Network);
     })
     system.relationships.forEach((relationship: ComponentRelationship) => {
-        output += relationship.toMarkup(DiagramType.Component) + "\n";
+        output += relationship.toMarkup(DiagramType.Network);
     })
     output += endUml;
     return output;
