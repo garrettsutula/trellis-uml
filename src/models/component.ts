@@ -10,6 +10,7 @@ export class Component {
     type: ComponentType;
     stereotype?: string;
     color?: string;
+    executionEnvironment?: Component;
     childComponents?: Array<Component>;
     childRelationships?: Array<ComponentRelationship>
     constructor(label: string, config?: ComponentConfiguration) {
@@ -33,20 +34,36 @@ export class Component {
 }
 
 export class Database extends Component {
+    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Database;
 }
 
 export class Service extends Component {
+    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.Service;
 }
 
 export class UI extends Component {
+    executionEnvironment: ExecutionEnvironment;
     type = ComponentType.UI;
 }
 
-export class ExecutionEnvironment extends Component {
+export class Domain extends Component {
     type = ComponentType.ExecutionEnvironment;
+    stereotype = "Domain";
 }
+
+export class Device extends Domain {
+    executionEnvironment: Domain;
+    stereotype = "Device";
+}
+
+export class ExecutionEnvironment extends Domain {
+    executionEnvironment: Device;
+    stereotype = "Execution Environment";
+}
+
+
 
 interface ComponentConfiguration {
     label?: string;
@@ -54,6 +71,7 @@ interface ComponentConfiguration {
     type?: ComponentType;
     stereotype?: string;
     color?: string;
+    executionEnvironment?: Component;
     childComponents?: Array<Component>;
     childRelationships?: Array<ComponentRelationship>
 }

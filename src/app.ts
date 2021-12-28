@@ -1,35 +1,43 @@
 import { System } from "./models/system";
-import { UI, Service, ExecutionEnvironment, Database, Uses } from "./models/component";
-import { writeFileSync } from "fs";
-import { generateComponentDiagram } from "./plantuml/component-diagram";
-import { generateNetworkDiagram } from "./plantuml/network-diagram";
+import { Domain, Device, UI, Service, ExecutionEnvironment, Database, Uses } from "./models/component";
+import { generateSystemDiagrams } from "./common/generate";
 
-export const myApp = new UI("My Application");
-export const myService = new Service("My Service");
-export const myDatabase = new Database("My Database");
 
-const myMobileOs = new ExecutionEnvironment("My MobileOS", { childComponents: [ myApp ]});
-const myMobile = new ExecutionEnvironment("My Device", { childComponents: [ myMobileOs ]});
-const house = new ExecutionEnvironment("My House", { childComponents: [ myMobile ]});
+const house = new Domain("My House");
+const myMobile = new Device("My Device", { executionEnvironment: house });
+const myMobileOs = new ExecutionEnvironment("My MobileOS", { executionEnvironment: myMobile });
 
-const dbms = new ExecutionEnvironment("DBMS", { childComponents: [ myService, myDatabase ]});
-const server = new ExecutionEnvironment("Server", { childComponents: [ dbms ]});
-const datacenter = new ExecutionEnvironment("Datacenter", { childComponents: [ server ]});
+const datacenter = new Domain("Datacenter");
+const server = new Device("Server", { executionEnvironment: datacenter });
+const dbms = new ExecutionEnvironment("DBMS", { executionEnvironment: server });
+// Move to object structure
+export const myApp = new UI("My Application", { executionEnvironment: myMobileOs });
+export const myService = new Service("My Service", { executionEnvironment: server });
+export const myDatabase = new Database("My Database", { executionEnvironment: dbms });
 
-export const components = [
+
+
+// Change to objects for better named exports
+const components = {
+    myApp,
+    myService,
+    myDatabase,
     house,
-    datacenter
-]
+    myMobile,
+    myMobileOs,
+    datacenter,
+    server,
+    dbms,
+};
 
-export const relationships = [
-    new Uses(myApp, myService),
-    new Uses(myService, myDatabase),
-    new Uses(myMobileOs, server),
-];
+// Change to objects for better named exports
+const relationships = {
+    appToService: new Uses(myApp, myService),
+    serviceToDb: new Uses(myService, myDatabase),
+    deviceToServer: new Uses(myMobileOs, server),
+};
 
 export const system = new System("My System", components, relationships);
-const output = generateComponentDiagram(system);
-const output2 = generateNetworkDiagram(system);
 
-writeFileSync('output.puml', output);
-writeFileSync('output2.puml', output2);
+// Move to a cli command
+generateSystemDiagrams(system);
