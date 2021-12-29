@@ -17,9 +17,11 @@ To get started locally, follow these instructions:
 > Note: you will get an error & nothing will happen if the project folder exists already, relative to the current working directory.
 
 ## Using Trellis (CLI Commands)
-`trellis init` (WIP) will initialize a project folder w/ folder structure and typescript modules that will be used as the basis for creating diagrams based off of instantiations of a few key classes.
+`trellis init` will initialize a project folder w/ folder structure and typescript modules that will be used as the basis for creating diagrams based off of instantiations of a few key classes.
 
-`trellis generate` (WIP) will iterate over the contents of `./src` to attempt to render all `.ts` files into PlantUML diagrams in the matching output directory, `./diagrams`.
+`trellis generate system|service|solution|domain name` (WIP) will create a new `.ts` file with a scaffold for the specified diagram type with the specified name.
+
+`trellis build` (WIP) will iterate over the contents of `./src` to attempt to render all `.ts` files into PlantUML diagrams in the matching output directory, `./diagrams`.
 
 `trellis serve` (WIP) will run a process that will auto-generate diagrams automatically on-save, similar to a hot-reload working with a modern SPA or node application.
 
