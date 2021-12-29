@@ -8,22 +8,22 @@
 - Often systems & integrations are vast and complex. Trying to express these at different levels of detail becomes very costly using **any** diagramming tool.
 
 ## Getting Started
-To get started locally, follow these instructions:
+To get started using this project locally, follow these instructions:
 
 1. Make sure you have Node 12.14 or higher installed, ideally latest LTS.
 2. Install this package globally with the command: `npm install -g trellisuml`
-3. In your preferred working directory run the command `trellis init "myProject"` to initialize a new project folder.
+3. `cd` into your preferred working directory run the command `trellis init` to initialize a new project folder.
+4. Use `trellis generate system|service|solution|domain name` to create diagram scaffolds.
+5. Review the available exports from the `trellisuml` module & reference examples on how to use them further below.
 
-> Note: you will get an error & nothing will happen if the project folder exists already, relative to the current working directory.
+## CLI Reference
+`trellis init` - initializes project folder structure, package.json and installs latest available dependencies.
 
-## Using Trellis (CLI Commands)
-`trellis init` will initialize a project folder w/ folder structure and typescript modules that will be used as the basis for creating diagrams based off of instantiations of a few key classes.
+`trellis generate system|service|solution|domain name` - **(WIP)** - creates a diagram scaffold file in `./src/...` according to the arguments passed.
 
-`trellis generate system|service|solution|domain name` (WIP) will create a new `.ts` file with a scaffold for the specified diagram type with the specified name.
+`trellis build` - **(WIP)** - Iterates over an instance of `DiagramRoot`, the export of `./src/app.ts`, to  render all diagram TypeScript files into PlantUML diagrams in the matching output directory, `./diagrams`.
 
-`trellis build` (WIP) will iterate over the contents of `./src` to attempt to render all `.ts` files into PlantUML diagrams in the matching output directory, `./diagrams`.
-
-`trellis serve` (WIP) will run a process that will auto-generate diagrams automatically on-save, similar to a hot-reload working with a modern SPA or node application.
+`trellis serve` - **(TODO)** - runs a process that will auto-generate diagrams automatically on-save, similar to a hot-reload working with a modern SPA or node application.
 
 ### Project Structure
 See [Diagram Types](#diagram-types) belwo for more information & examples.
@@ -37,7 +37,7 @@ See [Diagram Types](#diagram-types) belwo for more information & examples.
 │     ├── appointments-microservice.ts
 │     └── ...
 ├──── solution
-│     ├── appointments_solution.ts
+│     ├── appointments-solution.ts
 │     └── ...
 ├──── domain
 │     ├── my-organization.ts
@@ -47,13 +47,17 @@ See [Diagram Types](#diagram-types) belwo for more information & examples.
 │     ├── appointments.puml
 │     └── ...
 ├──── ...
+├──── ... configuration files for dependencies
+├──── ...
 └── package.json
 ```
 
 ### Diagram Types
 
 #### System
-Each system diagram exports a default that instantiates one `System` and zero or more `Component` and `ComponentRelationship` classes that represent all the different Network, Deployment, and Logical components in the system. From these definitions, the following digrams are generated:
+Each system diagram exports a default that instantiates one `System` and zero or more `Component` and `ComponentRelationship` classes that represent all the different Network, Deployment, and Logical components in the system. 
+
+From these definitions, the following digrams are generated:
 
 - System Diagram - Highest-level representation of the system, typically included and used in high level enterprise architecture diagrams.
 - Network Diagram - Overview of execution environments (components represented by `node` in diagrams, e.g. `Domain`, `Device`, and `ExecutionEnvironment`) and the network connections established between them.
@@ -62,27 +66,28 @@ Each system diagram exports a default that instantiates one `System` and zero or
 
 ##### Example
 ``` TypeScript
-import { UI, Service, Database, ConnectsTo  } from "trellisuml";
-import { clientDevice, appServer, dbServer } from "../Domain/domain.ts"; // Import & use Device(name: string) to easily re-create these dependencies.
+import { UI, Service, Database, ConnectsTo } from "trellisuml";
+// Import & use Device(name: string) to easily re-create these dependencies instead of importing this module.
+import { clientDevice, appServer, dbServer } from "../domains/domain"; 
  
 const name = "Appointments";
-const app = new UI(`${name} App`, { parentComponent: clientDevice });
-const service = new Service(`${name} Service`, { parentComponent: dbServer });
+// parentComponents are defined here to place the component in the broader context of the systems & infrastructure.
+const app = new UI(`${name} App`, { parentComponent: clientDevice }); 
+const service = new Service(`${name} Service`, { parentComponent: appServer });
 const db = new Database(`${name} Database`, { parentComponent: dbServer });
 
 export default new System({
     name,
-    components: {
-        app,
-        service,
-        db,
+    components: {         // Only the highest level components in the system should be included here.
+        clientDevice,     // Rarely, a component without a parentComponent may be defined in a system diagram.
+        appServer,        // If so, add it here (but it should probably be in the domain diagram module).
+        dbServer,
     },
-    relationships: {
+    relationships: {  // Defined as needed for every connection between systems. De-duplicated when rendered as puml.
         appToService: new ConnectsTo(app, service),
         serviceToDb: new ConnectsTo(service, db),
         clientToServer: new ConnectsTo(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
-        clientToServer: new ConnectsTo(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
-
+        serverToDb: new ConnectsTo(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
     }
 })
 ```
