@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "types": "dist/app.d.ts",
   "bin": {
-    "trellisuml": "dist/app.js"
+    "trellis": "dist/app.js"
   },
   "scripts": {
     "prepublish": "npm run build",
