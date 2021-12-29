@@ -5,16 +5,10 @@ import { System } from "../models/system";
 
 export function getNetworkDiagramType(type: ComponentType): string {
     switch(type) {
-        case ComponentType.UI:
-            return "boundary";
-        case ComponentType.Service:
-            return "component";
-        case ComponentType.Database:
-            return "database";
         case ComponentType.ExecutionEnvironment:
             return "node";
         default:
-            return "component";
+            throw new Error("only 'node' components are expected in network diagrams, possible bug?")
     }
 }
 

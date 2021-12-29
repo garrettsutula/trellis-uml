@@ -17,6 +17,10 @@ export function getNetworkDiagramType(type: ComponentType): string {
             return "node";
         case ComponentType.API:
             return "interface";
+        case ComponentType.Queue:
+            return "queue";
+        case ComponentType.Processor:
+            return "control";
         default:
             return "component";
     }
