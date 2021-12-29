@@ -25,3 +25,7 @@ export {
     SystemConfiguration,
     System,
 } from './system';
+
+export {
+    DiagramRoot
+} from './diagram-root';

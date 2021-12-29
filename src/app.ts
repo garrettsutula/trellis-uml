@@ -37,6 +37,7 @@ switch(command) {
         break;
     case 'build':
         invokedCommand = Commands.buildProject();
+        break;
     case 'generate':
         invokedCommand = Commands.generateDiagramScaffold(type, name);
         break;

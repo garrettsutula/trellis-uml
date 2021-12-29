@@ -42,10 +42,10 @@ export async function initializeProject() {
         console.log("Creating diagram source code folder structure...");
         try {
             mkdir(path.join(workingDirectoryPath, './src'));
-            mkdir(path.join(workingDirectoryPath, './src/system'));
-            mkdir(path.join(workingDirectoryPath, './src/service'));
-            mkdir(path.join(workingDirectoryPath, './src/solution'));
-            mkdir(path.join(workingDirectoryPath, './src/domain'));
+            mkdir(path.join(workingDirectoryPath, './src/systems'));
+            mkdir(path.join(workingDirectoryPath, './src/services'));
+            mkdir(path.join(workingDirectoryPath, './src/solutions'));
+            mkdir(path.join(workingDirectoryPath, './src/domains'));
         } catch(e) {
             throw new Error("Error creating directory structure for diagram source code.");
         }

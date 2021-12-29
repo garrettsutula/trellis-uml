@@ -8,7 +8,7 @@ import { escapeString } from "./utils";
 import * as Path from 'path';
 
 
-export function generateSystemDiagrams(system: System) {
+export function generateSystemDiagrams(system: System, path: string) {
     const diagrams = [
         generateNetworkDiagram(system),
         generateDeploymentDiagram(system),
@@ -17,6 +17,5 @@ export function generateSystemDiagrams(system: System) {
     ];
 
     const output = diagrams.join("\n''''''''''''''''''''''''''''''\n");
-    const path = Path.join(process.cwd(), `./diagrams/systems/${escapeString(system.name)}.puml`);
     writeFileSync(path, output);
 }
