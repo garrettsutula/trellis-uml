@@ -1,4 +1,5 @@
 import { titleAndHeader, startUml, endUml } from "./chrome";
+import { escapeString } from "../common";
 import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
@@ -19,7 +20,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
     const componentString = getNetworkDiagramType(component.type);
     if (renderComponentMarkup) {
         output += `${'\t'.repeat(tabIndex)}`;
-        output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+        output += `${componentString} "${component.label}" as ${escapeString(component.id)} <<${component.stereotype || component.type}>>`;
         if(component.color) output += " #" + component.color; 
     }
     if (component.childComponents.length) {
@@ -81,6 +82,19 @@ export function generateNetworkDiagram(system: System): string {
 
     const topLevelComponents = new Map<string, Component>();
     const componentsToRender = new Map();
+    const relationshipComponents = new Map();
+    // TODO: come back to consolidate/simplify this probably by changing to arrays.
+    Object.values(system.relationships).forEach(({source, target}) => {
+        if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
+        if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
+        if(relationshipComponents.has(target.id) === false) relationshipComponents.set(target.id, target);
+        const topSourceComponent = recurseParentComponents(source, componentsToRender);
+        const { id: sourceId } = topSourceComponent;
+        if (topLevelComponents.has(sourceId) === false) topLevelComponents.set(sourceId, topSourceComponent);
+        const topTargetComponent = recurseParentComponents(target, componentsToRender);
+        const { id:targetId } = topTargetComponent;
+        if (topLevelComponents.has(targetId) === false) topLevelComponents.set(targetId, topTargetComponent);
+    })
 
     Object.values(system.components).forEach((component) => {
         const topComponent = recurseParentComponents(component, componentsToRender);
