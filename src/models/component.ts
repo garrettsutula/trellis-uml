@@ -68,8 +68,22 @@ export class API extends Component {
     type = ComponentType.API;
 }
 
+export class Queue extends Component {
+    type = ComponentType.Queue;
+}
+
+export class Cache extends Component {
+    type = ComponentType.Database;
+    stereotype = "Cache";
+}
+
+export class Processor extends Component {
+    type = ComponentType.Processor;
+    stereotype = "Processor";
+}
+
 export class Domain extends Component {
-    type: ComponentType = ComponentType.ExecutionEnvironment;
+    type = ComponentType.ExecutionEnvironment;
     stereotype = "Domain";
 }
 
@@ -98,4 +112,6 @@ export enum ComponentType {
     Database = "Database",
     ExecutionEnvironment = "Execution Environment",
     API = "API",
+    Queue = "Queue",
+    Processor = "Processor",
 }
