@@ -30,21 +30,27 @@ See [Diagram Types](#diagram-types) belwo for more information & examples.
 ```
 .
 ├── src
+├── app.ts - diagram root module, exports all diagrams defined in subfolders' index.ts
 ├──── system
 │     ├── appointments.ts
+│     ├── index.ts - exports individual systems to provide imports for other diagram files & the diagram root
 │     └── ...
 ├──── service
 │     ├── appointments-microservice.ts
+│     ├── index.ts - exports individual systems to provide imports for other diagram files & the diagram root
 │     └── ...
 ├──── solution
 │     ├── appointments-solution.ts
+│     ├── index.ts - exports individual systems to provide imports for other diagram files & the diagram root
 │     └── ...
 ├──── domain
 │     ├── my-organization.ts
+│     ├── index.ts - exports individual systems to provide imports for other diagram files & the diagram root
 │     └── ...
 ├── diagrams - output folder for diagram rendering, sub-folder structure matches ./src
 ├──── system
 │     ├── appointments.puml
+│     ├── index.ts - exports individual systems to provide imports for other diagram files & the diagram root
 │     └── ...
 ├──── ...
 ├──── ... configuration files for dependencies
@@ -66,9 +72,12 @@ From these definitions, the following digrams are generated:
 
 ##### Example
 ``` TypeScript
-import { UI, Service, Database, ConnectsTo } from "trellisuml";
-// Import & use Device(name: string) to easily re-create these dependencies instead of importing this module.
-import { clientDevice, appServer, dbServer } from "../domains/domain"; 
+import { System, UI, Service, Database, Device, ConnectsTo } from "trellisuml";
+// These would typically be defined in a "domain" diagram & imported from that diagram instead of defined here.
+// because they are likely re-used by other components in other systems/solutions
+const clientDevice = new Device("Mobile App");
+const appServer = new Device("Application Server");
+const dbServer = new Device("Database Server");
  
 const name = "Appointments";
 // parentComponents are defined here to place the component in the broader context of the systems & infrastructure.
