@@ -1,4 +1,5 @@
 import { titleAndHeader, startUml, endUml } from "./chrome";
+import { escapeString } from "../common";
 import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
@@ -8,44 +9,50 @@ export function getNetworkDiagramType(type: ComponentType): string {
         case ComponentType.ExecutionEnvironment:
             return "node";
         default:
-            throw new Error("only 'node' components are expected in network diagrams, possible bug?")
+            return "component";
     }
 }
 
-export function generateComponentMarkup(component: Component) {
+export function generateComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
     let output = '';
     let renderComponentMarkup = true;
     if (component.type !== ComponentType.ExecutionEnvironment) renderComponentMarkup = false;
     const componentString = getNetworkDiagramType(component.type);
     if (renderComponentMarkup) {
-        output += `${componentString} "${component.label}" as ${component.id} <<${component.stereotype || component.type}>>`;
+        output += `${'\t'.repeat(tabIndex)}`;
+        output += `${componentString} "${component.label}" as ${escapeString(component.id)} <<${component.stereotype || component.type}>>`;
         if(component.color) output += " #" + component.color; 
     }
     if (component.childComponents.length) {
         if (renderComponentMarkup) output += " {\n";
         component.childComponents.forEach((component) => {
-            output += generateComponentMarkup(component) + "\n"
+            if (componentsToRender.has(component.id)) {
+                const markup = generateComponentMarkup(component, componentsToRender, tabIndex + 1);
+                if (markup.length) output += markup
+                if (output.slice(-1) !== "\n") output += '\n';
+            }
         })
         if (component.childRelationships.length) {
             component.childRelationships.forEach((relationship) => {
-                output += generateRelationshipMarkup(relationship);
+                output += generateRelationshipMarkup(relationship, tabIndex + 1);
             });
         }
-        if (renderComponentMarkup) output += "}";
+        if (renderComponentMarkup) output += `${'\t'.repeat(tabIndex)}}\n`;
     }
     return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship): string {
+function generateRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
     // TODO: Implement config interface
-    let output = `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
+    let output = `${'\t'.repeat(tabIndex)}`;
+    output += `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
     if (relationship.description) output += `: ${relationship.description}`;
     return output + "\n";
 }
 
-function generateComponents(components: Array<Component>) {
+function generateComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
     return components
-    .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
+    .reduce((output, component): string => output += generateComponentMarkup(component, componentsToRender), '');
 }
 
 function generateRelationships(relationships: Array<ComponentRelationship>): string {
@@ -60,18 +67,45 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
         }, '');
 }
 
+function recurseParentComponents(component: Component, componentsToRender) {
+    if (componentsToRender.has(component.id) === false) componentsToRender.set(component.id, component);
+    if (component.parentComponent) {
+        return recurseParentComponents(component.parentComponent, componentsToRender);
+    }
+    return component;
+}
+
 
 export function generateNetworkDiagram(system: System): string {
-    const executionEnvironmentComponents = Object.values(system.components).filter((component) => component.type === ComponentType.ExecutionEnvironment)
-    if (executionEnvironmentComponents.length) {
-        let output: string = startUml(`Network Diagram ${system.name}`);
-        output += titleAndHeader(system.name, "Network");
-        // Identify top level components (ones without execution environments) and generate markup recursively.
-        output += generateComponents(executionEnvironmentComponents);
-        // Filter in relationships that connect to an execution environment & generate markup.
-        output += generateRelationships(Object.values(system.relationships));
-        output += endUml();
-        return output;
-    }
-    return "";
+    let output: string = startUml(`Network Diagram ${system.name}`);
+    output += titleAndHeader(system.name, "Network");
+
+    const topLevelComponents = new Map<string, Component>();
+    const componentsToRender = new Map();
+    const relationshipComponents = new Map();
+    // TODO: come back to consolidate/simplify this probably by changing to arrays.
+    Object.values(system.relationships).forEach(({source, target}) => {
+        if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
+        if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
+        if(relationshipComponents.has(target.id) === false) relationshipComponents.set(target.id, target);
+        const topSourceComponent = recurseParentComponents(source, componentsToRender);
+        const { id: sourceId } = topSourceComponent;
+        if (topLevelComponents.has(sourceId) === false) topLevelComponents.set(sourceId, topSourceComponent);
+        const topTargetComponent = recurseParentComponents(target, componentsToRender);
+        const { id:targetId } = topTargetComponent;
+        if (topLevelComponents.has(targetId) === false) topLevelComponents.set(targetId, topTargetComponent);
+    })
+
+    Object.values(system.components).forEach((component) => {
+        const topComponent = recurseParentComponents(component, componentsToRender);
+        const { id } = topComponent;
+        if (topLevelComponents.has(id) === false) topLevelComponents.set(id, topComponent);
+    });
+
+    // Identify top level components (ones without execution environments) and generate markup recursively.
+    output += generateComponents(Array.from(topLevelComponents.values()), componentsToRender);
+    // Filter in relationships that connect to an execution environment & generate markup.
+    output += generateRelationships(Object.values(system.relationships));
+    output += endUml();
+    return output;
 }
