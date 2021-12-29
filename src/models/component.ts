@@ -7,7 +7,7 @@ export class Component implements ComponentConfiguration {
     type: ComponentType;
     stereotype?: string;
     color?: string;
-    private _executionEnvironment?: Component;
+    private _parentComponent?: Component;
     childComponents?: Array<Component>;
     childRelationships?: Array<ComponentRelationship>;
     constructor(label: string, config?: ComponentConfiguration) {
@@ -20,7 +20,7 @@ export class Component implements ComponentConfiguration {
         this.color = config?.color;
         this.childComponents = config?.childComponents || new Array();
         this.childRelationships = config?.childRelationships || new Array();
-        this.executionEnvironment = config?.executionEnvironment;
+        this.parentComponent = config?.parentComponent;
     }
 
     public get id() {
@@ -31,20 +31,20 @@ export class Component implements ComponentConfiguration {
         this._id = escapeString(newId);
     }
 
-    public get executionEnvironment() {
-        return this._executionEnvironment;
+    public get parentComponent() {
+        return this._parentComponent;
     }
 
-    public set executionEnvironment(newEnvironment: Component) {
-        if ((newEnvironment && newEnvironment?.id) !== this?.executionEnvironment?.id) {
-            const indexOfComponent = this.executionEnvironment?.childComponents.findIndex(({ id }) => this.id === id);
+    public set parentComponent(newEnvironment: Component) {
+        if ((newEnvironment && newEnvironment?.id) !== this?.parentComponent?.id) {
+            const indexOfComponent = this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id);
             if (indexOfComponent > -1) {
-                this.executionEnvironment.childComponents.splice(indexOfComponent, 1);
+                this.parentComponent.childComponents.splice(indexOfComponent, 1);
             }
-            this._executionEnvironment = newEnvironment;
+            this._parentComponent = newEnvironment;
         }
-        if (this.executionEnvironment?.childComponents.findIndex(({ id }) => this.id === id) == -1) {
-            this.executionEnvironment.childComponents.push(this);
+        if (this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id) == -1) {
+            this.parentComponent.childComponents.push(this);
         }
     }
 }
@@ -87,7 +87,7 @@ export interface ComponentConfiguration {
     type?: ComponentType;
     stereotype?: string;
     color?: string;
-    executionEnvironment?: Component;
+    parentComponent?: Component;
     childComponents?: Array<Component>;
     childRelationships?: Array<ComponentRelationship>;
 }

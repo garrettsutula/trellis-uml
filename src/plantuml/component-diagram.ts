@@ -57,8 +57,8 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
 function generateComponents(components: Array<Component>) {
     return components
     .filter((component) => {
-        const test = component.executionEnvironment === undefined
-        return component.executionEnvironment === undefined
+        const test = component.parentComponent === undefined
+        return component.parentComponent === undefined
     })
     .reduce((output, component, newArry): string => output += generateComponentMarkup(component) + "\n", '');
 }

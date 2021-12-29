@@ -54,12 +54,12 @@ function generateComponents(components: Array<Component>) {
     // Add child components to their execution environments as desginated on instantiated components.
     components
     .forEach((component) => {
-        if (component.executionEnvironment) {
-            component.executionEnvironment.childComponents.push(component);
+        if (component.parentComponent) {
+            component.parentComponent.childComponents.push(component);
         }
     });
     return components
-    .filter((component) => component.executionEnvironment === undefined)
+    .filter((component) => component.parentComponent === undefined)
     .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
 }
 
