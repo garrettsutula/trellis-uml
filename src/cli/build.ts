@@ -10,7 +10,12 @@ const currentFolder = path.basename(workingDirectoryPath);
 
 export async function buildProject() {
     // Make sure current diagram code is compiled.
-    execSync('npm run build');
+    try {
+        execSync('npm run build');
+    } catch (e) {
+        throw new Error(`Failed to build using project's build script. ${JSON.stringify(e)}`);
+    }
+    
     // Test for output directory structure & create if needed.
     try {
         await access('./diagrams');
@@ -25,7 +30,7 @@ export async function buildProject() {
     const diagramPath = path.join(workingDirectoryPath, './dist/app.js');
     const diagramRoot: DiagramRoot = await import(path.join(workingDirectoryPath, './dist/app.js'));
     // System Diagram Generation
-    Object.values(diagramRoot.systems).forEach((system) => {
+    Object.values(diagramRoot.systems).forEach((system, i, arr) => {
         try {
             generateSystemDiagrams(system, path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`));
         } catch(e) {
