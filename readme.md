@@ -65,10 +65,10 @@ Each system diagram exports a default that instantiates one `System` and zero or
 
 From these definitions, the following digrams are generated:
 
-- System Diagram - Highest-level representation of the system, typically included and used in high level enterprise architecture diagrams.
-- Network Diagram - Overview of execution environments (components represented by `node` in diagrams, e.g. `Domain`, `Device`, and `ExecutionEnvironment`) and the network connections established between them.
-- Component Diagram - Logical component diagram of the system and its dependencies.
-- Deployment Diagram - Demonstrates how components are deployed into their execution environments with the more detailed representation of connections & dependencies from the Component Diagram.
+- [System Diagram](./readme/System%20Diagram%20Appointments.png) - Highest-level representation of the system, typically included and used in high level enterprise architecture diagrams.
+- [Network Diagram](./readme/Network%20Diagram%20Appointments.png) - Overview of execution environments (components represented by `node` in diagrams, e.g. `Domain`, `Device`, and `ExecutionEnvironment`) and the network connections established between them.
+- [Component Diagram](./readme/Component%20Diagram%20Appointments.png) - Logical component diagram of the system and its dependencies.
+- [Deployment Diagram](./readme/Deployment%20Diagram%20Appointments.png) - Demonstrates how components are deployed into their execution environments with the more detailed representation of connections & dependencies from the Component Diagram.
 
 ##### Example
 ``` TypeScript
