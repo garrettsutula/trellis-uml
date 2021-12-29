@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import * as Commands from './cli';
 
 var argv = require('yargs/yargs')(process.argv.slice(2))

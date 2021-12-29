@@ -1,23 +1,29 @@
 {
-  "name": "uml-js",
-  "version": "1.0.0",
+  "name": "trellisuml",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/app.js",
+  "types": "dist/app.d.ts",
+  "bin": {
+    "trellisuml": "dist/app.js"
+  },
   "scripts": {
+    "prepublish": "npm run build",
     "start": "tsc && node dist/app.js",
+    "build": "tsc",
     "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/garrettsutula/uml-js.git"
+    "url": "git+https://github.com/garrettsutula/trellis-uml.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/garrettsutula/uml-js/issues"
+    "url": "https://github.com/garrettsutula/trellis-uml/issues"
   },
-  "homepage": "https://github.com/garrettsutula/uml-js#readme",
+  "homepage": "https://github.com/garrettsutula/trellis-uml#readme",
   "devDependencies": {
     "@types/node": "^17.0.5",
     "eslint": "^8.5.0",
