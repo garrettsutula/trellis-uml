@@ -26,44 +26,41 @@ export function getComponentDiagramType(type: ComponentType): string {
     }
 }
 
-export function generateComponentMarkup(component: Component): string {
+export function generateComponentMarkup(component: Component, tabIndex: number = 1): string {
     let output = '';
     let renderComponentMarkup = true;
-    if (component.type === ComponentType.ExecutionEnvironment) renderComponentMarkup = false;
     const componentString = getComponentDiagramType(component.type);
-    if (renderComponentMarkup) {
-        output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
-        if(component.stereotype) output += ` <<${component.stereotype}>>`;
-        if(component.color) output += " #" + component.color;
-    }
+    output += `${'\t'.repeat(tabIndex)}`;
+    output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
+    if(component.stereotype) output += ` <<${component.stereotype}>>`;
+    if(component.color) output += " #" + component.color;
+
     if (component.childComponents.length) {
-        if (renderComponentMarkup) output += " {\n";
+        output += " {\n";
         component.childComponents.forEach((component) => {
-            output += generateComponentMarkup(component) + "\n"
+            output += generateComponentMarkup(component, tabIndex + 1) + "\n"
         })
         if (component.childRelationships.length) {
             component.childRelationships.forEach((relationship) => {
-                output += generateRelationshipMarkup(relationship);
+                output += generateRelationshipMarkup(relationship, tabIndex + 1);
             });
         }
-        if (renderComponentMarkup) output += "}";
+        output += "}";
     }
     return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship): string {
+function generateRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
     // TODO: Implement config interface
-    let output = `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
+    let output = `${'\t'.repeat(tabIndex)}`;
+    output += `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
     if (relationship.description) output += `: ${relationship.description}`;
     return output + "\n";
 }
 
 function generateComponents(components: Array<Component>) {
     return components
-    .filter((component) => {
-        const test = component.parentComponent === undefined
-        return component.parentComponent === undefined
-    })
+    .filter ((component) => component.type !== ComponentType.ExecutionEnvironment)
     .reduce((output, component, newArry): string => output += generateComponentMarkup(component) + "\n", '');
 }
 
@@ -81,11 +78,11 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
 
 export function generateComponentDiagram(system: System): string {
     let output: string = startUml(`Component Diagram ${system.name}`);
-    output += generateSystemMarkup(system) + "{\n"
     output += titleAndHeader(system.name, "Component");
+    output += generateSystemMarkup(system) + "{\n"
     output += generateComponents(Object.values(system.components));
     output += generateComponentRelationships(Object.values(system.relationships));
-    output += "\n}\n";
+    output += "}\n";
     output += endUml();
     return output;
 }

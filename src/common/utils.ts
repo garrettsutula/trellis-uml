@@ -1,3 +1,3 @@
 export function escapeString(label: string) {
-    return label.replace(/ /g, "_");
+    return label.replace(/[\/ ]/g, "_").replace(/[\(\)]/g, "")
 }
