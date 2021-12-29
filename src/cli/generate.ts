@@ -1,8 +1,6 @@
-export async function generateProject() {
+export async function generateDiagramScaffold(type, name) {
     // TODO
-    // Iterate over project diagrams folder structure.
-    // For each system, generate system diagrams.
-    // For each solution, generate solution diagrams.
-    // For each service, generate service diagrams.
+    // trellisuml generate system|service|solution|domain
+    // Creates .ts scaffold based on passed args.
     throw new Error("generate command isn't implemented yet.");
 }

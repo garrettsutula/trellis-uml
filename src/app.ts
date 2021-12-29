@@ -27,7 +27,7 @@ export {
     ConnectsTo,
 } from "./models"
 
-const { _: [ command ] = []} = argv;
+const { _: [ command, type, name ] = []} = argv;
 
 let invokedCommand;
 
@@ -35,8 +35,10 @@ switch(command) {
     case 'init':
         invokedCommand = Commands.initializeProject();
         break;
+    case 'build':
+        invokedCommand = Commands.buildProject();
     case 'generate':
-        invokedCommand = Commands.generateProject();
+        invokedCommand = Commands.generateDiagramScaffold(type, name);
         break;
     case 'serve':
         invokedCommand = Commands.serveProject();
