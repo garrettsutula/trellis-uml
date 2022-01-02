@@ -1,11 +1,39 @@
 # TrellisUML
-> A **prescriptive** framework for making UML diagrams with [PlantUML](https://plantuml.com/) and CLI in the style of [angular-cli](https://github.com/angular/angular-cli) for project scaffolding & author productivity.
+TrellisUML is a **prescriptive** TypeScript framework & cli tool for making UML diagrams with [PlantUML](https://plantuml.com/). 
 
-## Why TrellisUML?
-(WIP)
-- Big productivity gains by using a popular, actively-developed high-level language/framework and the supporting toolset (IDE features, etc.).
-- Markup, although better than graphical visualizations, doesn't enforce consistency or alignment to standards for UML diagrams.
-- Often systems & integrations are vast and complex. Trying to express these at different levels of detail becomes very costly using **any** diagramming tool.
+This project was made with main goals of: providing a better developer experience, being as human-readable as possible and supporting easy re-use and extension of diagram content as needed to express various integrations & solutions as it is common in real-life systems.
+
+## Work in Progress/To-do List
+Roughly in order of priority.
+
+- Use functions to instantiate components, connections, etc.
+  - Overloads for declaring more than one at a time.
+  - Consider: Pipes or another composition method
+- **Sequence Diagram Support**
+  - Declare diagram components 
+    - Participants (import from system when possible)
+    - Sequences
+    - Sub-Routines (imported sequences)
+    - Strongly-typed content for request & responses
+- **Use Case Diagram Support**
+  - Declare diagram components
+    - Actors
+    - Use Cases
+    - Use Case Model
+  - Consider: strongly-typed content generators
+- **Solution Diagram Support**
+  - Declare diagram components
+    - Solution
+      - Combine and add to existing system diagrams
+    - User Interaction Model
+- **Roadmap Diagram Support**
+  - Composed from systems
+  - Set lifecycle annotations on components & connections
+  - Set phases up, multiple representations of each phase to describe options
+- **Misc. Backlog**
+  - Hypertext Linking between diagrams
+  - For System/Solution a way to define/configure how detailed (i.e. how many levels of dependencies) to include when generating diagrams
+  - Full feature support for components, connections along with semantic use (i.e. can set `component.color = 'green'` or pipe components through `New(args: Array<Component | Connection>)` to decorate).
 
 ## Getting Started
 To get started using this project locally, follow these instructions:
