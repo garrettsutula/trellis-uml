@@ -54,7 +54,7 @@ To get started using this project locally, follow these instructions:
 `trellis serve` - **(TODO)** - runs a process that will auto-generate diagrams automatically on-save, similar to a hot-reload working with a modern SPA or node application.
 
 ### Project Structure
-See [Diagram Types](#diagram-types) belwo for more information & examples.
+See [Diagram Types](#diagram-types) below for more information & examples.
 ```
 .
 ├── src
@@ -99,6 +99,8 @@ From these definitions, the following digrams are generated:
 - [Deployment Diagram](./readme/Deployment%20Diagram%20Appointments.png) - Demonstrates how components are deployed into their execution environments with the more detailed representation of connections & dependencies from the Component Diagram.
 
 ##### Example
+Reference the [Example Trellis Project](https://github.com/garrettsutula/example-trellis-project) for a non-trivial example.
+
 ``` TypeScript
 import { system, ui, service, database, device, connectsTo } from "trellisuml";
 // These would typically be defined in a "domain" diagram & imported from that diagram instead of defined here.
