@@ -1,34 +1,4 @@
-export {
-    ComponentConfiguration,
-    Database,
-    Service,
-    UI,
-    API,
-    Queue,
-    Cache,
-    Processor,
-    Domain,
-    Device,
-    ExecutionEnvironment,
-    ComponentType
-}
-from './component'
-
-export {
-    ComponentRelationshipConfiguration,
-    Uses,
-    Accesses,
-    FlowsInto,
-    Provides,
-    Requires,
-    ConnectsTo,
-} from './component-relationship'
-
-export {
-    SystemConfiguration,
-    System,
-} from './system';
-
-export {
-    DiagramRoot
-} from './diagram-root';
+export * from "./component";
+export * from "./component-relationship";
+export * from "./diagram-root";
+export * from "./system";

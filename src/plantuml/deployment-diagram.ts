@@ -101,7 +101,7 @@ export function generateDeploymentDiagram(system: System): string {
     const componentsToRender = new Map();
     const relationshipComponents = new Map();
     // TODO: come back to consolidate/simplify this probably by changing to arrays.
-    Object.values(system.relationships).forEach(({source, target}) => {
+    system.relationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
         if(relationshipComponents.has(target.id) === false) relationshipComponents.set(target.id, target);
@@ -113,13 +113,13 @@ export function generateDeploymentDiagram(system: System): string {
         if (topLevelComponents.has(targetId) === false) topLevelComponents.set(targetId, topTargetComponent);
     })
 
-    Object.values(system.components).forEach((component) => {
+    system.components.forEach((component) => {
         const topComponent = recurseParentComponents(component, componentsToRender);
         const { id } = topComponent;
         if (topLevelComponents.has(id) === false) topLevelComponents.set(id, topComponent);
     });
 
-    Object.values(system.relationships).forEach(({source, target}) => {
+    system.relationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
     })
@@ -127,7 +127,7 @@ export function generateDeploymentDiagram(system: System): string {
     // Identify top level components (ones without execution environments) and generate markup recursively.
     output += generateComponents(Array.from(topLevelComponents.values()), componentsToRender);
     // Filter in relationships that connect to an execution environment & generate markup.
-    output += generateRelationships(Object.values(system.relationships));
+    output += generateRelationships(system.relationships);
     output += endUml();
     return output;
 }

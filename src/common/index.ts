@@ -1,2 +1,2 @@
-export { generateSystemDiagrams } from './generate';
-export { escapeString } from './utils';
+export * from './generate';
+export * from './utils';

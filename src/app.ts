@@ -1,34 +1,12 @@
 #!/usr/bin/env node
 import * as Commands from './cli';
 
+export * from './syntax';
+
 var argv = require('yargs/yargs')(process.argv.slice(2))
     .usage('Usage: $0 [init|generate|serve]')
     .demandCommand(1)
     .argv;
-
-export { 
-    System,
-    SystemConfiguration,
-    ComponentConfiguration,
-    Database,
-    Service,
-    UI,
-    API,
-    Queue,
-    Cache,
-    Processor,
-    Domain,
-    Device,
-    ExecutionEnvironment,
-    ComponentType,
-    ComponentRelationshipConfiguration,
-    Uses,
-    Accesses,
-    FlowsInto,
-    Provides,
-    Requires,
-    ConnectsTo,
-} from "./models"
 
 const { _: [ command, type, name ] = []} = argv;
 
