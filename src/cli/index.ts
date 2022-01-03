@@ -1,4 +1,4 @@
-export { generateDiagramScaffold } from './generate';
-export { initializeProject } from './init';
-export { serveProject } from './serve';
-export { buildProject } from './build';
+export * from './generate';
+export * from './init';
+export * from './serve';
+export * from './build';

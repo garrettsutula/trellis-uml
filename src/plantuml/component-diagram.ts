@@ -79,11 +79,11 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
 export function generateComponentDiagram(system: System): string {
     const componentsToRender = new Map();
 
-    Object.values(system.components).forEach((component) => {
+    system.components.forEach((component) => {
         if(componentsToRender.has(component.id) === false) componentsToRender.set(component.id, component);
     })
 
-    Object.values(system.relationships).forEach(({source, target}) => {
+    system.relationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
     })
@@ -92,7 +92,7 @@ export function generateComponentDiagram(system: System): string {
     output += titleAndHeader(system.name, "Component");
     output += generateSystemMarkup(system) + "{\n"
     output += generateComponents(Array.from(componentsToRender.values()));
-    output += generateComponentRelationships(Object.values(system.relationships));
+    output += generateComponentRelationships(system.relationships);
     output += "}\n";
     output += endUml();
     return output;
