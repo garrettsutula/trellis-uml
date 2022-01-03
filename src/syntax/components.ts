@@ -9,7 +9,7 @@ export function ui(labelOrConfig: string | ComponentConfiguration | ComponentCon
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((uiConfig) => new UI(uiConfig.label, uiConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new UI(label, { parentComponent });
         } else {
@@ -26,7 +26,7 @@ export function database(labelOrConfig: string | ComponentConfiguration | Compon
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Database(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Database(label, { parentComponent });
         } else {
@@ -43,7 +43,7 @@ export function service(labelOrConfig: string | ComponentConfiguration | Compone
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Service(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Service(label, { parentComponent });
         } else {
@@ -60,7 +60,7 @@ export function api(labelOrConfig: string | ComponentConfiguration | ComponentCo
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new API(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new API(label, { parentComponent });
         } else {
@@ -77,7 +77,7 @@ export function queue(labelOrConfig: string | ComponentConfiguration | Component
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Queue(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Queue(label, { parentComponent });
         } else {
@@ -94,7 +94,7 @@ export function cache(labelOrConfig: string | ComponentConfiguration | Component
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Cache(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Cache(label, { parentComponent });
         } else {
@@ -111,7 +111,7 @@ export function processor(labelOrConfig: string | ComponentConfiguration | Compo
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Processor(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Processor(label, { parentComponent });
         } else {
@@ -128,7 +128,7 @@ export function domain(labelOrConfig: string | ComponentConfiguration | Componen
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Domain(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Domain(label, { parentComponent });
         } else {
@@ -145,7 +145,7 @@ export function device(labelOrConfig: string | ComponentConfiguration | Componen
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new Device(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new Device(label, { parentComponent });
         } else {
@@ -162,7 +162,7 @@ export function executionEnvironment(labelOrConfig: string | ComponentConfigurat
     if (labelOrConfig instanceof Array) {
         return labelOrConfig.map((dbConfig) => new ExecutionEnvironment(dbConfig.label, dbConfig));
     } else {
-        if (labelOrConfig instanceof String) {
+        if (typeof labelOrConfig === "string") {
             const label = labelOrConfig as string;
             return new ExecutionEnvironment(label, { parentComponent });
         } else {

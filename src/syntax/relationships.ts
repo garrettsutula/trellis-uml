@@ -9,7 +9,7 @@ export function uses(sourceOrConfig: Component | ComponentRelationshipConfigurat
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new Uses(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new Uses(sourceOrConfig as Component, target, description);
         }
         return new Uses(sourceOrConfig as ComponentRelationshipConfiguration);
@@ -24,7 +24,7 @@ export function accesses(sourceOrConfig: Component | ComponentRelationshipConfig
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new Accesses(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new Accesses(sourceOrConfig as Component, target, description);
         }
         return new Accesses(sourceOrConfig as ComponentRelationshipConfiguration);
@@ -39,7 +39,7 @@ export function flowsInto(sourceOrConfig: Component | ComponentRelationshipConfi
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new FlowsInto(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new FlowsInto(sourceOrConfig as Component, target, description);
         }
         return new FlowsInto(sourceOrConfig as ComponentRelationshipConfiguration);
@@ -54,7 +54,7 @@ export function provides(sourceOrConfig: Component | ComponentRelationshipConfig
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new Provides(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new Provides(sourceOrConfig as Component, target, description);
         }
         return new Provides(sourceOrConfig as ComponentRelationshipConfiguration);
@@ -69,7 +69,7 @@ export function requires(sourceOrConfig: Component | ComponentRelationshipConfig
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new Requires(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new Requires(sourceOrConfig as Component, target, description);
         }
         return new Requires(sourceOrConfig as ComponentRelationshipConfiguration);
@@ -84,7 +84,7 @@ export function connectsTo(sourceOrConfig: Component | ComponentRelationshipConf
         const relationships = sourceOrConfig;
         return relationships.map((relationship) => new ConnectsTo(relationship));
     } else {
-        if (sourceOrConfig && target && description) {
+        if (sourceOrConfig && target) {
             return new ConnectsTo(sourceOrConfig as Component, target, description);
         }
         return new ConnectsTo(sourceOrConfig as ComponentRelationshipConfiguration);
