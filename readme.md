@@ -6,9 +6,6 @@ This project was made with main goals of: providing a better developer experienc
 ## Work in Progress/To-do List
 Roughly in order of priority.
 
-- Use functions to instantiate components, connections, etc.
-  - Overloads for declaring more than one at a time.
-  - Consider: Pipes or another composition method
 - **Sequence Diagram Support**
   - Declare diagram components 
     - Participants (import from system when possible)
