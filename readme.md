@@ -100,33 +100,38 @@ From these definitions, the following digrams are generated:
 
 ##### Example
 ``` TypeScript
-import { System, UI, Service, Database, Device, ConnectsTo } from "trellisuml";
+import { system, ui, service, database, device, connectsTo } from "trellisuml";
 // These would typically be defined in a "domain" diagram & imported from that diagram instead of defined here.
 // because they are likely re-used by other components in other systems/solutions
-const clientDevice = new Device("Mobile App");
-const appServer = new Device("Application Server");
-const dbServer = new Device("Database Server");
+const [ clientDevice, appServer, dbServer ] = device([
+    { label: "Mobile App" },
+    { label: "Application Server"},
+    { label: "Database Server"}
+]);
  
 const name = "Appointments";
 // parentComponents are defined here to place the component in the broader context of the systems & infrastructure.
-const app = new UI(`${name} App`, { parentComponent: clientDevice }); 
-const service = new Service(`${name} Service`, { parentComponent: appServer });
-const db = new Database(`${name} Database`, { parentComponent: dbServer });
+export const apptApp = ui(`${name} App`, clientDevice); 
+export const apptService = service(`${name} Service`, appServer);
+export const apptDb = database(`${name} Database`, dbServer);
 
-export default new System({
+// Defined as needed for every connection between systems. De-duplicated when rendered as puml.
+export const relationships = [
+    connectsTo(apptApp, apptService),
+    connectsTo(apptService, apptDb),
+    connectsTo(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
+    connectsTo(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
+]
+
+export default system({
     name,
-    components: {         // Only the highest level components in the system should be included here.
-        clientDevice,     // Rarely, a component without a parentComponent may be defined in a system diagram.
-        appServer,        // If so, add it here (but it should probably be in the domain diagram module).
-        dbServer,
-    },
-    relationships: {  // Defined as needed for every connection between systems. De-duplicated when rendered as puml.
-        appToService: new ConnectsTo(app, service),
-        serviceToDb: new ConnectsTo(service, db),
-        clientToServer: new ConnectsTo(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
-        serverToDb: new ConnectsTo(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
-    }
-})
+    components: [
+        apptApp,
+        apptService,
+        apptDb,
+    ],
+    relationships,
+});
 ```
 #### Service
 WIP: implement this, write docs.
