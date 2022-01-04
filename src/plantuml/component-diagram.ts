@@ -21,6 +21,8 @@ export function getComponentDiagramType(type: ComponentType): string {
             return "queue";
         case ComponentType.Processor:
                 return "control";
+        case ComponentType.Schema:
+                return "artifact";
         default:
             return "component";
     }
