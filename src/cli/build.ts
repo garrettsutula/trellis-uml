@@ -30,7 +30,7 @@ export async function buildProject() {
     const diagramPath = path.join(workingDirectoryPath, './dist/app.js');
     const diagramRoot: DiagramRoot = await import(path.join(workingDirectoryPath, './dist/app.js'));
     // System Diagram Generation
-    Object.values(diagramRoot.systems).forEach((system, i, arr) => {
+    Object.values(Object.values(diagramRoot.systems)).forEach((system, i, arr) => {
         try {
             generateSystemDiagrams(system, path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`));
         } catch(e) {

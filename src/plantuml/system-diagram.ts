@@ -2,9 +2,16 @@ import { titleAndHeader, startUml, endUml } from "./chrome";
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
 
-export function generateComponentMarkup(system: System) {
+export function generateComponentMarkup(system: System, tabIndex: number = 0, compoundIdentifier?: string) {
     let output = '';
-    output += `package "${system.name}" as ${system.id + "_package"} <<System>>`;
+    let compoundId = '';
+    if (compoundIdentifier) {
+        compoundId = system.id + "_" + compoundIdentifier + "_package";
+    } else {
+        compoundId = system.id + "_package";
+    }
+    output += `${'\t'.repeat(tabIndex)}`;
+    output += `package "${system.name}" as ${compoundId} <<System>>`;
     if(system.color) output += " #" + system.color; 
     return output;
 }
@@ -33,12 +40,19 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
 
 
 export function generateSystemDiagram(system: System): string {
+    const componentsToRender = new Map();
+    componentsToRender.set(system.id, system);
+    if (system.systemRelationships) {
+        system.systemRelationships.forEach(({source, target}) => {
+            if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
+            if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
+        })    
+    }
+
     let output: string = startUml(`System Diagram ${system.name}`);
     output += titleAndHeader(system.name, "System");
-    // Identify top level components (ones without execution environments) and generate markup recursively.
-    output += generateComponents([system, ...Object.values(system.systemDependencies.systems)]);
-    // Filter in relationships that connect to an execution environment & generate markup.
-    output += generateRelationships(Object.values(system.systemDependencies.relationships));
+    output += generateComponents(Array.from(componentsToRender.values()));
+    if (system.systemRelationships) output += generateRelationships(system.systemRelationships);
     output += endUml();
     return output;
 }
