@@ -1,6 +1,5 @@
 import { System } from ".";
 import { escapeString } from "../common/utils";
-import { ComponentRelationship } from "./component-relationship";
 
 export class Component implements ComponentConfiguration {
     label: string;
