@@ -51,7 +51,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
         })
         output += `${'\t'.repeat(tabIndex)}}\n`;
     }
-    if (component.system && component.system !== component.parentComponent.system) {
+    if (component.system && component.parentComponent && component.system !== component.parentComponent.system) {
        tabIndex -= 1;
        output += `\n${'\t'.repeat(tabIndex)}}\n`; 
     }
