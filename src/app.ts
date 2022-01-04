@@ -32,6 +32,6 @@ switch(command) {
 invokedCommand.then(() => {
     process.exit(0)
 })
-.catch(() => {
-    process.exit(1)
+.catch((e) => {
+    throw new Error(JSON.stringify(e));
 })
