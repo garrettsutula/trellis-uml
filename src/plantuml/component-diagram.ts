@@ -17,7 +17,9 @@ export function getComponentDiagramType(type: ComponentType): string {
             return "node";
         case ComponentType.API:
             return "interface";
+        case ComponentType.Topic:
         case ComponentType.Queue:
+        case ComponentType.EventQueue:
             return "queue";
         case ComponentType.Processor:
                 return "control";
