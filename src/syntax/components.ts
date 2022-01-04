@@ -1,4 +1,4 @@
-import { API, Cache, Component, ComponentConfiguration, Database, Device, Domain, ExecutionEnvironment, Processor, Queue, Service, UI, Schema } from "../models";
+import { API, Cache, Component, ComponentConfiguration, Database, Device, Domain, ExecutionEnvironment, Processor, Queue, Service, UI, Schema, Topic, EventQueue } from "../models";
 export { ComponentType } from '../models';
 
 
@@ -66,6 +66,40 @@ export function api(labelOrConfig: string | ComponentConfiguration | ComponentCo
         } else {
             const config = labelOrConfig as ComponentConfiguration;
             return new API(config.label, config);
+        }
+    }
+}
+
+export function topic(label: string, parentComponent?: Component): Topic;
+export function topic(config: ComponentConfiguration): Topic;
+export function topic(config: ComponentConfiguration[]): Topic[];
+export function topic(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Topic | Topic[]  {
+    if (labelOrConfig instanceof Array) {
+        return labelOrConfig.map((dbConfig) => new Topic(dbConfig.label, dbConfig));
+    } else {
+        if (typeof labelOrConfig === "string") {
+            const label = labelOrConfig as string;
+            return new Topic(label, { parentComponent });
+        } else {
+            const config = labelOrConfig as ComponentConfiguration;
+            return new Topic(config.label, config);
+        }
+    }
+}
+
+export function eventQueue(label: string, parentComponent?: Component): EventQueue;
+export function eventQueue(config: ComponentConfiguration): EventQueue;
+export function eventQueue(config: ComponentConfiguration[]): EventQueue[];
+export function eventQueue(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): EventQueue | EventQueue[]  {
+    if (labelOrConfig instanceof Array) {
+        return labelOrConfig.map((dbConfig) => new EventQueue(dbConfig.label, dbConfig));
+    } else {
+        if (typeof labelOrConfig === "string") {
+            const label = labelOrConfig as string;
+            return new EventQueue(label, { parentComponent });
+        } else {
+            const config = labelOrConfig as ComponentConfiguration;
+            return new EventQueue(config.label, config);
         }
     }
 }

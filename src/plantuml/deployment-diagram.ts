@@ -19,6 +19,8 @@ export function getDeploymentDiagramType(type: ComponentType): string {
         case ComponentType.API:
             return "interface";
         case ComponentType.Queue:
+        case ComponentType.Topic:
+        case ComponentType.EventQueue:
             return "queue";
         case ComponentType.Processor:
             return "control";

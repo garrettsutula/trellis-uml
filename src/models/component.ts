@@ -1,4 +1,4 @@
-import { System } from ".";
+import { ComponentRelationship, System } from ".";
 import { escapeString } from "../common/utils";
 
 export class Component implements ComponentConfiguration {
@@ -74,7 +74,17 @@ export class API extends Component {
 
 export class Queue extends Component {
     type = ComponentType.Queue;
+    stereotype = "Queue"
 }
+
+export class Topic extends Queue {
+    type = ComponentType.Topic;
+}
+
+export class EventQueue extends Queue {
+    type = ComponentType.EventQueue;
+}
+
 
 export class Cache extends Component {
     type = ComponentType.Database;
@@ -118,4 +128,6 @@ export enum ComponentType {
     Queue = "Queue",
     Processor = "Processor",
     Schema = "Schema",
+    Topic = "Topic",
+    EventQueue = "Event Queue",
 }
