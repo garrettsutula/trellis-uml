@@ -31,7 +31,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
     let output = '';
     const componentString = getDeploymentDiagramType(component.type);
     
-    if (component.system && component.system !== component.parentComponent.system) {
+    if (component.system && component.parentComponent && component.system !== component.parentComponent.system) {
         output += generateSystemMarkup(component.system, tabIndex, component.parentComponent.id) + "{\n";
         tabIndex += 1;
     }
