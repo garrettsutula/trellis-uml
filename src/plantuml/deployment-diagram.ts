@@ -2,6 +2,7 @@ import { titleAndHeader, startUml, endUml } from "./chrome";
 import { Component, ComponentType} from "../models/component"
 import { ComponentRelationship } from "../models/component-relationship"
 import { System } from "../models/system";
+import { generateComponentMarkup as generateSystemMarkup, generateSystemDiagram } from "./system-diagram";
 import { escapeString } from "../common/utils";
 
 
@@ -29,6 +30,11 @@ export function getDeploymentDiagramType(type: ComponentType): string {
 export function generateComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
     let output = '';
     const componentString = getDeploymentDiagramType(component.type);
+    
+    if (component.system && component.system !== component.parentComponent.system) {
+        output += generateSystemMarkup(component.system, tabIndex, component.parentComponent.id) + "{\n";
+        tabIndex += 1;
+    }
     output += `${'\t'.repeat(tabIndex)}`;
     output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
     if(component.stereotype || component.type) output += ` <<${component.stereotype || component.type}>>`;
@@ -43,12 +49,11 @@ export function generateComponentMarkup(component: Component, componentsToRender
                 if (output.slice(-1) !== "\n") output += '\n';
             }
         })
-        if (component.childRelationships.length) {
-            component.childRelationships.forEach((relationship) => {
-                output += generateRelationshipMarkup(relationship, tabIndex + 1);
-            });
-        }
         output += `${'\t'.repeat(tabIndex)}}\n`;
+    }
+    if (component.system && component.system !== component.parentComponent.system) {
+       tabIndex -= 1;
+       output += `\n${'\t'.repeat(tabIndex)}}\n`; 
     }
     return output;
 }
@@ -101,7 +106,7 @@ export function generateDeploymentDiagram(system: System): string {
     const componentsToRender = new Map();
     const relationshipComponents = new Map();
     // TODO: come back to consolidate/simplify this probably by changing to arrays.
-    system.relationships.forEach(({source, target}) => {
+    system.componentRelationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
         if(relationshipComponents.has(target.id) === false) relationshipComponents.set(target.id, target);
@@ -119,7 +124,7 @@ export function generateDeploymentDiagram(system: System): string {
         if (topLevelComponents.has(id) === false) topLevelComponents.set(id, topComponent);
     });
 
-    system.relationships.forEach(({source, target}) => {
+    system.componentRelationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
     })
@@ -127,7 +132,7 @@ export function generateDeploymentDiagram(system: System): string {
     // Identify top level components (ones without execution environments) and generate markup recursively.
     output += generateComponents(Array.from(topLevelComponents.values()), componentsToRender);
     // Filter in relationships that connect to an execution environment & generate markup.
-    output += generateRelationships(system.relationships);
+    output += generateRelationships(system.componentRelationships);
     output += endUml();
     return output;
 }

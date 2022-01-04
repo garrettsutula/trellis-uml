@@ -40,11 +40,6 @@ export function generateComponentMarkup(component: Component, tabIndex: number =
         component.childComponents.forEach((component) => {
             output += generateComponentMarkup(component, tabIndex + 1) + "\n"
         })
-        if (component.childRelationships.length) {
-            component.childRelationships.forEach((relationship) => {
-                output += generateRelationshipMarkup(relationship, tabIndex + 1);
-            });
-        }
         output += "}";
     }
     return output;
@@ -61,7 +56,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
 function generateComponents(components: Array<Component>) {
     return components
     .filter ((component) => component.type !== ComponentType.ExecutionEnvironment)
-    .reduce((output, component, newArry): string => output += generateComponentMarkup(component) + "\n", '');
+    .reduce((output, component): string => output += generateComponentMarkup(component) + "\n", '');
 }
 
 function generateComponentRelationships(relationships: Array<ComponentRelationship>): string {
@@ -71,29 +66,40 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
             relationship.target.type !== ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
         const newLine = generateRelationshipMarkup(relationship);
-        if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
-        return output;
+        if (relationshipsAlreadyAdded.includes(newLine)) { 
+            return output;
+        } else {
+            relationshipsAlreadyAdded.push(newLine);
+            return output += newLine; 
+        }
     }, '');
 }
 
 export function generateComponentDiagram(system: System): string {
-    const componentsToRender = new Map();
+    const componentsToRender: Map<String, Component> = new Map();
+    const systems: Set<System> = new Set();
 
     system.components.forEach((component) => {
         if(componentsToRender.has(component.id) === false) componentsToRender.set(component.id, component);
+        if(component.system) systems.add(component.system);
     })
 
-    system.relationships.forEach(({source, target}) => {
+    system.componentRelationships.forEach(({source, target}) => {
         if(componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
         if(componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
+        if(source.system) systems.add(source.system);
+        if(target.system) systems.add(target.system);
     })
 
     let output: string = startUml(`Component Diagram ${system.name}`);
     output += titleAndHeader(system.name, "Component");
-    output += generateSystemMarkup(system) + "{\n"
-    output += generateComponents(Array.from(componentsToRender.values()));
-    output += generateComponentRelationships(system.relationships);
-    output += "}\n";
+    Array.from(systems).forEach((system) => {
+        const systemComponents = Array.from(componentsToRender.values()).filter((component) => component.system && component.system?.id === system?.id);
+        output += generateSystemMarkup(system) + "{\n"
+        output += generateComponents(systemComponents);
+        output += "}\n";
+    });
+    output += generateComponentRelationships(system.componentRelationships);
     output += endUml();
     return output;
 }

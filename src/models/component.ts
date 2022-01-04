@@ -1,3 +1,4 @@
+import { System } from ".";
 import { escapeString } from "../common/utils";
 import { ComponentRelationship } from "./component-relationship";
 
@@ -7,9 +8,9 @@ export class Component implements ComponentConfiguration {
     type: ComponentType;
     stereotype?: string;
     color?: string;
+    system?: System;
     private _parentComponent?: Component;
-    childComponents?: Array<Component>;
-    childRelationships?: Array<ComponentRelationship>;
+    childComponents?: Component[];
     constructor(label: string, config?: ComponentConfiguration) {
         this.label = config?.label || label;
         this.id = config?.id || label;
@@ -19,7 +20,6 @@ export class Component implements ComponentConfiguration {
         }
         this.color = config?.color;
         this.childComponents = config?.childComponents || new Array();
-        this.childRelationships = config?.childRelationships || new Array();
         this.parentComponent = config?.parentComponent;
     }
 
@@ -103,7 +103,6 @@ export interface ComponentConfiguration {
     color?: string;
     parentComponent?: Component;
     childComponents?: Array<Component>;
-    childRelationships?: Array<ComponentRelationship>;
 }
 
 export enum ComponentType {
