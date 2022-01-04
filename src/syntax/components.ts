@@ -1,4 +1,4 @@
-import { API, Cache, Component, ComponentConfiguration, Database, Device, Domain, ExecutionEnvironment, Processor, Queue, Service, UI } from "../models";
+import { API, Cache, Component, ComponentConfiguration, Database, Device, Domain, ExecutionEnvironment, Processor, Queue, Service, UI, Schema } from "../models";
 export { ComponentType } from '../models';
 
 
@@ -168,6 +168,23 @@ export function executionEnvironment(labelOrConfig: string | ComponentConfigurat
         } else {
             const config = labelOrConfig as ComponentConfiguration;
             return new ExecutionEnvironment(config.label, config);
+        }
+    }
+}
+
+export function schema(label: string, parentComponent?: Component): Schema;
+export function schema(config: ComponentConfiguration): Schema;
+export function schema(config: ComponentConfiguration[]): Schema[];
+export function schema(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Schema | Schema[]  {
+    if (labelOrConfig instanceof Array) {
+        return labelOrConfig.map((dbConfig) => new Schema(dbConfig.label, dbConfig));
+    } else {
+        if (typeof labelOrConfig === "string") {
+            const label = labelOrConfig as string;
+            return new Schema(label, { parentComponent });
+        } else {
+            const config = labelOrConfig as ComponentConfiguration;
+            return new Schema(config.label, config);
         }
     }
 }

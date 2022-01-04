@@ -53,6 +53,11 @@ export class Database extends Component {
     stereotype: string = "Database";
 }
 
+export class Schema extends Component {
+    type = ComponentType.Schema;
+    stereotype: string = "Schema";
+}
+
 export class Service extends Component {
     type = ComponentType.Service;
     stereotype = "Service";
@@ -112,4 +117,5 @@ export enum ComponentType {
     API = "API",
     Queue = "Queue",
     Processor = "Processor",
+    Schema = "Schema",
 }
