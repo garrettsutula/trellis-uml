@@ -1,4 +1,4 @@
-export async function generateDiagramScaffold() {
+export async function generateDiagramScaffold(type, name) {
   // TODO
   // trellisuml generate system|service|solution|domain
   // Creates .ts scaffold based on passed args.
