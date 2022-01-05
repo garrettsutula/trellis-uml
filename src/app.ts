@@ -12,11 +12,14 @@ const { _: [ command, type, name ] = []} = argv;
 
 let invokedCommand;
 
+console.log(`Running command 'trellis ${command}'`);
+console.time(`Ran 'trellis ${command}' in`);
 switch(command) {
     case 'init':
         invokedCommand = Commands.initializeProject();
         break;
     case 'build':
+        
         invokedCommand = Commands.buildProject();
         break;
     case 'generate':
@@ -26,12 +29,17 @@ switch(command) {
         invokedCommand = Commands.serveProject();
         break;
     default:
-        throw new Error(`Unrecognized command: ${command}.`);
+        console.error(`Unrecognized command: ${command}.`);
+        throw new Error();
 }
 
 invokedCommand.then(() => {
-    process.exit(0)
+    console.timeEnd(`Ran 'trellis ${command}' in`);
+    process.exit(0);
 })
 .catch((e) => {
-    throw new Error(JSON.stringify(e));
+    const message = 
+    console.error(`Problem running 'trellis ${command}'`);
+    console.dir(e);
+    process.exit(1);
 })
