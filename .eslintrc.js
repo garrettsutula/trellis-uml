@@ -11,4 +11,14 @@ module.exports = {
     },
     plugins: ['@typescript-eslint'],
     rules: {},
+    extends: [ 'airbnb-base', 'airbnb-typescript/base'],
+    parserOptions: {
+      project: './tsconfig.json'
+    },
+    rules: {
+      'no-underscore-dangle': [0],
+      'no-console': [0],
+      'max-len': [2, 140],
+      'import/prefer-default-export': [0]
+    }
   }
