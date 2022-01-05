@@ -6,7 +6,11 @@ import { Component } from '../models/component';
 export function uses(source: Component, target: Component, description?: string): Uses;
 export function uses(config: ComponentRelationshipConfiguration): Uses;
 export function uses(config: ComponentRelationshipConfiguration[]): Uses[];
-export function uses(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): Uses | Uses[] {
+export function uses(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): Uses | Uses[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new Uses(relationship));
@@ -20,7 +24,11 @@ export function uses(sourceOrConfig: Component | ComponentRelationshipConfigurat
 export function accesses(source: Component, target: Component, description?: string): Accesses;
 export function accesses(config: ComponentRelationshipConfiguration): Accesses;
 export function accesses(config: ComponentRelationshipConfiguration[]): Accesses[];
-export function accesses(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): Accesses | Accesses[] {
+export function accesses(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): Accesses | Accesses[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new Accesses(relationship));
@@ -34,7 +42,11 @@ export function accesses(sourceOrConfig: Component | ComponentRelationshipConfig
 export function flowsInto(source: Component, target: Component, description?: string): FlowsInto;
 export function flowsInto(config: ComponentRelationshipConfiguration): FlowsInto;
 export function flowsInto(config: ComponentRelationshipConfiguration[]): FlowsInto[];
-export function flowsInto(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): FlowsInto | FlowsInto[] {
+export function flowsInto(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): FlowsInto | FlowsInto[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new FlowsInto(relationship));
@@ -48,7 +60,11 @@ export function flowsInto(sourceOrConfig: Component | ComponentRelationshipConfi
 export function provides(source: Component, target: Component, description?: string): Provides;
 export function provides(config: ComponentRelationshipConfiguration): Provides;
 export function provides(config: ComponentRelationshipConfiguration[]): Provides[];
-export function provides(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): Provides | Provides[] {
+export function provides(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): Provides | Provides[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new Provides(relationship));
@@ -62,7 +78,11 @@ export function provides(sourceOrConfig: Component | ComponentRelationshipConfig
 export function requires(source: Component, target: Component, description?: string): Requires;
 export function requires(config: ComponentRelationshipConfiguration): Requires;
 export function requires(config: ComponentRelationshipConfiguration[]): Requires[];
-export function requires(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): Requires | Requires[] {
+export function requires(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): Requires | Requires[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new Requires(relationship));
@@ -76,7 +96,11 @@ export function requires(sourceOrConfig: Component | ComponentRelationshipConfig
 export function connectsTo(source: Component, target: Component, description?: string): ConnectsTo;
 export function connectsTo(config: ComponentRelationshipConfiguration): ConnectsTo;
 export function connectsTo(config: ComponentRelationshipConfiguration[]): ConnectsTo[];
-export function connectsTo(sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[], target?: Component, description?: string): ConnectsTo | ConnectsTo[] {
+export function connectsTo(
+  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  target?: Component,
+  description?: string,
+): ConnectsTo | ConnectsTo[] {
   if (sourceOrConfig instanceof Array) {
     const relationships = sourceOrConfig;
     return relationships.map((relationship) => new ConnectsTo(relationship));

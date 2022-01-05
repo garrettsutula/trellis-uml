@@ -37,7 +37,7 @@ invokedCommand.then(() => {
   process.exit(0);
 })
   .catch((e) => {
-    const message = console.error(`Problem running 'trellis ${command}'`);
+    console.error(`Problem running 'trellis ${command}'`);
     console.dir(e);
     process.exit(1);
   });

@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { access, mkdir } from 'fs/promises';
-import { exec, execSync } from 'child_process';
+import { execSync } from 'child_process';
 import { generateSystemDiagrams, escapeString } from '../common';
 import { DiagramRoot } from '../models';
 
@@ -33,10 +33,12 @@ export async function buildProject() {
   // Load compiled diagram source code as diagram root
   console.time(`Loaded diagram root: ${currentFolder}/dist/app.js in`);
   const diagramPath = path.join(workingDirectoryPath, './dist/app.js');
-  const diagramRoot: DiagramRoot = await import(path.join(workingDirectoryPath, './dist/app.js'));
+  const diagramRoot: DiagramRoot = await import(diagramPath);
   console.timeEnd(`Loaded diagram root: ${currentFolder}/dist/app.js in`);
   // System Diagram Generation
-  console.log(`Generating system digrams for: ${Object.values(diagramRoot.systems).reduce((systemList, system) => `${systemList}${system.name}, `, '')}`);
+  console.log(`Generating system digrams for: ${Object
+    .values(diagramRoot.systems)
+    .reduce((systemList, system) => `${systemList}${system.name}, `, '')}`);
   console.time('Generation completed in');
   Object.values(diagramRoot.systems)
     .map((system) => {

@@ -2,7 +2,7 @@ import { titleAndHeader, startUml, endUml } from './chrome';
 import { Component, ComponentType } from '../models/component';
 import { ComponentRelationship } from '../models/component-relationship';
 import { System } from '../models/system';
-import { generateComponentMarkup as generateSystemMarkup, generateSystemDiagram } from './system-diagram';
+import { generateComponentMarkup as generateSystemMarkup } from './system-diagram';
 import { escapeString } from '../common/utils';
 
 export function getDeploymentDiagramType(type: ComponentType): string {

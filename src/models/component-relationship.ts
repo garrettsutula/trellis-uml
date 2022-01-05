@@ -34,9 +34,7 @@ export class ComponentRelationship {
       this.description = description;
       this.color = color;
     } else {
-      this.source = args[0];
-      this.target = args[1];
-      this.description = args[2];
+      [this.source, this.target, this.description] = args;
     }
   }
 }

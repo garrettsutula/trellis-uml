@@ -18,6 +18,7 @@ export function generateComponentMarkup(system: System, tabIndex: number = 0, co
 
 function generateRelationshipMarkup(relationship: ComponentRelationship): string {
   // TODO: Implement config interface
+  // eslint-disable-next-line max-len
   let output = `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
   if (relationship.description) output += `: ${relationship.description}`;
   return `${output}\n`;

@@ -32,7 +32,6 @@ export function getComponentDiagramType(type: ComponentType): string {
 
 export function generateComponentMarkup(component: Component, tabIndex: number = 1): string {
   let output = '';
-  const renderComponentMarkup = true;
   const componentString = getComponentDiagramType(component.type);
   output += `${'\t'.repeat(tabIndex)}`;
   output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
@@ -74,7 +73,8 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
         return output;
       }
       relationshipsAlreadyAdded.push(newLine);
-      return output += newLine;
+      output += newLine;
+      return output;
     }, '');
 }
 

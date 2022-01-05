@@ -5,9 +5,7 @@ import eslintConfig from './templates/eslintrc';
 import gitignoreConfig from './templates/gitignore';
 import tsConfig from './templates/tsconfig';
 
-const scriptPath = __dirname;
 const workingDirectoryPath = process.cwd();
-const currentFolder = path.basename(workingDirectoryPath);
 
 export async function initializeProject() {
   console.log("Running 'npm init' to initialize project folder...");
@@ -17,7 +15,7 @@ export async function initializeProject() {
   } catch (e) {
     try {
       await execSync('npm init -y');
-    } catch (e) {
+    } catch (err) {
       throw new Error("Error running 'npm init'.");
     }
     console.log('Installing npm dependencies & dev dependencies for project...');
@@ -25,7 +23,7 @@ export async function initializeProject() {
       execSync('npm install --save trellisuml');
       execSync('npm install --save-dev typescript');
       execSync('npm install --save-dev eslint');
-    } catch (e) {
+    } catch (err) {
       throw new Error('Error installing project dependencies from latest available on npm.');
     }
     console.log('Initializing typescript and eslint config.');
@@ -35,7 +33,7 @@ export async function initializeProject() {
         writeFile('./.gitignore', gitignoreConfig),
         writeFile('./tsconfig.json', tsConfig),
       ]);
-    } catch (e) {
+    } catch (err) {
       throw new Error('Error copying configuration template files into project.');
     }
     console.log('Creating diagram source code folder structure...');
@@ -45,7 +43,7 @@ export async function initializeProject() {
       mkdir(path.join(workingDirectoryPath, './src/services'));
       mkdir(path.join(workingDirectoryPath, './src/solutions'));
       mkdir(path.join(workingDirectoryPath, './src/domains'));
-    } catch (e) {
+    } catch (err) {
       throw new Error('Error creating directory structure for diagram source code.');
     }
     console.log('**********************************');

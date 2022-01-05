@@ -1,5 +1,20 @@
-import { ComponentRelationship, System } from '.';
+/* eslint-disable max-classes-per-file */
+import { System } from './system';
 import { escapeString } from '../common/utils';
+
+export enum ComponentType {
+  UI = 'UI',
+  Service = 'Service',
+  Database = 'Database',
+  ExecutionEnvironment = 'Execution Environment',
+  API = 'API',
+  Queue = 'Queue',
+  Processor = 'Processor',
+  Schema = 'Schema',
+  Topic = 'Topic',
+  EventQueue = 'Event Queue',
+  Actor = 'Actor',
+}
 
 export class Component implements ComponentConfiguration {
   label: string;
@@ -50,7 +65,7 @@ export class Component implements ComponentConfiguration {
       }
       this._parentComponent = newEnvironment;
     }
-    if (this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id) == -1) {
+    if (this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id) === -1) {
       this.parentComponent.childComponents.push(this);
     }
   }
@@ -138,18 +153,4 @@ export interface ComponentConfiguration {
   color?: string;
   parentComponent?: Component;
   childComponents?: Array<Component>;
-}
-
-export enum ComponentType {
-  UI = 'UI',
-  Service = 'Service',
-  Database = 'Database',
-  ExecutionEnvironment = 'Execution Environment',
-  API = 'API',
-  Queue = 'Queue',
-  Processor = 'Processor',
-  Schema = 'Schema',
-  Topic = 'Topic',
-  EventQueue = 'Event Queue',
-  Actor = 'Actor',
 }

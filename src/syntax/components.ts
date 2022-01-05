@@ -1,5 +1,21 @@
+// TODO: refactor into separate files
+
 import {
-  API, Cache, Component, ComponentConfiguration, Database, Device, Domain, ExecutionEnvironment, Processor, Queue, Service, UI, Schema, Topic, EventQueue,
+  API,
+  Cache,
+  Component,
+  ComponentConfiguration,
+  Database,
+  Device,
+  Domain,
+  ExecutionEnvironment,
+  Processor,
+  Queue,
+  Service,
+  UI,
+  Schema,
+  Topic,
+  EventQueue,
 } from '../models';
 
 export { ComponentType } from '../models';
@@ -22,7 +38,10 @@ export function ui(labelOrConfig: string | ComponentConfiguration | ComponentCon
 export function database(label: string, parentComponent?: Component): Database;
 export function database(config: ComponentConfiguration): Database;
 export function database(config: ComponentConfiguration[]): Database[];
-export function database(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Database | Database[] {
+export function database(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Database | Database[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Database(dbConfig.label, dbConfig));
   }
@@ -37,7 +56,10 @@ export function database(labelOrConfig: string | ComponentConfiguration | Compon
 export function service(label: string, parentComponent?: Component): Service;
 export function service(config: ComponentConfiguration): Service;
 export function service(config: ComponentConfiguration[]): Service[];
-export function service(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Service | Service[] {
+export function service(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Service | Service[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Service(dbConfig.label, dbConfig));
   }
@@ -52,7 +74,10 @@ export function service(labelOrConfig: string | ComponentConfiguration | Compone
 export function api(label: string, parentComponent?: Component): API;
 export function api(config: ComponentConfiguration): API;
 export function api(config: ComponentConfiguration[]): API[];
-export function api(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): API | API[] {
+export function api(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): API | API[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new API(dbConfig.label, dbConfig));
   }
@@ -67,7 +92,10 @@ export function api(labelOrConfig: string | ComponentConfiguration | ComponentCo
 export function topic(label: string, parentComponent?: Component): Topic;
 export function topic(config: ComponentConfiguration): Topic;
 export function topic(config: ComponentConfiguration[]): Topic[];
-export function topic(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Topic | Topic[] {
+export function topic(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Topic | Topic[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Topic(dbConfig.label, dbConfig));
   }
@@ -82,7 +110,10 @@ export function topic(labelOrConfig: string | ComponentConfiguration | Component
 export function eventQueue(label: string, parentComponent?: Component): EventQueue;
 export function eventQueue(config: ComponentConfiguration): EventQueue;
 export function eventQueue(config: ComponentConfiguration[]): EventQueue[];
-export function eventQueue(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): EventQueue | EventQueue[] {
+export function eventQueue(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): EventQueue | EventQueue[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new EventQueue(dbConfig.label, dbConfig));
   }
@@ -97,7 +128,10 @@ export function eventQueue(labelOrConfig: string | ComponentConfiguration | Comp
 export function queue(label: string, parentComponent?: Component): Queue;
 export function queue(config: ComponentConfiguration): Queue;
 export function queue(config: ComponentConfiguration[]): Queue[];
-export function queue(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Queue | Queue[] {
+export function queue(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Queue | Queue[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Queue(dbConfig.label, dbConfig));
   }
@@ -112,7 +146,10 @@ export function queue(labelOrConfig: string | ComponentConfiguration | Component
 export function cache(label: string, parentComponent?: Component): Cache;
 export function cache(config: ComponentConfiguration): Cache;
 export function cache(config: ComponentConfiguration[]): Cache[];
-export function cache(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Cache | Cache[] {
+export function cache(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Cache | Cache[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Cache(dbConfig.label, dbConfig));
   }
@@ -127,7 +164,10 @@ export function cache(labelOrConfig: string | ComponentConfiguration | Component
 export function processor(label: string, parentComponent?: Component): Processor;
 export function processor(config: ComponentConfiguration): Processor;
 export function processor(config: ComponentConfiguration[]): Processor[];
-export function processor(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Processor | Processor[] {
+export function processor(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Processor | Processor[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Processor(dbConfig.label, dbConfig));
   }
@@ -142,7 +182,10 @@ export function processor(labelOrConfig: string | ComponentConfiguration | Compo
 export function domain(label: string, parentComponent?: Component): Domain;
 export function domain(config: ComponentConfiguration): Domain;
 export function domain(config: ComponentConfiguration[]): Domain[];
-export function domain(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Domain | Domain[] {
+export function domain(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Domain | Domain[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Domain(dbConfig.label, dbConfig));
   }
@@ -157,7 +200,10 @@ export function domain(labelOrConfig: string | ComponentConfiguration | Componen
 export function device(label: string, parentComponent?: Component): Device;
 export function device(config: ComponentConfiguration): Device;
 export function device(config: ComponentConfiguration[]): Device[];
-export function device(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Device | Device[] {
+export function device(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Device | Device[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Device(dbConfig.label, dbConfig));
   }
@@ -172,7 +218,10 @@ export function device(labelOrConfig: string | ComponentConfiguration | Componen
 export function executionEnvironment(label: string, parentComponent?: Component): ExecutionEnvironment;
 export function executionEnvironment(config: ComponentConfiguration): ExecutionEnvironment;
 export function executionEnvironment(config: ComponentConfiguration[]): ExecutionEnvironment[];
-export function executionEnvironment(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): ExecutionEnvironment | ExecutionEnvironment[] {
+export function executionEnvironment(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): ExecutionEnvironment | ExecutionEnvironment[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new ExecutionEnvironment(dbConfig.label, dbConfig));
   }
@@ -187,7 +236,10 @@ export function executionEnvironment(labelOrConfig: string | ComponentConfigurat
 export function schema(label: string, parentComponent?: Component): Schema;
 export function schema(config: ComponentConfiguration): Schema;
 export function schema(config: ComponentConfiguration[]): Schema[];
-export function schema(labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[], parentComponent?: Component): Schema | Schema[] {
+export function schema(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Schema | Schema[] {
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => new Schema(dbConfig.label, dbConfig));
   }
