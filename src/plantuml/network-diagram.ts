@@ -1,8 +1,7 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
 import { escapeString } from '../common/utils';
-import { Component } from '../models/component/Component';
-import { ComponentType } from '../syntax';
-import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
+import { Component, ComponentType } from '../models/component';
+import { ComponentRelationship } from '../models/component-relationship';
 import { System } from '../models/system';
 
 export function getNetworkDiagramType(type: ComponentType): string {
