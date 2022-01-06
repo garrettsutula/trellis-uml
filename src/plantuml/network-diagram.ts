@@ -14,7 +14,7 @@ export function getNetworkDiagramType(type: ComponentType): string {
   }
 }
 
-export function generateComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
+export function buildComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
   let output = '';
   let renderComponentMarkup = true;
   if (component.type !== ComponentType.ExecutionEnvironment) renderComponentMarkup = false;
@@ -28,7 +28,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
     if (renderComponentMarkup) output += ' {\n';
     component.childComponents.forEach((childComponent) => {
       if (componentsToRender.has(childComponent.id)) {
-        const markup = generateComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
+        const markup = buildComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
         if (markup.length) output += markup;
         if (output.slice(-1) !== '\n') output += '\n';
       }
@@ -38,7 +38,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
   return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
+function buildRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
   // TODO: Implement config interface
   let output = `${'\t'.repeat(tabIndex)}`;
   output += `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
@@ -46,18 +46,18 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
   return `${output}\n`;
 }
 
-function generateComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
+function buildComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
   return components
-    .reduce((output, component): string => output.concat(generateComponentMarkup(component, componentsToRender)), '');
+    .reduce((output, component): string => output.concat(buildComponentMarkup(component, componentsToRender)), '');
 }
 
-function generateRelationships(relationships: Array<ComponentRelationship>): string {
+function buildRelationships(relationships: Array<ComponentRelationship>): string {
   const relationshipsAlreadyAdded = [];
   return relationships
     .filter((relationship) => relationship.source.type === ComponentType.ExecutionEnvironment
                 && relationship.target.type === ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
-      const newLine = generateRelationshipMarkup(relationship);
+      const newLine = buildRelationshipMarkup(relationship);
       // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
@@ -72,7 +72,7 @@ function recurseParentComponents(component: Component, componentsToRender) {
   return component;
 }
 
-export function generateNetworkDiagram(system: System): string {
+export function buildNetworkDiagram(system: System): string {
   let output: string = startUml(`Network Diagram ${system.name}`);
   output += titleAndHeader(system.name, 'Network');
 
@@ -98,10 +98,10 @@ export function generateNetworkDiagram(system: System): string {
     if (topLevelComponents.has(id) === false) topLevelComponents.set(id, topComponent);
   });
 
-  // Identify top level components (ones without execution environments) and generate markup recursively.
-  output += generateComponents(Array.from(topLevelComponents.values()), componentsToRender);
-  // Filter in relationships that connect to an execution environment & generate markup.
-  output += generateRelationships(system.componentRelationships);
+  // Identify top level components (ones without execution environments) and build markup recursively.
+  output += buildComponents(Array.from(topLevelComponents.values()), componentsToRender);
+  // Filter in relationships that connect to an execution environment & build markup.
+  output += buildRelationships(system.componentRelationships);
   output += endUml();
   return output;
 }

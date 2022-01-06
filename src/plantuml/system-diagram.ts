@@ -2,7 +2,7 @@ import { titleAndHeader, startUml, endUml } from './chrome';
 import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { System } from '../models/system';
 
-export function generateComponentMarkup(system: System, tabIndex: number = 0, compoundIdentifier?: string) {
+export function buildComponentMarkup(system: System, tabIndex: number = 0, compoundIdentifier?: string) {
   let output = '';
   let compoundId = '';
   if (compoundIdentifier) {
@@ -16,7 +16,7 @@ export function generateComponentMarkup(system: System, tabIndex: number = 0, co
   return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship): string {
+function buildRelationshipMarkup(relationship: ComponentRelationship): string {
   // TODO: Implement config interface
   // eslint-disable-next-line max-len
   let output = `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
@@ -24,23 +24,23 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
   return `${output}\n`;
 }
 
-function generateComponents(systems: Array<System>) {
+function buildComponents(systems: Array<System>) {
   return systems
-    .reduce((output, system): string => output.concat(`${generateComponentMarkup(system)}\n`), '');
+    .reduce((output, system): string => output.concat(`${buildComponentMarkup(system)}\n`), '');
 }
 
-function generateRelationships(relationships: Array<ComponentRelationship>): string {
+function buildRelationships(relationships: Array<ComponentRelationship>): string {
   const relationshipsAlreadyAdded = [];
   return relationships
     .reduce((output, relationship): string => {
-      const newLine = generateRelationshipMarkup(relationship);
+      const newLine = buildRelationshipMarkup(relationship);
       // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
     }, '');
 }
 
-export function generateSystemDiagram(system: System): string {
+export function buildSystemDiagram(system: System): string {
   const componentsToRender = new Map();
   componentsToRender.set(system.id, system);
   if (system.systemRelationships) {
@@ -52,8 +52,8 @@ export function generateSystemDiagram(system: System): string {
 
   let output: string = startUml(`System Diagram ${system.name}`);
   output += titleAndHeader(system.name, 'System');
-  output += generateComponents(Array.from(componentsToRender.values()));
-  if (system.systemRelationships) output += generateRelationships(system.systemRelationships);
+  output += buildComponents(Array.from(componentsToRender.values()));
+  if (system.systemRelationships) output += buildRelationships(system.systemRelationships);
   output += endUml();
   return output;
 }
