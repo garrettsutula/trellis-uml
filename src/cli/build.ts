@@ -1,8 +1,9 @@
 import * as path from 'path';
 import { access, mkdir } from 'fs/promises';
 import { execSync } from 'child_process';
-import { generateSystemDiagrams, escapeString } from '../common';
+import { escapeString } from '../common/utils';
 import { DiagramRoot } from '../models';
+import { generateSystemDiagrams } from '../common/generate';
 
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);

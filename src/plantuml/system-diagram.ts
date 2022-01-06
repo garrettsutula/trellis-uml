@@ -1,5 +1,5 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
-import { ComponentRelationship } from '../models/component-relationship';
+import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { System } from '../models/system';
 
 export function generateComponentMarkup(system: System, tabIndex: number = 0, compoundIdentifier?: string) {
@@ -26,7 +26,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship): string
 
 function generateComponents(systems: Array<System>) {
   return systems
-    .reduce((output, system): string => output += `${generateComponentMarkup(system)}\n`, '');
+    .reduce((output, system): string => output.concat(`${generateComponentMarkup(system)}\n`), '');
 }
 
 function generateRelationships(relationships: Array<ComponentRelationship>): string {
@@ -34,6 +34,7 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
   return relationships
     .reduce((output, relationship): string => {
       const newLine = generateRelationshipMarkup(relationship);
+      // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
     }, '');

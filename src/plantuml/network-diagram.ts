@@ -1,7 +1,8 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
-import { escapeString } from '../common';
-import { Component, ComponentType } from '../models/component';
-import { ComponentRelationship } from '../models/component-relationship';
+import { escapeString } from '../common/utils';
+import { Component } from '../models/component/Component';
+import { ComponentType } from '../syntax';
+import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { System } from '../models/system';
 
 export function getNetworkDiagramType(type: ComponentType): string {
@@ -25,9 +26,9 @@ export function generateComponentMarkup(component: Component, componentsToRender
   }
   if (component.childComponents.length) {
     if (renderComponentMarkup) output += ' {\n';
-    component.childComponents.forEach((component) => {
-      if (componentsToRender.has(component.id)) {
-        const markup = generateComponentMarkup(component, componentsToRender, tabIndex + 1);
+    component.childComponents.forEach((childComponent) => {
+      if (componentsToRender.has(childComponent.id)) {
+        const markup = generateComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
         if (markup.length) output += markup;
         if (output.slice(-1) !== '\n') output += '\n';
       }
@@ -47,7 +48,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
 
 function generateComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
   return components
-    .reduce((output, component): string => output += generateComponentMarkup(component, componentsToRender), '');
+    .reduce((output, component): string => output.concat(generateComponentMarkup(component, componentsToRender)), '');
 }
 
 function generateRelationships(relationships: Array<ComponentRelationship>): string {
@@ -57,6 +58,7 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
                 && relationship.target.type === ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
       const newLine = generateRelationshipMarkup(relationship);
+      // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
     }, '');

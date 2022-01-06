@@ -1,6 +1,7 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
-import { Component, ComponentType } from '../models/component';
-import { ComponentRelationship } from '../models/component-relationship';
+import { Component } from '../models/component/Component';
+import { ComponentType } from '../syntax';
+import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { generateComponentMarkup as generateSystemMarkup } from './system-diagram';
 import { System } from '../models/system';
 import { escapeString } from '../common/utils';
@@ -25,6 +26,8 @@ export function getComponentDiagramType(type: ComponentType): string {
       return 'control';
     case ComponentType.Schema:
       return 'artifact';
+    case ComponentType.System:
+      throw new Error('System component not expected in component diagram generation.');
     default:
       return 'component';
   }
@@ -40,8 +43,8 @@ export function generateComponentMarkup(component: Component, tabIndex: number =
 
   if (component.childComponents.length) {
     output += ' {\n';
-    component.childComponents.forEach((component) => {
-      output += `${generateComponentMarkup(component, tabIndex + 1)}\n`;
+    component.childComponents.forEach((childComponent) => {
+      output += `${generateComponentMarkup(childComponent, tabIndex + 1)}\n`;
     });
     output += '}';
   }
@@ -59,7 +62,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
 function generateComponents(components: Array<Component>) {
   return components
     .filter((component) => component.type !== ComponentType.ExecutionEnvironment)
-    .reduce((output, component): string => output += `${generateComponentMarkup(component)}\n`, '');
+    .reduce((output, component): string => output.concat(`${generateComponentMarkup(component)}\n`), '');
 }
 
 function generateComponentRelationships(relationships: Array<ComponentRelationship>): string {
@@ -73,36 +76,39 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
         return output;
       }
       relationshipsAlreadyAdded.push(newLine);
+      // eslint-disable-next-line no-param-reassign
       output += newLine;
       return output;
     }, '');
 }
 
-export function generateComponentDiagram(system: System): string {
+export function generateComponentDiagram(targetSystem: System): string {
   const componentsToRender: Map<String, Component> = new Map();
   const systems: Set<System> = new Set();
 
-  system.components.forEach((component) => {
+  targetSystem.components.forEach((component) => {
     if (componentsToRender.has(component.id) === false) componentsToRender.set(component.id, component);
     if (component.system) systems.add(component.system);
   });
 
-  system.componentRelationships.forEach(({ source, target }) => {
+  targetSystem.componentRelationships.forEach(({ source, target }) => {
     if (componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
     if (componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
     if (source.system) systems.add(source.system);
     if (target.system) systems.add(target.system);
   });
 
-  let output: string = startUml(`Component Diagram ${system.name}`);
-  output += titleAndHeader(system.name, 'Component');
+  let output: string = startUml(`Component Diagram ${targetSystem.name}`);
+  output += titleAndHeader(targetSystem.name, 'Component');
   Array.from(systems).forEach((system) => {
-    const systemComponents = Array.from(componentsToRender.values()).filter((component) => component.system && component.system?.id === system?.id);
+    const systemComponents = Array
+      .from(componentsToRender.values())
+      .filter((component) => component.system && component.system?.id === system?.id);
     output += `${generateSystemMarkup(system)}{\n`;
     output += generateComponents(systemComponents);
     output += '}\n';
   });
-  output += generateComponentRelationships(system.componentRelationships);
+  output += generateComponentRelationships(targetSystem.componentRelationships);
   output += endUml();
   return output;
 }

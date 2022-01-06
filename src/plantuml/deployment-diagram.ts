@@ -1,6 +1,7 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
-import { Component, ComponentType } from '../models/component';
-import { ComponentRelationship } from '../models/component-relationship';
+import { Component } from '../models/component/Component';
+import { ComponentType } from '../syntax';
+import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { System } from '../models/system';
 import { generateComponentMarkup as generateSystemMarkup } from './system-diagram';
 import { escapeString } from '../common/utils';
@@ -36,6 +37,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
 
   if (component.system && component.parentComponent && component.system !== component.parentComponent.system) {
     output += `${generateSystemMarkup(component.system, tabIndex, component.parentComponent.id)}{\n`;
+    // eslint-disable-next-line no-param-reassign
     tabIndex += 1;
   }
   output += `${'\t'.repeat(tabIndex)}`;
@@ -45,9 +47,9 @@ export function generateComponentMarkup(component: Component, componentsToRender
 
   if (component.childComponents.length) {
     output += ' {\n';
-    component.childComponents.forEach((component) => {
-      if (componentsToRender.has(component.id)) {
-        const markup = generateComponentMarkup(component, componentsToRender, tabIndex + 1);
+    component.childComponents.forEach((childComponent) => {
+      if (componentsToRender.has(childComponent.id)) {
+        const markup = generateComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
         if (markup.length) output += markup;
         if (output.slice(-1) !== '\n') output += '\n';
       }
@@ -55,6 +57,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
     output += `${'\t'.repeat(tabIndex)}}\n`;
   }
   if (component.system && component.parentComponent && component.system !== component.parentComponent.system) {
+    // eslint-disable-next-line no-param-reassign
     tabIndex -= 1;
     output += `\n${'\t'.repeat(tabIndex)}}\n`;
   }
@@ -79,7 +82,7 @@ function generateComponents(components: Array<Component>, componentsToRender: Ma
     });
   return components
     .filter((component) => component.parentComponent === undefined)
-    .reduce((output, component): string => output += `${generateComponentMarkup(component, componentsToRender)}\n`, '');
+    .reduce((output, component): string => output.concat(`${generateComponentMarkup(component, componentsToRender)}\n`), '');
 }
 
 function generateRelationships(relationships: Array<ComponentRelationship>): string {
@@ -89,6 +92,7 @@ function generateRelationships(relationships: Array<ComponentRelationship>): str
         && relationship.target.type !== ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
       const newLine = generateRelationshipMarkup(relationship);
+      // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
     }, '');

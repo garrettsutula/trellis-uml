@@ -1,7 +1,7 @@
 import {
   ComponentRelationshipConfiguration, Uses, Accesses, FlowsInto, Provides, Requires, ConnectsTo,
 } from '../models';
-import { Component } from '../models/component';
+import { Component } from '../models/component/Component';
 
 export function uses(source: Component, target: Component, description?: string): Uses;
 export function uses(config: ComponentRelationshipConfiguration): Uses;
