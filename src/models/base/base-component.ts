@@ -26,7 +26,7 @@ export interface BaseComponentConfiguration {
 export class BaseComponent implements BaseComponentConfiguration {
   label: string;
 
-  private _id: string;
+  protected _id: string;
 
   type: ComponentType;
 
