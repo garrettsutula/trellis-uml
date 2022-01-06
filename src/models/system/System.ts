@@ -1,6 +1,6 @@
-import { Component } from './component';
-import { ComponentRelationship } from './component-relationship';
-import { escapeString } from '../common/utils';
+import { Component } from '../component/Component';
+import { ComponentRelationship } from '../component-relationship/ComponentRelationship';
+import { escapeString } from '../../common/utils';
 
 export class System implements SystemConfiguration {
   name: string;
@@ -37,6 +37,7 @@ export class System implements SystemConfiguration {
 
   public set components(newComponents: Component[]) {
     newComponents.forEach((component) => {
+      // eslint-disable-next-line no-param-reassign
       if (!component.system) { component.system = this; }
     });
     this._components = newComponents;

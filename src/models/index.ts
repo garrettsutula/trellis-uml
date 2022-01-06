@@ -1,4 +1,4 @@
-export * from './component';
-export * from './component-relationship';
+export * from './component/Component';
+export * from './component-relationship/ComponentRelationship';
 export * from './diagram-root';
 export * from './system';
