@@ -16,10 +16,6 @@ function execAsync(command) {
 }
 
 export async function serveProject() {
-  // TODO
-  // Run a process that auto-generates the diagrams on file save.
-  // Consider hosting a webserver & small webapp w/ live reload for previews
-  // Consider how to integrate with vscode
   console.log(chalk.dim(`Running 'npm run dev' on current directory ${currentFolder}.`));
   try {
     await execAsync('npm run dev');
