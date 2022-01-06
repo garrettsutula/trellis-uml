@@ -18,8 +18,6 @@ import {
   EventQueue,
 } from '../models';
 
-export { ComponentType } from '../models';
-
 export function ui(label: string, parentComponent?: Component): UI;
 export function ui(config: ComponentConfiguration): UI;
 export function ui(config: ComponentConfiguration[]): UI[];

@@ -2,6 +2,8 @@
 import { System } from '../system';
 import { BaseComponent, BaseComponentConfiguration } from '../base/base-component';
 
+export { ComponentType } from '../base/base-component';
+
 export class Component extends BaseComponent {
   system?: System;
 

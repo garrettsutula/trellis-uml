@@ -1,5 +1,5 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
-import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
+import { ComponentRelationship } from '../models/component-relationship';
 import { System } from '../models/system';
 
 export function buildComponentMarkup(system: System, tabIndex: number = 0, compoundIdentifier?: string) {
