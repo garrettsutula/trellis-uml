@@ -7,7 +7,7 @@ export { ComponentType } from '../base/base-component';
 export class Component extends BaseComponent {
   system?: System;
 
-  private _parentComponent?: Component;
+  protected _parentComponent?: Component;
 
   childComponents?: Component[];
 
