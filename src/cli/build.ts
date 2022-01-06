@@ -1,50 +1,51 @@
 import * as path from 'path';
 import { access, mkdir } from 'fs/promises';
 import { execSync } from 'child_process';
+import chalk from 'chalk';
+
 import { escapeString } from '../common/utils';
 import { DiagramRoot } from '../models';
-import { generateSystemDiagrams } from '../common/generate';
+import { buildSystemDiagrams } from '../common/generate';
 
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
 export async function buildProject() {
   // Make sure current diagram code is compiled.
-  console.time(`Running 'npm run build' on current directory ${currentFolder} in`);
+  console.log(chalk.dim(`Running 'npm run build' on current directory ${currentFolder}.`));
   try {
     execSync('npm run build');
   } catch (e) {
     throw new Error('Failed to build using project\'s build script.');
   }
-  console.timeEnd(`Running 'npm run build' on current directory ${currentFolder} in`);
 
   // Test for output directory structure & create if needed.
-  console.time(`Made sure output directories are created by testing access to: ${currentFolder}/diagrams in`);
+  console.log(chalk.dim(`Test presence of: ${currentFolder}/diagrams`));
   try {
     await access('./diagrams');
   } catch (e) {
     console.warn(`Directory '${currentFolder}/diagrams' not present, attempting to create it & child directories.`);
     await mkdir(path.join(workingDirectoryPath, './diagrams'));
-    await mkdir(path.join(workingDirectoryPath, './diagrams/systems'));
-    await mkdir(path.join(workingDirectoryPath, './diagrams/services'));
-    await mkdir(path.join(workingDirectoryPath, './diagrams/solutions'));
-    await mkdir(path.join(workingDirectoryPath, './diagrams/domains'));
+    await mkdir(path.join(workingDirectoryPath, './diagrams/systems'), { recursive: true });
+    await mkdir(path.join(workingDirectoryPath, './diagrams/services'), { recursive: true });
+    await mkdir(path.join(workingDirectoryPath, './diagrams/solutions'), { recursive: true });
+    await mkdir(path.join(workingDirectoryPath, './diagrams/domains'), { recursive: true });
   }
-  console.timeEnd(`Made sure output directories are created by testing access to: ${currentFolder}/diagrams in`);
   // Load compiled diagram source code as diagram root
-  console.time(`Loaded diagram root: ${currentFolder}/dist/app.js in`);
+  console.log(chalk.dim(`Loading diagram root: ${currentFolder}/dist/app.js`));
   const diagramPath = path.join(workingDirectoryPath, './dist/app.js');
   const diagramRoot: DiagramRoot = await import(diagramPath);
-  console.timeEnd(`Loaded diagram root: ${currentFolder}/dist/app.js in`);
-  // System Diagram Generation
-  console.log(`Generating system digrams for: ${Object
+  // Default export not intended/used here but may be present in diagramRoom.systems.
+  delete diagramRoot.systems.default;
+
+  console.table(Object
     .values(diagramRoot.systems)
-    .reduce((systemList, system) => `${systemList}${system.name}, `, '')}`);
-  console.time('Generation completed in');
+    // eslint-disable-next-line max-len
+    .map(({ name, components, componentRelationships }) => ({ name, componentCount: components.length, relationshipCount: componentRelationships.length })));
+  console.log(chalk.dim('Building digrams from source code.'));
   Object.values(diagramRoot.systems)
     .map((system) => {
       const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`);
-      return generateSystemDiagrams(system, diagramOutputPath);
+      return buildSystemDiagrams(system, diagramOutputPath);
     });
-  console.timeEnd('Generation completed in');
 }

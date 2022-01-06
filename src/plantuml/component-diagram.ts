@@ -2,7 +2,7 @@ import { titleAndHeader, startUml, endUml } from './chrome';
 import { Component } from '../models/component/Component';
 import { ComponentType } from '../syntax';
 import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
-import { generateComponentMarkup as generateSystemMarkup } from './system-diagram';
+import { buildComponentMarkup as buildSystemMarkup } from './system-diagram';
 import { System } from '../models/system';
 import { escapeString } from '../common/utils';
 
@@ -33,7 +33,7 @@ export function getComponentDiagramType(type: ComponentType): string {
   }
 }
 
-export function generateComponentMarkup(component: Component, tabIndex: number = 1): string {
+export function buildComponentMarkup(component: Component, tabIndex: number = 1): string {
   let output = '';
   const componentString = getComponentDiagramType(component.type);
   output += `${'\t'.repeat(tabIndex)}`;
@@ -44,14 +44,14 @@ export function generateComponentMarkup(component: Component, tabIndex: number =
   if (component.childComponents.length) {
     output += ' {\n';
     component.childComponents.forEach((childComponent) => {
-      output += `${generateComponentMarkup(childComponent, tabIndex + 1)}\n`;
+      output += `${buildComponentMarkup(childComponent, tabIndex + 1)}\n`;
     });
     output += '}';
   }
   return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
+function buildRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
   // TODO: Implement config interface
   let output = `${'\t'.repeat(tabIndex)}`;
   output += `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
@@ -59,19 +59,19 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
   return `${output}\n`;
 }
 
-function generateComponents(components: Array<Component>) {
+function buildComponents(components: Array<Component>) {
   return components
     .filter((component) => component.type !== ComponentType.ExecutionEnvironment)
-    .reduce((output, component): string => output.concat(`${generateComponentMarkup(component)}\n`), '');
+    .reduce((output, component): string => output.concat(`${buildComponentMarkup(component)}\n`), '');
 }
 
-function generateComponentRelationships(relationships: Array<ComponentRelationship>): string {
+function buildComponentRelationships(relationships: Array<ComponentRelationship>): string {
   const relationshipsAlreadyAdded = [];
   return relationships
     .filter((relationship) => relationship.source.type !== ComponentType.ExecutionEnvironment
             && relationship.target.type !== ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
-      const newLine = generateRelationshipMarkup(relationship);
+      const newLine = buildRelationshipMarkup(relationship);
       if (relationshipsAlreadyAdded.includes(newLine)) {
         return output;
       }
@@ -82,7 +82,7 @@ function generateComponentRelationships(relationships: Array<ComponentRelationsh
     }, '');
 }
 
-export function generateComponentDiagram(targetSystem: System): string {
+export function buildComponentDiagram(targetSystem: System): string {
   const componentsToRender: Map<String, Component> = new Map();
   const systems: Set<System> = new Set();
 
@@ -104,11 +104,11 @@ export function generateComponentDiagram(targetSystem: System): string {
     const systemComponents = Array
       .from(componentsToRender.values())
       .filter((component) => component.system && component.system?.id === system?.id);
-    output += `${generateSystemMarkup(system)}{\n`;
-    output += generateComponents(systemComponents);
+    output += `${buildSystemMarkup(system)}{\n`;
+    output += buildComponents(systemComponents);
     output += '}\n';
   });
-  output += generateComponentRelationships(targetSystem.componentRelationships);
+  output += buildComponentRelationships(targetSystem.componentRelationships);
   output += endUml();
   return output;
 }

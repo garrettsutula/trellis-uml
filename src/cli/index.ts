@@ -2,6 +2,7 @@
 
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import chalk from 'chalk';
 
 import { generateDiagramScaffold } from './generate';
 import { initializeProject } from './init';
@@ -16,8 +17,8 @@ const { _: [command, type, name] = [] } = argv;
 
 let invokedCommand;
 
-console.log(`Running command 'trellis ${command}'`);
-console.time(`Ran 'trellis ${command}' in`);
+console.log(chalk.bold(`Running command 'trellis ${command}'`));
+console.time(chalk.dim('Total duration'));
 switch (command) {
   case 'init':
     invokedCommand = initializeProject();
@@ -39,7 +40,8 @@ switch (command) {
 
 invokedCommand
   .then(() => {
-    console.timeEnd(`Ran 'trellis ${command}' in`);
+    console.log(chalk.bold.underline.green(`'trellis ${command}' ran successfully!`));
+    console.timeEnd(chalk.dim('Total duration'));
     process.exit(0);
   })
   .catch((e) => {

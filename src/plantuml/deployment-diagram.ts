@@ -3,7 +3,7 @@ import { Component } from '../models/component/Component';
 import { ComponentType } from '../syntax';
 import { ComponentRelationship } from '../models/component-relationship/ComponentRelationship';
 import { System } from '../models/system';
-import { generateComponentMarkup as generateSystemMarkup } from './system-diagram';
+import { buildComponentMarkup as buildSystemMarkup } from './system-diagram';
 import { escapeString } from '../common/utils';
 
 export function getDeploymentDiagramType(type: ComponentType): string {
@@ -31,12 +31,12 @@ export function getDeploymentDiagramType(type: ComponentType): string {
   }
 }
 
-export function generateComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
+export function buildComponentMarkup(component: Component, componentsToRender: Map<string, Component>, tabIndex: number = 1) {
   let output = '';
   const componentString = getDeploymentDiagramType(component.type);
 
   if (component.system && component.parentComponent && component.system !== component.parentComponent.system) {
-    output += `${generateSystemMarkup(component.system, tabIndex, component.parentComponent.id)}{\n`;
+    output += `${buildSystemMarkup(component.system, tabIndex, component.parentComponent.id)}{\n`;
     // eslint-disable-next-line no-param-reassign
     tabIndex += 1;
   }
@@ -49,7 +49,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
     output += ' {\n';
     component.childComponents.forEach((childComponent) => {
       if (componentsToRender.has(childComponent.id)) {
-        const markup = generateComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
+        const markup = buildComponentMarkup(childComponent, componentsToRender, tabIndex + 1);
         if (markup.length) output += markup;
         if (output.slice(-1) !== '\n') output += '\n';
       }
@@ -64,7 +64,7 @@ export function generateComponentMarkup(component: Component, componentsToRender
   return output;
 }
 
-function generateRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
+function buildRelationshipMarkup(relationship: ComponentRelationship, tabIndex: number = 1): string {
   // TODO: Implement config interface
   let output = `${'\t'.repeat(tabIndex)}`;
   output += `${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}`;
@@ -72,7 +72,7 @@ function generateRelationshipMarkup(relationship: ComponentRelationship, tabInde
   return `${output}\n`;
 }
 
-function generateComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
+function buildComponents(components: Array<Component>, componentsToRender: Map<string, Component>) {
   // Add child components to their execution environments as desginated on instantiated components.
   components
     .forEach((component) => {
@@ -82,16 +82,16 @@ function generateComponents(components: Array<Component>, componentsToRender: Ma
     });
   return components
     .filter((component) => component.parentComponent === undefined)
-    .reduce((output, component): string => output.concat(`${generateComponentMarkup(component, componentsToRender)}\n`), '');
+    .reduce((output, component): string => output.concat(`${buildComponentMarkup(component, componentsToRender)}\n`), '');
 }
 
-function generateRelationships(relationships: Array<ComponentRelationship>): string {
+function buildRelationships(relationships: Array<ComponentRelationship>): string {
   const relationshipsAlreadyAdded = [];
   return relationships
     .filter((relationship) => relationship.source.type !== ComponentType.ExecutionEnvironment
         && relationship.target.type !== ComponentType.ExecutionEnvironment)
     .reduce((output, relationship): string => {
-      const newLine = generateRelationshipMarkup(relationship);
+      const newLine = buildRelationshipMarkup(relationship);
       // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
       return output;
@@ -106,7 +106,7 @@ function recurseParentComponents(component: Component, componentsToRender) {
   return component;
 }
 
-export function generateDeploymentDiagram(system: System): string {
+export function buildDeploymentDiagram(system: System): string {
   let output: string = startUml(`Deployment Diagram ${system.name}`);
   output += titleAndHeader(system.name, 'Deployment');
   const topLevelComponents = new Map<string, Component>();
@@ -136,10 +136,10 @@ export function generateDeploymentDiagram(system: System): string {
     if (componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
   });
 
-  // Identify top level components (ones without execution environments) and generate markup recursively.
-  output += generateComponents(Array.from(topLevelComponents.values()), componentsToRender);
-  // Filter in relationships that connect to an execution environment & generate markup.
-  output += generateRelationships(system.componentRelationships);
+  // Identify top level components (ones without execution environments) and build markup recursively.
+  output += buildComponents(Array.from(topLevelComponents.values()), componentsToRender);
+  // Filter in relationships that connect to an execution environment & build markup.
+  output += buildRelationships(system.componentRelationships);
   output += endUml();
   return output;
 }
