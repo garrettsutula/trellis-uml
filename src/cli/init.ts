@@ -21,6 +21,7 @@ export async function initializeProject() {
       execSync('npm init -y');
       execSync('npm set-script build "swc ./src -d dist"');
       execSync('npm set-script lint "eslint . --ext .ts"');
+      execSync('npm set-script dev "npx chokidar \\"./src/**/*.ts\\" --command  \\"npx trellis build\\""');
       execSync('npm pkg set main=./dist/app.js');
       execSync('npm pkg set description="A diagramming project made using the TrellisUML Framework."');
     } catch (err) {
@@ -34,6 +35,7 @@ export async function initializeProject() {
       execSync('npm install --save-dev @swc/core');
       execSync('npm install --save-dev @swc/cli');
       execSync('npm install --save-dev @types/node');
+      execSync('npm install --save-dev chokidar-cli');
     } catch (err) {
       throw new Error('Error installing project dependencies from latest available on npm.');
     }
