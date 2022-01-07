@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import { Component, ComponentType } from '..';
+import { Component } from '.';
+import { ComponentType } from '../base/enums';
 
 export class Domain extends Component {
   type = ComponentType.ExecutionEnvironment;

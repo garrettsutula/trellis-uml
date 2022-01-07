@@ -1,6 +1,7 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
 import { escapeString } from '../common/utils';
-import { Component, ComponentType } from '../models';
+import { Component } from '../models';
+import { ComponentType } from '../models/base/enums';
 import { ComponentRelationship } from '../models/component-relationship';
 import { System } from '../models/system';
 

@@ -1,4 +1,4 @@
-import { LifecycleState } from '.';
+import { LifecycleState } from './enums';
 
 export interface BaseRelationshipConfiguration {
   source: any;

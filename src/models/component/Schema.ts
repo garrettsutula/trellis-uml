@@ -1,6 +1,5 @@
-import {
-  Database, Component, ComponentType,
-} from '..';
+import { Component, Database } from '.';
+import { ComponentType } from '../base/enums';
 
 export class Schema extends Component {
   type = ComponentType.Schema;

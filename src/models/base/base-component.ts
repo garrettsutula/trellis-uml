@@ -1,5 +1,5 @@
 import { escapeString } from '../../common/utils';
-import { ComponentType, LifecycleState } from '.';
+import { ComponentType, LifecycleState } from './enums';
 
 export interface BaseComponentConfiguration {
   label?: string;
