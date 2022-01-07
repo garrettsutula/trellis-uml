@@ -1,5 +1,5 @@
 import {
-  Database, Processor, Service, UI, Cache,
+  Database, Processor, Service, UI, Cache, Entity,
 } from '..';
 import { ComponentRelationship } from './ComponentRelationship';
 
@@ -11,12 +11,6 @@ export class Accesses extends ComponentRelationship {
   source: Service | Database | Processor | UI | Cache;
 
   target: Service | Database | Cache;
-}
 
-/*
-AccessConfiguration {
-  entities: [
-    {entity: Class, crudOperations: string}
-  ];
+  entities?: Entity[];
 }
-*/

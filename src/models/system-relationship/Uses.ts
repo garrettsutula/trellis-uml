@@ -1,4 +1,4 @@
-import { System, Actor } from '..';
+import { System, Actor, Entity } from '..';
 import { SystemRelationship } from './SystemRelationship';
 
 export class Uses extends SystemRelationship {
@@ -7,6 +7,8 @@ export class Uses extends SystemRelationship {
   diagramFragmentAfter: string = 'down-(';
 
   source: System | Actor;
+
+  entities: Entity[];
 }
 
 /*
