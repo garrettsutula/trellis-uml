@@ -1,5 +1,5 @@
 import {
-  Component, ComponentRelationshipConfiguration, Uses, Accesses, FlowsInto, Provides, Requires,
+  Component, ComponentRelationshipConfiguration, Uses, Accesses, Provides, Requires,
 } from '../models';
 
 export function uses(source: Component, target: Component, description?: string): Uses;
@@ -36,24 +36,6 @@ export function accesses(
     return new Accesses(sourceOrConfig as Component, target, description);
   }
   return new Accesses(sourceOrConfig as ComponentRelationshipConfiguration);
-}
-
-export function flowsInto(source: Component, target: Component, description?: string): FlowsInto;
-export function flowsInto(config: ComponentRelationshipConfiguration): FlowsInto;
-export function flowsInto(config: ComponentRelationshipConfiguration[]): FlowsInto[];
-export function flowsInto(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
-  target?: Component,
-  description?: string,
-): FlowsInto | FlowsInto[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new FlowsInto(relationship));
-  }
-  if (sourceOrConfig && target) {
-    return new FlowsInto(sourceOrConfig as Component, target, description);
-  }
-  return new FlowsInto(sourceOrConfig as ComponentRelationshipConfiguration);
 }
 
 export function provides(source: Component, target: Component, description?: string): Provides;

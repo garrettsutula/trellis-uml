@@ -1,6 +1,6 @@
 import { SystemRelationship } from './SystemRelationship';
 
-export class FlowsInfo extends SystemRelationship {
+export class FlowsInto extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
   diagramFragmentAfter: string = 'down-(';
