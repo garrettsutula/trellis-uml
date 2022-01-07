@@ -1,7 +1,19 @@
-export class BaseRelationship {
+import { LifecycleState } from '.';
+
+export interface BaseRelationshipConfiguration {
+  source: any;
+  target: any;
+  lifecycleState?: LifecycleState;
+  description?: string;
+  color?: string;
+}
+
+export class BaseRelationship implements BaseRelationshipConfiguration {
   source: any;
 
   target: any;
+
+  lifecycleState?: LifecycleState;
 
   description?: string;
 
@@ -28,11 +40,4 @@ export class BaseRelationship {
       [this.source, this.target, this.description] = args;
     }
   }
-}
-
-export interface BaseRelationshipConfiguration {
-  source: any;
-  target: any;
-  description?: string;
-  color?: string;
 }
