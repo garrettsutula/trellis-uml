@@ -2,12 +2,12 @@ import { readFile, writeFile, access } from 'fs/promises';
 import systemTemplate from './diagram-templates/system';
 
 async function generateNewSystem(name, filePath, indexPath) {
-  systemTemplate.replace(/{{name}}/g, name);
+  const renderedSystemTemplate = systemTemplate.replace(/{{name}}/g, name);
   try {
     await access(filePath);
     throw new Error(`File already exists at path: ${filePath}`);
   } catch (e) {
-    await writeFile(filePath, systemTemplate);
+    await writeFile(filePath, renderedSystemTemplate);
   }
   let index: string;
   try {
@@ -21,7 +21,7 @@ async function generateNewSystem(name, filePath, indexPath) {
   }
   index += `export * from './${name}'\n`;
   try {
-    await writeFile(indexPath, indexPath);
+    await writeFile(indexPath, index);
   } catch (e) {
     throw new Error(`Unable to update file at: ${indexPath}`);
   }
