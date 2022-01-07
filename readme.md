@@ -3,52 +3,6 @@ TrellisUML is a **prescriptive** TypeScript framework & cli tool for making UML 
 
 This project was made with main goals of: providing a better developer experience, being as human-readable as possible and supporting easy re-use and extension of diagram content as needed to express various integrations & solutions as it is common in real-life systems.
 
-## Work in Progress/To-do List
-Roughly in order of priority.
-
-- Add generator support for `lifecycleState` 
-  - Change color
-  - Change sterotype (e.g. `<<Service>> - Modified`)
-- Add semantic exports for setting lifecycle state (e.g. `new(...args: Component[])`)
-- Add generator support for notes on components/relationships based on set `description`.
-- Add generator support for `entities`.
-- Add generator support for `ports`, `applicationProtocols`, and `networkProtocols`.
-- Sequence Diagrams - import components from systems and domains, define sequence diagrams
-  - Models
-    - Participant
-    - Sequence (??? SequenceComponent[])
-    - SequenceComponent (???)
-    - Request
-    - Response
-  - Generator
-  - Syntax
-- Use Case Diagrams - import components from systems and domains, define use cases and use case models (rollup)
-  - Models
-    - Actor
-    - Use Case
-    - Use Case Model
-  - Generator
-  - Syntax
-- Solution Diagram - import systems & components, add relationships between systems and annotations.
-  - Models
-  - Generator
-  - Syntax
-- Roadmap Diagram - import & decorate systems, components, relationships with lifecycle state changes and annotations.
-  - Models
-    - Phase
-    - Option
-    - Roadmap
-- Hypertext Linking - Link to system, entity, etc.
-- Diagram Configuration
-  - level of detail?
-  - other rendering options?
-  - theme?
-  - enable/disable annotations?
-
-
-- **Misc. Backlog**
-  - Full feature support for components, connections along with semantic use (i.e. can set `component.color = 'green'` or pipe components through `New(args: Array<Component | Connection>)` to decorate).
-
 ## Getting Started
 To get started using this project locally, follow these instructions:
 
@@ -153,3 +107,45 @@ export default system({
 WIP: implement this, write docs.
 #### Solution
 WIP: implement this, write docs.
+
+## Work in Progress/To-do List
+Roughly in order of priority.
+
+- Add generator support for `lifecycleState` 
+  - Change color
+  - Change sterotype (e.g. `<<Service>> - Modified`)
+- Add semantic exports for setting lifecycle state (e.g. `new(...args: Component[])`)
+- Add generator support for notes on components/relationships based on set `description`.
+- Add generator support for `entities`.
+- Add generator support for `ports`, `applicationProtocols`, and `networkProtocols`.
+- Sequence Diagrams - import components from systems and domains, define sequence diagrams
+  - Models
+    - Participant
+    - Sequence (??? SequenceComponent[])
+    - SequenceComponent (???)
+    - Request
+    - Response
+  - Generator
+  - Syntax
+- Use Case Diagrams - import components from systems and domains, define use cases and use case models (rollup)
+  - Models
+    - Actor
+    - Use Case
+    - Use Case Model
+  - Generator
+  - Syntax
+- Solution Diagram - import systems & components, add relationships between systems and annotations.
+  - Models
+  - Generator
+  - Syntax
+- Roadmap Diagram - import & decorate systems, components, relationships with lifecycle state changes and annotations.
+  - Models
+    - Phase
+    - Option
+    - Roadmap
+- Hypertext Linking - Link to system, entity, etc.
+- Diagram Configuration
+  - level of detail?
+  - other rendering options?
+  - theme?
+  - enable/disable annotations?
