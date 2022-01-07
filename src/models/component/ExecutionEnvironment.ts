@@ -1,4 +1,4 @@
-import { Device, Domain } from '.';
+import { Device, Domain } from '..';
 
 export class ExecutionEnvironment extends Domain {
   stereotype = 'Execution Environment';

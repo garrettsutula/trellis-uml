@@ -1,6 +1,6 @@
 import {
   Device, ExecutionEnvironment, Component, ComponentType,
-} from '.';
+} from '..';
 
 export class Database extends Component {
   type = ComponentType.Database;

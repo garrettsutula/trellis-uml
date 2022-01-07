@@ -1,6 +1,6 @@
 import {
   Device, ExecutionEnvironment, Component, ComponentType,
-} from '.';
+} from '..';
 
 export class Service extends Component {
   type = ComponentType.Service;

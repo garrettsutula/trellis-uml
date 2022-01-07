@@ -1,6 +1,6 @@
 import {
   Database, Component, ComponentType,
-} from '.';
+} from '..';
 
 export class Schema extends Component {
   type = ComponentType.Schema;

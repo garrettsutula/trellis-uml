@@ -1,4 +1,4 @@
-import { Component, ComponentType } from './Component';
+import { Component, ComponentType } from '..';
 
 export class Actor extends Component {
   type = ComponentType.Actor;

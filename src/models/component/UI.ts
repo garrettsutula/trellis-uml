@@ -1,6 +1,6 @@
 import {
   Device, ExecutionEnvironment, Component, ComponentType,
-} from '.';
+} from '..';
 
 export class UI extends Component {
   type = ComponentType.UI;

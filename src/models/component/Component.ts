@@ -1,8 +1,4 @@
-/* eslint-disable max-classes-per-file */
-import { System } from '../system';
-import { BaseComponent, BaseComponentConfiguration } from '../base/base-component';
-
-export { ComponentType } from '../base/base-component';
+import { BaseComponent, BaseComponentConfiguration, System } from '..';
 
 export class Component extends BaseComponent {
   system?: System;
