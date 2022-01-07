@@ -1,4 +1,4 @@
-import { System, Domain } from '.';
+import { System, Domain } from '..';
 
 export interface DiagramRoot {
   domainComponents: { [key: string]: Domain };
