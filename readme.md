@@ -6,30 +6,47 @@ This project was made with main goals of: providing a better developer experienc
 ## Work in Progress/To-do List
 Roughly in order of priority.
 
-- **Sequence Diagram Support**
-  - Declare diagram components 
-    - Participants (import from system when possible)
-    - Sequences
-    - Sub-Routines (imported sequences)
-    - Strongly-typed content for request & responses
-- **Use Case Diagram Support**
-  - Declare diagram components
-    - Actors
-    - Use Cases
+- Add generator support for `lifecycleState` 
+  - Change color
+  - Change sterotype (e.g. `<<Service>> - Modified`)
+- Add semantic exports for setting lifecycle state (e.g. `new(...args: Component[])`)
+- Add generator support for notes on components/relationships based on set `description`.
+- Add generator support for `entities`.
+- Add generator support for `ports`, `applicationProtocols`, and `networkProtocols`.
+- Sequence Diagrams - import components from systems and domains, define sequence diagrams
+  - Models
+    - Participant
+    - Sequence (??? SequenceComponent[])
+    - SequenceComponent (???)
+    - Request
+    - Response
+  - Generator
+  - Syntax
+- Use Case Diagrams - import components from systems and domains, define use cases and use case models (rollup)
+  - Models
+    - Actor
+    - Use Case
     - Use Case Model
-  - Consider: strongly-typed content generators
-- **Solution Diagram Support**
-  - Declare diagram components
-    - Solution
-      - Combine and add to existing system diagrams
-    - User Interaction Model
-- **Roadmap Diagram Support**
-  - Composed from systems
-  - Set lifecycle annotations on components & connections
-  - Set phases up, multiple representations of each phase to describe options
+  - Generator
+  - Syntax
+- Solution Diagram - import systems & components, add relationships between systems and annotations.
+  - Models
+  - Generator
+  - Syntax
+- Roadmap Diagram - import & decorate systems, components, relationships with lifecycle state changes and annotations.
+  - Models
+    - Phase
+    - Option
+    - Roadmap
+- Hypertext Linking - Link to system, entity, etc.
+- Diagram Configuration
+  - level of detail?
+  - other rendering options?
+  - theme?
+  - enable/disable annotations?
+
+
 - **Misc. Backlog**
-  - Hypertext Linking between diagrams
-  - For System/Solution a way to define/configure how detailed (i.e. how many levels of dependencies) to include when generating diagrams
   - Full feature support for components, connections along with semantic use (i.e. can set `component.color = 'green'` or pipe components through `New(args: Array<Component | Connection>)` to decorate).
 
 ## Getting Started
@@ -46,9 +63,9 @@ To get started using this project locally, follow these instructions:
 
 `trellis generate system|service|solution|domain name` - **(WIP)** - creates a diagram scaffold file in `./src/...` according to the arguments passed.
 
-`trellis build` - **(WIP)** - Iterates over an instance of `DiagramRoot`, the export of `./src/app.ts`, to  render all diagram TypeScript files into PlantUML diagrams in the matching output directory, `./diagrams`.
+`trellis build` - runs project's `npm run build` script. If the project was initialized with `trellis init` then the correct script [swc](https://swc.rs/) was added at that time.
 
-`trellis serve` - **(TODO)** - runs a process that will auto-generate diagrams automatically on-save, similar to a hot-reload working with a modern SPA or node application.
+`trellis serve` - runs project's `npm run dev` script. If the project was initialized with `trellis init` then the correct script using [chodikar](https://github.com/paulmillr/chokidar) was added at that time.
 
 ### Project Structure
 See [Diagram Types](#diagram-types) below for more information & examples.
