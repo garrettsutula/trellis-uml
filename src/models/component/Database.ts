@@ -1,6 +1,5 @@
-import {
-  Device, ExecutionEnvironment, Component, ComponentType,
-} from '..';
+import { Component, Device, ExecutionEnvironment } from '.';
+import { ComponentType } from '../base/enums';
 
 export class Database extends Component {
   type = ComponentType.Database;
