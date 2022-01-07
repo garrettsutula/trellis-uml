@@ -2,6 +2,7 @@ import { readFile, writeFile, access } from 'fs/promises';
 import systemTemplate from './diagram-templates/system';
 
 async function generateNewSystem(name, filePath, indexPath) {
+  systemTemplate.replace(/{{name}}/g, name);
   try {
     await access(filePath);
     throw new Error(`File already exists at path: ${filePath}`);

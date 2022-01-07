@@ -6,11 +6,11 @@ export default `import { system } from "trellisuml";
 // Or:     'export const [myService, myOtherService] = service([{label: 'My Service'}, {label: 'My Other Service'}]);'
 
 export const componentRelationships = [
-
+  // Add component relationships here
 ];
 
 export default system({
-    name,
+    name '{{name}}',
     components: [
       // Add all components defined in this system here.
     ],
