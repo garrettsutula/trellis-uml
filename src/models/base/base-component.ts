@@ -6,6 +6,7 @@ export interface BaseComponentConfiguration {
   id?: string;
   type?: ComponentType;
   lifecycleState?: LifecycleState;
+  description?: string;
   stereotype?: string;
   color?: string;
 }
@@ -18,6 +19,8 @@ export class BaseComponent implements BaseComponentConfiguration {
   type: ComponentType;
 
   lifecycleState?: LifecycleState;
+
+  description?: string;
 
   stereotype?: string;
 
