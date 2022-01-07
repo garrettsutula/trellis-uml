@@ -1,5 +1,5 @@
 import {
-  Component, ComponentRelationshipConfiguration, Uses, Accesses, FlowsInto, Provides, Requires, ConnectsTo,
+  Component, ComponentRelationshipConfiguration, Uses, Accesses, Provides, Requires,
 } from '../models';
 
 export function uses(source: Component, target: Component, description?: string): Uses;
@@ -38,24 +38,6 @@ export function accesses(
   return new Accesses(sourceOrConfig as ComponentRelationshipConfiguration);
 }
 
-export function flowsInto(source: Component, target: Component, description?: string): FlowsInto;
-export function flowsInto(config: ComponentRelationshipConfiguration): FlowsInto;
-export function flowsInto(config: ComponentRelationshipConfiguration[]): FlowsInto[];
-export function flowsInto(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
-  target?: Component,
-  description?: string,
-): FlowsInto | FlowsInto[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new FlowsInto(relationship));
-  }
-  if (sourceOrConfig && target) {
-    return new FlowsInto(sourceOrConfig as Component, target, description);
-  }
-  return new FlowsInto(sourceOrConfig as ComponentRelationshipConfiguration);
-}
-
 export function provides(source: Component, target: Component, description?: string): Provides;
 export function provides(config: ComponentRelationshipConfiguration): Provides;
 export function provides(config: ComponentRelationshipConfiguration[]): Provides[];
@@ -90,22 +72,4 @@ export function requires(
     return new Requires(sourceOrConfig as Component, target, description);
   }
   return new Requires(sourceOrConfig as ComponentRelationshipConfiguration);
-}
-
-export function connectsTo(source: Component, target: Component, description?: string): ConnectsTo;
-export function connectsTo(config: ComponentRelationshipConfiguration): ConnectsTo;
-export function connectsTo(config: ComponentRelationshipConfiguration[]): ConnectsTo[];
-export function connectsTo(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
-  target?: Component,
-  description?: string,
-): ConnectsTo | ConnectsTo[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new ConnectsTo(relationship));
-  }
-  if (sourceOrConfig && target) {
-    return new ConnectsTo(sourceOrConfig as Component, target, description);
-  }
-  return new ConnectsTo(sourceOrConfig as ComponentRelationshipConfiguration);
 }

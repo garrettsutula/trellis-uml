@@ -1,6 +1,6 @@
 import { titleAndHeader, startUml, endUml } from './chrome';
 import { Component } from '../models/component/Component';
-import { ComponentType } from '../models/component';
+import { ComponentType } from '../models';
 import { ComponentRelationship } from '../models/component-relationship';
 import { System } from '../models/system';
 import { buildComponentMarkup as buildSystemMarkup } from './system-diagram';

@@ -1,24 +1,12 @@
 import { escapeString } from '../../common/utils';
-
-export enum ComponentType {
-  UI = 'UI',
-  Service = 'Service',
-  Database = 'Database',
-  ExecutionEnvironment = 'Execution Environment',
-  API = 'API',
-  Queue = 'Queue',
-  Processor = 'Processor',
-  Schema = 'Schema',
-  Topic = 'Topic',
-  EventQueue = 'Event Queue',
-  Actor = 'Actor',
-  System = 'System',
-}
+import { ComponentType, LifecycleState } from '.';
 
 export interface BaseComponentConfiguration {
   label?: string;
   id?: string;
   type?: ComponentType;
+  lifecycleState?: LifecycleState;
+  description?: string;
   stereotype?: string;
   color?: string;
 }
@@ -29,6 +17,10 @@ export class BaseComponent implements BaseComponentConfiguration {
   protected _id: string;
 
   type: ComponentType;
+
+  lifecycleState?: LifecycleState;
+
+  description?: string;
 
   stereotype?: string;
 
