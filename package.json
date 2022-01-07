@@ -1,6 +1,6 @@
 {
   "name": "trellisuml",
-  "version": "0.5.13",
+  "version": "0.6.0",
   "description": "",
   "types": "dist/app.d.ts",
   "main": "dist/app.js",
