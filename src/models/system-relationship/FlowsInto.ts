@@ -1,10 +1,20 @@
 import { Entity } from '..';
-import { SystemRelationship } from './SystemRelationship';
+import { SystemRelationship, SystemRelationshipConfiguration } from './SystemRelationship';
 
-export class FlowsInto extends SystemRelationship {
+export class SystemFlowsInto extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
   diagramFragmentAfter: string = 'down-(';
 
-  entities: Entity[];
+  entities?: Entity[];
+
+  constructor(config: FlowsIntoConfiguration) {
+    super(config);
+
+    this.entities = config.entities;
+  }
+}
+
+export interface FlowsIntoConfiguration extends SystemRelationshipConfiguration {
+  entities?: Entity[];
 }

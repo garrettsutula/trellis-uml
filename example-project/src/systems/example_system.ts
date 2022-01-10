@@ -1,4 +1,5 @@
-import { system, ui, service, database, device, accesses } from "../../../dist/app";
+import { system, ui, service, database, device, componentRelationships } from "../../../dist/app";
+const { accesses } = componentRelationships;
 // These would typically be defined in a "domain" diagram & imported from that diagram instead of defined here.
 // because they are likely re-used by other components in other systems/solutions
 const [ clientDevice, appServer, dbServer ] = device([
@@ -13,20 +14,17 @@ export const apptApp = ui(`${name} App`, clientDevice);
 export const apptService = service(`${name} Service`, appServer);
 export const apptDb = database(`${name} Database`, dbServer);
 
-// Defined as needed for every connection between systems. De-duplicated when rendered as puml.
-export const componentRelationships = [
-    accesses(apptApp, apptService),
-    accesses(apptService, apptDb),
-    accesses(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
-    accesses(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
-]
-
 export default system({
     name,
-    components: [
+    components: {
         apptApp,
         apptService,
         apptDb,
-    ],
-    componentRelationships,
+    },
+    componentRelationships: [
+        accesses(apptApp, apptService),
+        accesses(apptService, apptDb),
+        accesses(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
+        accesses(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
+    ]
 });

@@ -86,7 +86,7 @@ export function buildComponentDiagram(targetSystem: System): string {
   const componentsToRender: Map<String, Component> = new Map();
   const systems: Set<System> = new Set();
 
-  targetSystem.components.forEach((component) => {
+  Object.values(targetSystem.components).forEach((component) => {
     if (componentsToRender.has(component.id) === false) componentsToRender.set(component.id, component);
     if (component.system) systems.add(component.system);
   });

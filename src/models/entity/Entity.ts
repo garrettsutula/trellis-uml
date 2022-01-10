@@ -1,4 +1,4 @@
-type Class = { new(...args: any[]): any; };
+import { Class } from '../base/class';
 
 export class Entity {
   entity: Class;

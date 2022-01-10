@@ -1,22 +1,18 @@
-import { System, Actor, Entity } from '..';
+import {
+  System, Actor, Entity, SystemRelationshipConfiguration,
+} from '..';
 import { SystemRelationship } from './SystemRelationship';
 
-export class Uses extends SystemRelationship {
+export class SystemUses extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
   diagramFragmentAfter: string = 'down-(';
 
   source: System | Actor;
 
-  entities: Entity[];
+  entities?: Entity[];
 }
 
-/*
-InformationFlow {
-  source: System;
-  target: System;
-  entities: [
-    {entity: Class, crudOperations: string}
-  ];
+export interface SystemUsesConfiguration extends SystemRelationshipConfiguration {
+  entities?: Entity[];
 }
-*/
