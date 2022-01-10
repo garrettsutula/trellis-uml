@@ -1,1 +1,1 @@
-export * as exampleSystem from './example_system';
+export { default as exampleSystem } from './example_system';

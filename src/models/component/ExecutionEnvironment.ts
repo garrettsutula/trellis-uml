@@ -1,4 +1,5 @@
-import { Device, Domain } from '..';
+import type { Device } from '.';
+import { Domain } from './Domain';
 
 export class ExecutionEnvironment extends Domain {
   stereotype = 'Execution Environment';
@@ -10,6 +11,6 @@ export class ExecutionEnvironment extends Domain {
   }
 
   public set parentComponent(newEnvironment: Device) {
-    this.parentComponent = newEnvironment;
+    this._parentComponent = newEnvironment;
   }
 }

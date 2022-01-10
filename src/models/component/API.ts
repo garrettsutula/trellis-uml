@@ -1,4 +1,5 @@
-import { Component, Device, ExecutionEnvironment } from '..';
+import { Component } from './Component';
+import type { Device, ExecutionEnvironment } from '.';
 import { ComponentType } from '../base/enums';
 
 export class API extends Component {
@@ -11,6 +12,6 @@ export class API extends Component {
   }
 
   public set parentComponent(newEnvironment: ExecutionEnvironment | Device) {
-    this.parentComponent = newEnvironment;
+    this._parentComponent = newEnvironment;
   }
 }

@@ -1,6 +1,7 @@
-import {
-  Component, ComponentRelationship, System, SystemRelationship,
-} from '..';
+import { Component } from '../component';
+import { ComponentRelationship } from '../component-relationship';
+import { System } from '../system';
+import { SystemRelationship } from '../system-relationship';
 
 export class Solution {
   constructor(public config: {

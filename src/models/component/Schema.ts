@@ -1,4 +1,5 @@
-import { Component, Database } from '..';
+import { Component } from './Component';
+import type { Database } from '.';
 import { ComponentType } from '../base/enums';
 
 export class Schema extends Component {
@@ -13,6 +14,6 @@ export class Schema extends Component {
   }
 
   public set parentComponent(newEnvironment: Database) {
-    this.parentComponent = newEnvironment;
+    this._parentComponent = newEnvironment;
   }
 }
