@@ -13,7 +13,7 @@ export class Service extends Component {
     return this._parentComponent;
   }
 
-  public set parentComponent(newEnvironment: ExecutionEnvironment | Device) {
-    this._parentComponent = newEnvironment;
+  public set parentComponent(newParentComponent: ExecutionEnvironment | Device) {
+    this.propogateParentRelationship(newParentComponent);
   }
 }

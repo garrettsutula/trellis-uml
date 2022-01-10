@@ -13,7 +13,7 @@ export class Schema extends Component {
     return this._parentComponent;
   }
 
-  public set parentComponent(newEnvironment: Database) {
-    this._parentComponent = newEnvironment;
+  public set parentComponent(newParentComponent: Database) {
+    this.propogateParentRelationship(newParentComponent);
   }
 }

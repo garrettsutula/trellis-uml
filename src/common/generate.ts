@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 import { System } from '../models/system';
-import { buildComponentDiagram } from '../plantuml/component-diagram';
+import { buildComponentDiagram } from '../generators/diagram/component-diagram';
 import { buildNetworkDiagram } from '../plantuml/network-diagram';
 import { buildSystemDiagram } from '../plantuml/system-diagram';
 import { buildDeploymentDiagram } from '../plantuml/deployment-diagram';
