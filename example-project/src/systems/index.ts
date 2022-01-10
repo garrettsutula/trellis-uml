@@ -1,1 +1,0 @@
-export { default as exampleSystem } from './example_system';
