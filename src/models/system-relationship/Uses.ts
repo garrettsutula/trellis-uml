@@ -1,7 +1,7 @@
 import {
-  System, Actor, Entity, SystemRelationshipConfiguration,
+  System, Actor, Entity,
 } from '..';
-import { SystemRelationship } from './SystemRelationship';
+import { SystemRelationship, SystemRelationshipConfiguration } from './SystemRelationship';
 
 export class SystemUses extends SystemRelationship {
   diagramFragmentBefore: string = '-';

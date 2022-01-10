@@ -1,4 +1,4 @@
-import { Component, Device, ExecutionEnvironment } from '.';
+import { Component, Device, ExecutionEnvironment } from '..';
 import { ComponentType } from '../base/enums';
 
 export class API extends Component {
