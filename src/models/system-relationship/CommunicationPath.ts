@@ -1,5 +1,4 @@
-import { SystemRelationshipConfiguration } from '.';
-import { SystemRelationship } from './SystemRelationship';
+import { SystemRelationship, SystemRelationshipConfiguration } from './SystemRelationship';
 
 type AppProtocol = 'DNS' | 'DHCP' | 'TFTP' | 'TLS/SSL' | 'FTP' | 'HTTP' | 'HTTPS' | 'IMAP4' |
 'POP3' | 'SMTP' | 'SNMP' | 'SSH' | 'Telnet' | 'RTP' | 'SFTP';

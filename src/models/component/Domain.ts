@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Component } from '.';
+import { Component } from '..';
 import { ComponentType } from '../base/enums';
 
 export class Domain extends Component {

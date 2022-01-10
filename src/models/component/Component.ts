@@ -1,5 +1,5 @@
 import { BaseComponent, BaseComponentConfiguration } from '../base';
-import { System } from '..';
+import type { System } from '../system';
 
 export class Component extends BaseComponent {
   system?: System;

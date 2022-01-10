@@ -1,4 +1,4 @@
-import { Domain } from './Domain';
+import { Domain } from '..';
 
 export class Device extends Domain {
   stereotype = 'Device';
