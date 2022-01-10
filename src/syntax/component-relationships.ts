@@ -4,16 +4,11 @@ import {
 
 export function uses(source: Component, target: Component, description?: string): Uses;
 export function uses(config: ComponentRelationshipConfiguration): Uses;
-export function uses(config: ComponentRelationshipConfiguration[]): Uses[];
 export function uses(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  sourceOrConfig: Component | ComponentRelationshipConfiguration,
   target?: Component,
   description?: string,
-): Uses | Uses[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new Uses(relationship));
-  }
+): Uses {
   if (sourceOrConfig && target) {
     return new Uses(sourceOrConfig as Component, target, description);
   }
@@ -22,16 +17,11 @@ export function uses(
 
 export function accesses(source: Component, target: Component, description?: string): Accesses;
 export function accesses(config: ComponentRelationshipConfiguration): Accesses;
-export function accesses(config: ComponentRelationshipConfiguration[]): Accesses[];
 export function accesses(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  sourceOrConfig: Component | ComponentRelationshipConfiguration,
   target?: Component,
   description?: string,
-): Accesses | Accesses[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new Accesses(relationship));
-  }
+): Accesses {
   if (sourceOrConfig && target) {
     return new Accesses(sourceOrConfig as Component, target, description);
   }
@@ -40,16 +30,11 @@ export function accesses(
 
 export function provides(source: Component, target: Component, description?: string): Provides;
 export function provides(config: ComponentRelationshipConfiguration): Provides;
-export function provides(config: ComponentRelationshipConfiguration[]): Provides[];
 export function provides(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  sourceOrConfig: Component | ComponentRelationshipConfiguration,
   target?: Component,
   description?: string,
-): Provides | Provides[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new Provides(relationship));
-  }
+): Provides {
   if (sourceOrConfig && target) {
     return new Provides(sourceOrConfig as Component, target, description);
   }
@@ -58,16 +43,11 @@ export function provides(
 
 export function requires(source: Component, target: Component, description?: string): Requires;
 export function requires(config: ComponentRelationshipConfiguration): Requires;
-export function requires(config: ComponentRelationshipConfiguration[]): Requires[];
 export function requires(
-  sourceOrConfig: Component | ComponentRelationshipConfiguration | ComponentRelationshipConfiguration[],
+  sourceOrConfig: Component | ComponentRelationshipConfiguration,
   target?: Component,
   description?: string,
-): Requires | Requires[] {
-  if (sourceOrConfig instanceof Array) {
-    const relationships = sourceOrConfig;
-    return relationships.map((relationship) => new Requires(relationship));
-  }
+): Requires {
   if (sourceOrConfig && target) {
     return new Requires(sourceOrConfig as Component, target, description);
   }

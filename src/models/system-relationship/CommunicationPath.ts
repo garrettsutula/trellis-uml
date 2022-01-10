@@ -1,3 +1,4 @@
+import { SystemRelationshipConfiguration } from '.';
 import { SystemRelationship } from './SystemRelationship';
 
 type AppProtocol = 'DNS' | 'DHCP' | 'TFTP' | 'TLS/SSL' | 'FTP' | 'HTTP' | 'HTTPS' | 'IMAP4' |
@@ -5,14 +6,28 @@ type AppProtocol = 'DNS' | 'DHCP' | 'TFTP' | 'TLS/SSL' | 'FTP' | 'HTTP' | 'HTTPS
 
 type NetworkProtocol = 'TCP' | 'UDP';
 
-export class CommunicationPath extends SystemRelationship {
+export class SystemCommunicationPath extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
   diagramFragmentAfter: string = 'down-(';
 
-  ports: string | string[];
+  ports?: string | string[];
 
-  appProtocols: AppProtocol | AppProtocol[];
+  appProtocols?: AppProtocol | AppProtocol[];
 
-  networkProtocols: NetworkProtocol | NetworkProtocol[];
+  networkProtocols?: NetworkProtocol | NetworkProtocol[];
+
+  constructor(config: CommunicationPathConfiguration) {
+    super(config);
+
+    this.ports = config.ports;
+    this.appProtocols = config.appProtocols;
+    this.networkProtocols = config.networkProtocols;
+  }
+}
+
+export interface CommunicationPathConfiguration extends SystemRelationshipConfiguration {
+  ports?: string | string[];
+  appProtocols?: AppProtocol | AppProtocol[];
+  networkProtocols?: NetworkProtocol | NetworkProtocol[];
 }

@@ -2,22 +2,19 @@ import {
   Component, ComponentRelationship, System, SystemRelationship,
 } from '..';
 
-export class Solution implements SolutionConfiguration {
-  name: string;
-
-  description: string;
-
-  componentRelationships: ComponentRelationship[];
-
-  systems: { [key: string]: System };
-
-  systemRelationships: SystemRelationship[];
-
-  lifecycleChanges: {
-    new: Component | ComponentRelationship;
-    modified: Component | ComponentRelationship;
-    deprecated: ComponentRelationship | ComponentRelationship;
-  };
+export class Solution {
+  constructor(public config: {
+    name: string,
+    description: string,
+    componentRelationships: ComponentRelationship[],
+    systems: { [key: string]: System },
+    systemRelationships: SystemRelationship[],
+    lifecycleChanges: {
+      new: Component | ComponentRelationship,
+      modified: Component | ComponentRelationship,
+      deprecated: ComponentRelationship | ComponentRelationship,
+    },
+  }) {}
 }
 
 export interface SolutionConfiguration {
@@ -25,7 +22,7 @@ export interface SolutionConfiguration {
   componentRelationships: ComponentRelationship[];
   systems: { [key: string]: System };
   systemRelationships: SystemRelationship[];
-  lifecycleChanges: {
+  lifecycleChanges?: {
     new: Component | ComponentRelationship;
     modified: Component | ComponentRelationship;
     deprecated: ComponentRelationship | ComponentRelationship;
