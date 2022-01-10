@@ -12,14 +12,14 @@ async function generateNewSystem(name, filePath, indexPath) {
   let index: string;
   try {
     await access(indexPath);
-    index = await readFile(indexPath).toString();
+    index = (await readFile(indexPath)).toString();
   } catch (e) {
     throw new Error(`Index file not found at: ${indexPath}`);
   }
   if (index.slice(-1) !== '\n') {
     index += '\n';
   }
-  index += `export * from './${name}'\n`;
+  index += `export { * as ${name}System } from './${name}'\n`;
   try {
     await writeFile(indexPath, index);
   } catch (e) {

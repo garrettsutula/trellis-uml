@@ -10,7 +10,7 @@ export const componentRelationships = [
 ];
 
 export default system({
-    name '{{name}}',
+    name: '{{name}}',
     components: [
       // Add all components defined in this system here.
     ],

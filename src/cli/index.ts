@@ -8,6 +8,7 @@ import { generateDiagramScaffold } from './generate';
 import { initializeProject } from './init';
 import { serveProject } from './serve';
 import { buildProject } from './build';
+import { escapeString } from '../common/utils';
 
 const { argv } = yargs(hideBin(process.argv))
   .usage('Usage: $0 [init|generate|serve]')
@@ -24,17 +25,16 @@ switch (command) {
     invokedCommand = initializeProject();
     break;
   case 'build':
-
     invokedCommand = buildProject();
     break;
   case 'generate':
-    invokedCommand = generateDiagramScaffold(type, name);
+    invokedCommand = generateDiagramScaffold(type, escapeString(name));
     break;
   case 'serve':
     invokedCommand = serveProject();
     break;
   default:
-    console.error(`Unrecognized command: ${command}.`);
+    console.error(chalk.red(`Unrecognized command: ${command}.`));
     throw new Error();
 }
 
@@ -45,7 +45,7 @@ invokedCommand
     process.exit(0);
   })
   .catch((e) => {
-    console.error(`Problem running 'trellis ${command}'`);
+    console.error(chalk.red(`Problem running 'trellis ${command}'`));
     console.dir(e);
     process.exit(1);
   });
