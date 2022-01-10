@@ -1,6 +1,6 @@
 import {
   Database, Processor, Service, UI, API,
-} from '..';
+} from '../component';
 import { ComponentRelationship } from './ComponentRelationship';
 
 export class Requires extends ComponentRelationship {

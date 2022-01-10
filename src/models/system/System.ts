@@ -1,5 +1,5 @@
-import type { Component } from '../component/Component';
-import type { ComponentRelationship } from '../component-relationship/ComponentRelationship';
+import { Component } from '../component';
+import { ComponentRelationship } from '../component-relationship';
 import { escapeString } from '../../common/utils';
 import { LifecycleState } from '../base/enums';
 

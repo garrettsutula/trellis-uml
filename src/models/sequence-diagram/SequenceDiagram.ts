@@ -1,5 +1,6 @@
 import { Class } from '../base/class';
-import { Component, Entity } from '..';
+import { Component } from '../component';
+import { Entity } from '../entity';
 
 export class SequenceDiagram {
   title: string;

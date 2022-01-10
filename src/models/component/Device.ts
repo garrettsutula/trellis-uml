@@ -1,4 +1,4 @@
-import { Domain } from '..';
+import { Domain } from './Domain';
 
 export class Device extends Domain {
   stereotype = 'Device';
@@ -10,6 +10,6 @@ export class Device extends Domain {
   }
 
   public set parentComponent(newEnvironment: Domain) {
-    this.parentComponent = newEnvironment;
+    this._parentComponent = newEnvironment;
   }
 }

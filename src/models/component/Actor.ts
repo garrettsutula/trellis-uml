@@ -1,4 +1,4 @@
-import { Component } from '..';
+import { Component } from './Component';
 import { ComponentType } from '../base/enums';
 
 export class Actor extends Component {

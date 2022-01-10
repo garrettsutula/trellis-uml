@@ -1,4 +1,4 @@
-import { Actor, UI } from '..';
+import { Actor, UI } from '../component';
 import { ComponentRelationship } from './ComponentRelationship';
 
 export class Uses extends ComponentRelationship {

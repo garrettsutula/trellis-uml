@@ -1,6 +1,7 @@
 import {
-  Database, Processor, Service, UI, Cache, Entity,
-} from '..';
+  Database, Processor, Service, UI, Cache,
+} from '../component';
+import { Entity } from '../entity';
 import { ComponentRelationship } from './ComponentRelationship';
 
 export class Accesses extends ComponentRelationship {
