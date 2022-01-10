@@ -1,26 +1,26 @@
 import { Component } from '../component/Component';
 import { ComponentRelationship } from '../component-relationship/ComponentRelationship';
 import { escapeString } from '../../common/utils';
+import { LifecycleState } from '../base/enums';
 
 export class System implements SystemConfiguration {
   name: string;
 
   private _id: string;
 
+  lifecycleState?: LifecycleState;
+
   color?: string;
 
-  private _components: Component[];
+  private _components: { [key: string]: Component };
 
   componentRelationships?: ComponentRelationship[];
-
-  systemRelationships?: ComponentRelationship[];
 
   constructor(config: SystemConfiguration) {
     this.name = config.name;
     this.id = config.name;
     this.components = config.components;
     this.componentRelationships = config.componentRelationships || [];
-    this.systemRelationships = config.systemRelationships || [];
   }
 
   public get id() {
@@ -35,8 +35,8 @@ export class System implements SystemConfiguration {
     return this._components;
   }
 
-  public set components(newComponents: Component[]) {
-    newComponents.forEach((component) => {
+  public set components(newComponents: { [key: string]: Component }) {
+    Object.values(newComponents).forEach((component) => {
       // eslint-disable-next-line no-param-reassign
       if (!component.system) { component.system = this; }
     });
@@ -48,7 +48,7 @@ export interface SystemConfiguration {
   name: string;
   id?: string;
   color?: string;
-  components: Component[];
+  lifecycleState?: LifecycleState;
+  components: { [key: string]: Component };
   componentRelationships?: ComponentRelationship[];
-  systemRelationships?: ComponentRelationship[];
 }

@@ -43,17 +43,18 @@ function buildRelationships(relationships: Array<ComponentRelationship>): string
 export function buildSystemDiagram(system: System): string {
   const componentsToRender = new Map();
   componentsToRender.set(system.id, system);
+  /* Refactor into solution diagram generaton code.
   if (system.systemRelationships) {
     system.systemRelationships.forEach(({ source, target }) => {
       if (componentsToRender.has(source.id) === false) componentsToRender.set(source.id, source);
       if (componentsToRender.has(target.id) === false) componentsToRender.set(target.id, target);
     });
   }
-
+  */
   let output: string = startUml(`System Diagram ${system.name}`);
   output += titleAndHeader(system.name, 'System');
   output += buildComponents(Array.from(componentsToRender.values()));
-  if (system.systemRelationships) output += buildRelationships(system.systemRelationships);
+  // if (system.systemRelationships) output += buildRelationships(system.systemRelationships);
   output += endUml();
   return output;
 }

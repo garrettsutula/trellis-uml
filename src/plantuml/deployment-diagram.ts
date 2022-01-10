@@ -125,7 +125,7 @@ export function buildDeploymentDiagram(system: System): string {
     if (topLevelComponents.has(targetId) === false) topLevelComponents.set(targetId, topTargetComponent);
   });
 
-  system.components.forEach((component) => {
+  Object.values(system.components).forEach((component) => {
     const topComponent = recurseParentComponents(component, componentsToRender);
     const { id } = topComponent;
     if (topLevelComponents.has(id) === false) topLevelComponents.set(id, topComponent);
