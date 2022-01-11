@@ -1,4 +1,4 @@
-import { titleAndHeader, startUml, endUml } from './chrome';
+import { titleAndHeader, startUml, endUml } from '../generators/diagram-fragment/chrome';
 import { Component } from '../models/component/Component';
 import { ComponentType } from '../models/base/enums';
 import { ComponentRelationship } from '../models/component-relationship';

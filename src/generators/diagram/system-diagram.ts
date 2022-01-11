@@ -1,5 +1,5 @@
 import { System, SystemRelationship } from '../../models';
-import { startUml, titleAndHeader, endUml } from '../../plantuml/chrome';
+import { startUml, titleAndHeader, endUml } from '../diagram-fragment/chrome';
 import buildRelationshipMarkup from '../diagram-fragment/relationship';
 import { Solution } from '../../models/solution';
 

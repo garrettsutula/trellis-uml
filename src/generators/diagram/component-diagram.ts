@@ -1,6 +1,6 @@
 import { System, Component, ComponentRelationship } from '../../models';
 import { ComponentType } from '../../models/base/enums';
-import { endUml, startUml, titleAndHeader } from '../../plantuml/chrome';
+import { endUml, startUml, titleAndHeader } from '../diagram-fragment/chrome';
 import systemDiagramFragment from '../diagram-fragment/system';
 import buildComponentMarkup from '../diagram-fragment/component';
 import buildRelationshipMarkup from '../diagram-fragment/relationship';
