@@ -1,6 +1,6 @@
 import { System, Component, ComponentRelationship } from '../../models';
 import { ComponentType } from '../../models/base/enums';
-import { startUml, titleAndHeader } from '../../plantuml/chrome';
+import { endUml, startUml, titleAndHeader } from '../../plantuml/chrome';
 import systemDiagramFragment from '../diagram-fragment/system';
 import buildComponentMarkup from '../diagram-fragment/component';
 import buildRelationshipMarkup from '../diagram-fragment/relationship';
@@ -67,11 +67,10 @@ function buildSystemMarkup(system: System) {
 export function buildComponentDiagram(system: System): string;
 export function buildComponentDiagram(solution: Solution): string;
 export function buildComponentDiagram(input: System | Solution): string {
-  let output = '';
+  let output = startUml(`Component Diagram ${input.name}`);
+  output += titleAndHeader(input.name, 'Component');
   if (input instanceof Solution) {
     const solution = input;
-    output += startUml(`Component Diagram ${solution.name}`);
-    output += titleAndHeader(solution.name, 'Component');
     Object.values(solution.systems).forEach((system) => {
       output += buildSystemMarkup(system);
       solution.componentRelationships.push(...system.componentRelationships);
@@ -79,10 +78,9 @@ export function buildComponentDiagram(input: System | Solution): string {
     output += buildComponentRelationships(solution.componentRelationships);
   } else {
     const system = input;
-    output += startUml(`Component Diagram ${system.name}`);
-    output += titleAndHeader(system.name, 'Component');
     output += buildSystemMarkup(system);
     output += buildComponentRelationships(system.componentRelationships);
   }
+  output += endUml();
   return output;
 }
