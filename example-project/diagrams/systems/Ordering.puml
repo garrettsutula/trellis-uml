@@ -1,0 +1,39 @@
+@startuml Network Diagram Ordering
+header Network Diagram
+title Ordering
+node "Ordering Container" as Ordering_Container <<Execution Environment>> {
+
+
+}
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Deployment Diagram Ordering
+header Deployment Diagram
+title Ordering
+	Ordering_Service -down-( Ordering_DB_SQL
+	Ordering_Background_Tasks -down-( Ordering_DB_SQL
+	Ordering_Service -down-( Event_Bus_Pub_Sub
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Component Diagram Ordering
+header Component Diagram
+title Ordering
+package "Ordering" as Ordering_package <<System>>{
+	component "Ordering Service" as Ordering_Service <<Service>>
+	control "Ordering Background Tasks" as Ordering_Background_Tasks <<Processor>>
+	database "Ordering DB (SQL)" as Ordering_DB_SQL <<Database>>
+	queue "Event Bus (Pub/Sub)" as Event_Bus_Pub_Sub <<Queue>>
+}
+	Ordering_Service -down-( Ordering_DB_SQL
+	Ordering_Background_Tasks -down-( Ordering_DB_SQL
+	Ordering_Service -down-( Event_Bus_Pub_Sub
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml System Diagram Ordering
+header System Diagram
+title Ordering
+package "Ordering" as Ordering_package <<System>>
+@enduml

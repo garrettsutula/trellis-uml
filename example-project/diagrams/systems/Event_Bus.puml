@@ -1,0 +1,26 @@
+@startuml Network Diagram Event Bus
+header Network Diagram
+title Event Bus
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Deployment Diagram Event Bus
+header Deployment Diagram
+title Event Bus
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Component Diagram Event Bus
+header Component Diagram
+title Event Bus
+package "Event Bus" as Event_Bus_package <<System>>{
+	queue "Event Bus (Pub/Sub)" as Event_Bus_Pub_Sub <<Queue>>
+}
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml System Diagram Event Bus
+header System Diagram
+title Event Bus
+package "Event Bus" as Event_Bus_package <<System>>
+@enduml

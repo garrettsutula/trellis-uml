@@ -1,0 +1,35 @@
+@startuml Network Diagram Catalog
+header Network Diagram
+title Catalog
+node "Catalog Container" as Catalog_Container <<Execution Environment>> {
+
+}
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Deployment Diagram Catalog
+header Deployment Diagram
+title Catalog
+	Catalog_Service -down-( Catalog_DB_SQL
+	Catalog_Service -down-( Event_Bus_Pub_Sub
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml Component Diagram Catalog
+header Component Diagram
+title Catalog
+package "Catalog" as Catalog_package <<System>>{
+	component "Catalog Service" as Catalog_Service <<Service>>
+	database "Catalog DB (SQL)" as Catalog_DB_SQL <<Database>>
+	queue "Event Bus (Pub/Sub)" as Event_Bus_Pub_Sub <<Queue>>
+}
+	Catalog_Service -down-( Catalog_DB_SQL
+	Catalog_Service -down-( Event_Bus_Pub_Sub
+@enduml
+
+''''''''''''''''''''''''''''''
+@startuml System Diagram Catalog
+header System Diagram
+title Catalog
+package "Catalog" as Catalog_package <<System>>
+@enduml
