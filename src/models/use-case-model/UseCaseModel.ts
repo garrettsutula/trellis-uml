@@ -2,7 +2,5 @@ import { UseCase } from '../use-case';
 import { UseCaseRelationship } from '../use-case-relationship';
 
 export class UseCaseModel {
-  useCases: { [key: string]: UseCase };
-
-  useCaseRelationships: UseCaseRelationship[];
+  constructor(public useCases: { [key: string]: UseCase }, public useCaseRelationships: UseCaseRelationship[]) {}
 }
