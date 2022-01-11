@@ -5,7 +5,7 @@ import chalk from 'chalk';
 
 import { escapeString } from '../common/utils';
 import { DiagramRoot } from '../models';
-import { buildSystemDiagrams } from '../common/generate';
+import { build as buildSystemDiagrams } from '../generators/diagram';
 
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
@@ -41,11 +41,15 @@ export async function buildProject() {
   console.table(Object
     .values(diagramRoot.systems)
     // eslint-disable-next-line max-len
-    .map(({ name, components, componentRelationships }) => ({ name, componentCount: components.length, relationshipCount: componentRelationships.length })));
+    .map(({ name, components, componentRelationships }) => ({ name, componentCount: Object.values(components).length, relationshipCount: componentRelationships.length })));
   console.log(chalk.dim('Building digrams from source code.'));
-  Object.values(diagramRoot.systems)
-    .map((system) => {
-      const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`);
-      return buildSystemDiagrams(system, diagramOutputPath);
-    });
+  try {
+    await Promise.all(Object.values(diagramRoot.systems)
+      .map((system) => {
+        const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`);
+        return buildSystemDiagrams(system, diagramOutputPath);
+      }));
+  } catch (e) {
+    throw new Error(e);
+  }
 }
