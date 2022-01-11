@@ -6,3 +6,4 @@ export * from './solution';
 export * from './use-case';
 export * from './use-case-model';
 export * as useCaseRelationships from './use-case-relationships';
+export * from './sequence-diagram';
