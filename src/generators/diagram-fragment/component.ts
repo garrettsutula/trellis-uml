@@ -9,7 +9,7 @@ const buildComponentMarkup = (
   renderTypes: ComponentType[] = [],
 ): string => {
   let output = '';
-  if (!renderTypes.length || renderTypes.includes(component.type)) {
+  if (renderTypes.length === 0 || renderTypes.includes(component.type)) {
     const componentString = getComponentDiagramType(component.type);
     output += `${'\t'.repeat(tabIndex)}`;
     output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
@@ -19,8 +19,12 @@ const buildComponentMarkup = (
     if (component.childComponents.length) {
       output += ' {\n';
       component.childComponents.forEach((childComponent) => {
-        output += `${buildComponentMarkup(childComponent, getComponentDiagramType, tabIndex + 1, renderTypes)}\n`;
+        const childOutput = buildComponentMarkup(childComponent, getComponentDiagramType, tabIndex + 1, renderTypes);
+        if (childOutput.length) {
+          output += `${childOutput}\n`;
+        }
       });
+      output += `${'\t'.repeat(tabIndex)}`;
       output += '}';
     }
   }

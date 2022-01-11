@@ -59,8 +59,8 @@ export function buildNetworkDiagram(input: System | Solution): string {
     topLevelComponents.add(recurseParentComponents(component));
   });
 
-  output += allComponentsArr
-    .filter((component) => component.type === ComponentType.ExecutionEnvironment)
+  output += Array.from(topLevelComponents.values())
+    .filter(({ type }) => type === ComponentType.ExecutionEnvironment)
     // eslint-disable-next-line max-len
     .reduce((componentOutput, component): string => componentOutput.concat(`${buildComponentMarkup(component, getNetworkDiagramType, 0, [ComponentType.ExecutionEnvironment])}\n`), '');
 
