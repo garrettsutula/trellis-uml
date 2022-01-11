@@ -1,11 +1,7 @@
 import { Entity } from '..';
 
-export class UseCase {
-  title: string;
-
-  description: string;
-
-  entities?: Entity[];
+export class UseCase implements UseCaseConfiguration {
+  constructor(public title: string, public description: string, public entities?: Entity[]) {}
 }
 
 export interface UseCaseConfiguration {
