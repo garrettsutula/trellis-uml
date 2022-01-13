@@ -9,7 +9,7 @@ export class Device extends Domain {
     return this._parentComponent;
   }
 
-  public set parentComponent(newEnvironment: Domain) {
-    this._parentComponent = newEnvironment;
+  public set parentComponent(newParentComponent: Domain) {
+    this.propogateParentRelationship(newParentComponent);
   }
 }

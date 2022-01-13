@@ -10,7 +10,7 @@ export class ExecutionEnvironment extends Domain {
     return this._parentComponent;
   }
 
-  public set parentComponent(newEnvironment: Device) {
-    this._parentComponent = newEnvironment;
+  public set parentComponent(newParentComponent: Device) {
+    this.propogateParentRelationship(newParentComponent);
   }
 }

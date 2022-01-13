@@ -25,13 +25,17 @@ export class Component extends BaseComponent {
     return this._parentComponent;
   }
 
-  public set parentComponent(newEnvironment: Component) {
-    if ((newEnvironment && newEnvironment?.id) !== this?.parentComponent?.id) {
+  public set parentComponent(newParentComponent: Component) {
+    this.propogateParentRelationship(newParentComponent);
+  }
+
+  propogateParentRelationship(newParentComponent: Component) {
+    if ((newParentComponent && newParentComponent?.id) !== this?.parentComponent?.id) {
       const indexOfComponent = this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id);
       if (indexOfComponent > -1) {
         this.parentComponent.childComponents.splice(indexOfComponent, 1);
       }
-      this._parentComponent = newEnvironment;
+      this._parentComponent = newParentComponent;
     }
     if (this.parentComponent?.childComponents.findIndex(({ id }) => this.id === id) === -1) {
       this.parentComponent.childComponents.push(this);
