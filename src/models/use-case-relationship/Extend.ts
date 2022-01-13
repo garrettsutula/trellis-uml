@@ -1,6 +1,6 @@
 import { UseCase } from '../use-case';
 import { UseCaseRelationship } from '.';
 
-export class Includes extends UseCaseRelationship {
+export class Extend extends UseCaseRelationship {
   source: UseCase;
 }

@@ -1,11 +1,16 @@
 import { Component } from './Component';
-import type { Device, ExecutionEnvironment } from '.';
+import type { API, Device, ExecutionEnvironment } from '.';
 import { ComponentType } from '../base/enums';
 
 export class Queue extends Component {
   type = ComponentType.Queue;
 
   stereotype = 'Queue';
+
+  interfaces?: {
+    subscribe: API,
+    publish: API,
+  };
 
   protected _parentComponent?: ExecutionEnvironment | Device;
 
