@@ -1,11 +1,13 @@
 import { Component } from './Component';
-import type { Device, ExecutionEnvironment } from '.';
+import type { API, Device, ExecutionEnvironment } from '.';
 import { ComponentType } from '../base/enums';
 
 export class Service extends Component {
   type = ComponentType.Service;
 
   stereotype = 'Service';
+
+  interface?: API;
 
   protected _parentComponent?: ExecutionEnvironment | Device;
 

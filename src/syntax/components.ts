@@ -1,5 +1,3 @@
-// TODO: refactor into separate files
-
 import {
   API,
   Cache,
@@ -16,6 +14,7 @@ import {
   Schema,
   Topic,
   EventQueue,
+  Actor,
 } from '../models';
 
 export function ui(label: string, parentComponent?: Component): UI;
@@ -59,14 +58,22 @@ export function service(
   parentComponent?: Component,
 ): Service | Service[] {
   if (labelOrConfig instanceof Array) {
-    return labelOrConfig.map((dbConfig) => new Service(dbConfig.label, dbConfig));
+    return labelOrConfig.map((dbConfig) => {
+      const newService = new Service(dbConfig.label, dbConfig);
+      newService.interface = new API('internal');
+      return newService;
+    });
   }
+  let newService: Service;
   if (typeof labelOrConfig === 'string') {
     const label = labelOrConfig as string;
-    return new Service(label, { parentComponent });
+    newService = new Service(label, { parentComponent });
+  } else {
+    const config = labelOrConfig as ComponentConfiguration;
+    newService = new Service(config.label, config);
   }
-  const config = labelOrConfig as ComponentConfiguration;
-  return new Service(config.label, config);
+  newService.interface = new API('internal');
+  return newService;
 }
 
 export function api(label: string, parentComponent?: Component): API;
@@ -131,14 +138,24 @@ export function queue(
   parentComponent?: Component,
 ): Queue | Queue[] {
   if (labelOrConfig instanceof Array) {
-    return labelOrConfig.map((dbConfig) => new Queue(dbConfig.label, dbConfig));
+    return labelOrConfig.map((dbConfig) => {
+      const newQueue = new Queue(dbConfig.label, dbConfig);
+      newQueue.interfaces.publish = new API('publish');
+      newQueue.interfaces.subscribe = new API('subscribe');
+      return newQueue;
+    });
   }
+  let newQueue;
   if (typeof labelOrConfig === 'string') {
     const label = labelOrConfig as string;
-    return new Queue(label, { parentComponent });
+    newQueue = new Queue(label, { parentComponent });
+  } else {
+    const config = labelOrConfig as ComponentConfiguration;
+    newQueue = new Queue(config.label, config);
   }
-  const config = labelOrConfig as ComponentConfiguration;
-  return new Queue(config.label, config);
+  newQueue.interfaces.publish = new API('publish');
+  newQueue.interfaces.subscribe = new API('subscribe');
+  return newQueue;
 }
 
 export function cache(label: string, parentComponent?: Component): Cache;
@@ -247,4 +264,22 @@ export function schema(
   }
   const config = labelOrConfig as ComponentConfiguration;
   return new Schema(config.label, config);
+}
+
+export function actor(label: string, parentComponent?: Component): Actor;
+export function actor(config: ComponentConfiguration): Actor;
+export function actor(config: ComponentConfiguration[]): Actor[];
+export function actor(
+  labelOrConfig: string | ComponentConfiguration | ComponentConfiguration[],
+  parentComponent?: Component,
+): Actor | Actor[] {
+  if (labelOrConfig instanceof Array) {
+    return labelOrConfig.map((dbConfig) => new Actor(dbConfig.label, dbConfig));
+  }
+  if (typeof labelOrConfig === 'string') {
+    const label = labelOrConfig as string;
+    return new Actor(label, { parentComponent });
+  }
+  const config = labelOrConfig as ComponentConfiguration;
+  return new Actor(config.label, config);
 }

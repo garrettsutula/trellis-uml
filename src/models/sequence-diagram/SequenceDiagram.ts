@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { Class } from '../base/class';
+import { HttpRequest } from '../base/http-request';
+import { HttpResponse } from '../base/http-response';
 import { Component } from '../component';
 import { Entity } from '../entity';
 
@@ -17,15 +18,6 @@ export interface Sequence {
   target: Component | Entity;
   action: 'calls' | 'responds';
   description: string;
-  httpRequest?: {
-    verb: string;
-    path: string;
-    headers: { [key: string]: string };
-    query: Class;
-    body: Class;
-  };
-  httpResponse?: {
-    headers: { [key: string]: string };
-    body: Class;
-  };
+  httpRequest?: HttpRequest
+  httpResponse?: HttpResponse;
 }
