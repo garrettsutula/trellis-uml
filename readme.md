@@ -59,7 +59,7 @@ See [Diagram Types](#diagram-types) below for more information & examples.
 #### System
 Each system diagram exports a default that instantiates one `System` and zero or more `Component` and `ComponentRelationship` classes that represent all the different Network, Deployment, and Logical components in the system. 
 
-From these definitions, the following digrams are generated:
+From these definitions, the following diagrams are generated:
 
 - [System Diagram](./readme/System%20Diagram%20Appointments.png) - Highest-level representation of the system, typically included and used in high level enterprise architecture diagrams.
 - [Network Diagram](./readme/Network%20Diagram%20Appointments.png) - Overview of execution environments (components represented by `node` in diagrams, e.g. `Domain`, `Device`, and `ExecutionEnvironment`) and the network connections established between them.
@@ -70,37 +70,39 @@ From these definitions, the following digrams are generated:
 Reference the [Example Trellis Project](https://github.com/garrettsutula/example-trellis-project) for a non-trivial example.
 
 ``` TypeScript
-import { system, ui, service, database, device, connectsTo } from "trellisuml";
+import {
+  system, ui, service, database, device, componentRelationships,
+} from 'trellisuml';
+
+const { uses } = componentRelationships;
 // These would typically be defined in a "domain" diagram & imported from that diagram instead of defined here.
 // because they are likely re-used by other components in other systems/solutions
-const [ clientDevice, appServer, dbServer ] = device([
-    { label: "Mobile App" },
-    { label: "Application Server"},
-    { label: "Database Server"}
+const [clientDevice, appServer, dbServer] = device([
+  { label: 'Mobile App' },
+  { label: 'Application Server' },
+  { label: 'Database Server' },
 ]);
- 
-const name = "Appointments";
+
+const name = 'Appointments';
 // parentComponents are defined here to place the component in the broader context of the systems & infrastructure.
-export const apptApp = ui(`${name} App`, clientDevice); 
+export const apptApp = ui(`${name} App`, clientDevice);
 export const apptService = service(`${name} Service`, appServer);
 export const apptDb = database(`${name} Database`, dbServer);
 
-// Defined as needed for every connection between systems. De-duplicated when rendered as puml.
-export const componentRelationships = [
-    connectsTo(apptApp, apptService),
-    connectsTo(apptService, apptDb),
-    connectsTo(clientDevice, appServer, "Ports: 443\\nProtcol:TCP"),
-    connectsTo(appServer, dbServer, "Ports: 1443\\nProtcol:TCP")
-]
-
 export default system({
-    name,
-    components: [
-        apptApp,
-        apptService,
-        apptDb,
-    ],
-    componentRelationships,
+  name,
+  components: {
+    apptApp,
+    apptService,
+    apptDb,
+  },
+  // Defined as needed for every connection between systems. De-duplicated when rendered as puml.
+  componentRelationships: [
+    uses(apptApp, apptService),
+    uses(apptService, apptDb),
+    uses(clientDevice, appServer, 'Ports: 443\\nProtocol:TCP'),
+    uses(appServer, dbServer, 'Ports: 1443\\nProtocol:TCP'),
+  ],
 });
 ```
 #### Service
@@ -109,27 +111,25 @@ WIP: implement this, write docs.
 WIP: implement this, write docs.
 
 ## Work in Progress/To-do List
-Roughly in order of priority.
 
-- Add generator support for `lifecycleState` 
-  - Change color
-  - Change sterotype (e.g. `<<Service>> - Modified`)
-- Add semantic exports for setting lifecycle state (e.g. `new(...args: Component[])`)
-- Add generator support for notes on components/relationships based on set `description`.
-- Add generator support for `entities`.
-- Add generator support for `ports`, `applicationProtocols`, and `networkProtocols`.
-- Sequence Diagrams - import components from systems and domains, define sequence diagrams
-  - Generator
-- Use Case Diagrams - import components from systems and domains, define use cases and use case models (rollup)
-  - Generator
-- Solution Diagram - import systems & components, add relationships between systems and annotations.
-  - Generator
-- Roadmap Diagram - import & decorate systems, components, relationships with lifecycle state changes and annotations.
-  - Generator
-  - Syntax
-- Hypertext Linking - Link to system, entity, etc.
-- Diagram Configuration
-  - level of detail?
-  - other rendering options?
-  - theme?
-  - enable/disable annotations?
+- Namespace component alias generation
+- Improve implementation of queue, service interfaces 
+  - move to constructor?
+  - add this functionality to Topic
+- Roadmap syntax
+- Use Case Diagram Support
+- Sequence Diagram Support
+- Solution Diagram Support
+- Roadmap Diagram Support
+- Markup features:
+  - `lifecycleState` support
+    - Change color
+    - Append state to stereotype
+  - Use `description` to generate notes
+  - Annotations support (add to component, relationship, system models?)
+  - Hypertext Linking - Link to system, entity, etc.
+  - Diagram generation configuration?
+    - Level of detail/
+    - other rendering options?
+    - theme?
+    - enable/disable annotations?
