@@ -1,7 +1,11 @@
 import { UseCase } from '../models/use-case';
-import { UseCaseModel } from '../models/use-case-model';
+import { Actor, UseCaseModel } from '../models';
 import { UseCaseRelationship } from '../models/use-case-relationship';
 
-export function useCaseModel(useCases: { [key: string]: UseCase }, useCaseRelationships: UseCaseRelationship[]): UseCaseModel {
-  return new UseCaseModel(useCases, useCaseRelationships);
+export function useCaseModel(
+  actors: Actor[],
+  useCases: { [key: string]: UseCase },
+  useCaseRelationships: UseCaseRelationship[],
+): UseCaseModel {
+  return new UseCaseModel(actors, useCases, useCaseRelationships);
 }
