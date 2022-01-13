@@ -140,8 +140,10 @@ export function queue(
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => {
       const newQueue = new Queue(dbConfig.label, dbConfig);
-      newQueue.interfaces.publish = new API('publish');
-      newQueue.interfaces.subscribe = new API('subscribe');
+      newQueue.interfaces = {
+        publish: new API('publish'),
+        subscribe: new API('subscribe'),
+      };
       return newQueue;
     });
   }
@@ -153,8 +155,10 @@ export function queue(
     const config = labelOrConfig as ComponentConfiguration;
     newQueue = new Queue(config.label, config);
   }
-  newQueue.interfaces.publish = new API('publish');
-  newQueue.interfaces.subscribe = new API('subscribe');
+  newQueue.interfaces = {
+    publish: new API('publish'),
+    subscribe: new API('subscribe'),
+  };
   return newQueue;
 }
 

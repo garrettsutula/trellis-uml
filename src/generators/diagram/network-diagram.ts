@@ -14,9 +14,10 @@ export function getNetworkDiagramType(type: ComponentType): string {
   }
 }
 
-function recurseParentComponents(component: Component) {
+function recurseParentComponents(component: Component, allComponents: Set<Component>) {
   if (component.parentComponent) {
-    return recurseParentComponents(component.parentComponent);
+    allComponents.add(component.parentComponent);
+    return recurseParentComponents(component.parentComponent, allComponents);
   }
   return component;
 }
@@ -53,16 +54,14 @@ export function buildNetworkDiagram(input: System | Solution): string {
     allComponentRelationships.push(...system.componentRelationships);
   }
 
-  const allComponentsArr = Array.from(allComponents.values());
-
-  allComponentsArr.forEach((component) => {
-    topLevelComponents.add(recurseParentComponents(component));
+  Array.from(allComponents.values()).forEach((component) => {
+    topLevelComponents.add(recurseParentComponents(component, allComponents));
   });
 
   output += Array.from(topLevelComponents.values())
     .filter(({ type }) => type === ComponentType.ExecutionEnvironment)
     // eslint-disable-next-line max-len
-    .reduce((componentOutput, component): string => componentOutput.concat(`${buildComponentMarkup(component, getNetworkDiagramType, 0, [ComponentType.ExecutionEnvironment])}\n`), '');
+    .reduce((componentOutput, component): string => componentOutput.concat(`${buildComponentMarkup(component, getNetworkDiagramType, 0, [ComponentType.ExecutionEnvironment], Array.from(allComponents.values()))}\n`), '');
 
   const relationshipsAlreadyAdded = [];
   output += allComponentRelationships

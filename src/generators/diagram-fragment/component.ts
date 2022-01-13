@@ -7,6 +7,7 @@ const buildComponentMarkup = (
   getComponentDiagramType: Function,
   tabIndex: number = 1,
   renderTypes: ComponentType[] = [],
+  componentsToRender?: Component[],
 ): string => {
   let output = '';
   if (renderTypes.length === 0 || renderTypes.includes(component.type)) {
@@ -19,9 +20,11 @@ const buildComponentMarkup = (
     if (component.childComponents.length) {
       output += ' {\n';
       component.childComponents.forEach((childComponent) => {
-        const childOutput = buildComponentMarkup(childComponent, getComponentDiagramType, tabIndex + 1, renderTypes);
-        if (childOutput.length) {
-          output += `${childOutput}\n`;
+        if (componentsToRender === undefined || componentsToRender.includes(childComponent)) {
+          const childOutput = buildComponentMarkup(childComponent, getComponentDiagramType, tabIndex + 1, renderTypes, componentsToRender);
+          if (childOutput.length) {
+            output += `${childOutput}\n`;
+          }
         }
       });
       output += `${'\t'.repeat(tabIndex)}`;
