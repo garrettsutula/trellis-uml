@@ -64,16 +64,12 @@ export function service(
       return newService;
     });
   }
-  let newService: Service;
   if (typeof labelOrConfig === 'string') {
     const label = labelOrConfig as string;
-    newService = new Service(label, { parentComponent });
-  } else {
-    const config = labelOrConfig as ComponentConfiguration;
-    newService = new Service(config.label, config);
+    return new Service(label, { parentComponent });
   }
-  newService.interface = new API('internal');
-  return newService;
+  const config = labelOrConfig as ComponentConfiguration;
+  return new Service(config.label, config);
 }
 
 export function api(label: string, parentComponent?: Component): API;
@@ -140,26 +136,15 @@ export function queue(
   if (labelOrConfig instanceof Array) {
     return labelOrConfig.map((dbConfig) => {
       const newQueue = new Queue(dbConfig.label, dbConfig);
-      newQueue.interfaces = {
-        publish: new API('publish'),
-        subscribe: new API('subscribe'),
-      };
       return newQueue;
     });
   }
-  let newQueue;
   if (typeof labelOrConfig === 'string') {
     const label = labelOrConfig as string;
-    newQueue = new Queue(label, { parentComponent });
-  } else {
-    const config = labelOrConfig as ComponentConfiguration;
-    newQueue = new Queue(config.label, config);
+    return new Queue(label, { parentComponent });
   }
-  newQueue.interfaces = {
-    publish: new API('publish'),
-    subscribe: new API('subscribe'),
-  };
-  return newQueue;
+  const config = labelOrConfig as ComponentConfiguration;
+  return new Queue(config.label, config);
 }
 
 export function cache(label: string, parentComponent?: Component): Cache;
