@@ -5,11 +5,11 @@ import { Component } from '../component';
 import { Entity } from '../entity';
 
 export class SequenceDiagram implements SequenceDiagramConfiguration {
-  constructor(public title: string, public sequence: Array<Sequence | SequenceDiagram>) {}
+  constructor(public sequence: Array<Sequence | SequenceDiagram>, public title?: string) {}
 }
 
 export interface SequenceDiagramConfiguration {
-  title: string;
+  title?: string;
   sequence: Array<Sequence | SequenceDiagram>;
 }
 
