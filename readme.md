@@ -111,25 +111,21 @@ WIP: implement this, write docs.
 WIP: implement this, write docs.
 
 ## Work in Progress/To-do List
-
 - Namespace component alias generation
-- Improve implementation of queue, service interfaces 
-  - move to constructor?
-  - add this functionality to Topic
+- Solution Diagram Support
 - Roadmap syntax
 - Use Case Diagram Support
 - Sequence Diagram Support
-- Solution Diagram Support
 - Roadmap Diagram Support
-- Markup features:
   - `lifecycleState` support
     - Change color
     - Append state to stereotype
+- Generator features
   - Use `description` to generate notes
   - Annotations support (add to component, relationship, system models?)
   - Hypertext Linking - Link to system, entity, etc.
   - Diagram generation configuration?
-    - Level of detail/
+    - Level of detail?
     - other rendering options?
     - theme?
     - enable/disable annotations?

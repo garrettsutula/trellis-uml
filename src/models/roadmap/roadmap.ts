@@ -6,7 +6,7 @@ export class Roadmap {
     public name: string,
     public description: string,
     public solutions: Solution[],
-    public phases: Phase[] | Array<Array<Phase>>,
+    public phases: Phase[] | PhaseOptions[],
   ) {}
 }
 
@@ -21,9 +21,11 @@ export interface Phase {
   }
 }
 
+export type PhaseOptions = Array<Phase>;
+
 export interface RoadmapConfiguration {
   name: string;
   description: string;
   solutions: Solution[];
-  phases: Phase[] | Array<Array<Phase>>;
+  phases: Phase[] | PhaseOptions[];
 }

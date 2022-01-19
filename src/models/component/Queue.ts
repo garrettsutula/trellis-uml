@@ -1,5 +1,6 @@
 import { Component } from './Component';
-import type { API, Device, ExecutionEnvironment } from '.';
+import { API } from './API';
+import type { Device, ExecutionEnvironment } from '.';
 import { ComponentType } from '../base/enums';
 
 export class Queue extends Component {
@@ -7,7 +8,7 @@ export class Queue extends Component {
 
   stereotype = 'Queue';
 
-  interfaces?: {
+  interfaces: {
     subscribe: API,
     publish: API,
   };
@@ -20,5 +21,11 @@ export class Queue extends Component {
 
   public set parentComponent(newParentComponent: ExecutionEnvironment | Device) {
     this.propogateParentRelationship(newParentComponent);
+  }
+
+  constructor(label, config) {
+    super(label, config);
+    this.interfaces.subscribe = new API('subscribe', { parentComponent: this });
+    this.interfaces.publish = new API('publish', { parentComponent: this });
   }
 }
