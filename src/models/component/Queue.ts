@@ -25,7 +25,9 @@ export class Queue extends Component {
 
   constructor(label, config) {
     super(label, config);
-    this.interfaces.subscribe = new API('subscribe', { parentComponent: this });
-    this.interfaces.publish = new API('publish', { parentComponent: this });
+    this.interfaces = {
+      subscribe: new API('subscribe', { parentComponent: this }),
+      publish: new API('publish', { parentComponent: this }),
+    };
   }
 }
