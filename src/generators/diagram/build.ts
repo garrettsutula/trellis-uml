@@ -1,25 +1,27 @@
 import { writeFile } from 'fs/promises';
-import { System } from '../../models';
+import { Solution, System } from '../../models';
 import { buildComponentDiagram } from './component-diagram';
 import { buildNetworkDiagram } from './network-diagram';
 import { buildDeploymentDiagram } from './deployment-diagram';
 
-export default function build(system: System, path:string) {
+export function build(input: Solution, path: string);
+export function build(input: System, path: string);
+export function build(input: any, path:string) {
   const diagrams = [];
   try {
-    diagrams.push(buildNetworkDiagram(system));
+    diagrams.push(buildNetworkDiagram(input));
   } catch (e) {
     throw new Error('Error generating network diagrams.');
   }
 
   try {
-    diagrams.push(buildDeploymentDiagram(system));
+    diagrams.push(buildDeploymentDiagram(input));
   } catch (e) {
     throw new Error('Error generating deployment diagrams.');
   }
 
   try {
-    diagrams.push(buildComponentDiagram(system));
+    diagrams.push(buildComponentDiagram(input));
   } catch (e) {
     throw new Error('Error generating component diagrams.');
   }
