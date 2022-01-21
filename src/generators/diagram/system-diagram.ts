@@ -18,9 +18,9 @@ export function buildComponentMarkup(system: System, tabIndex: number = 0, compo
   let output = '';
   let compoundId = '';
   if (compoundIdentifier) {
-    compoundId = `${system.id}_${compoundIdentifier}_package`;
+    compoundId = `${system.id}_${compoundIdentifier}`;
   } else {
-    compoundId = `${system.id}_package`;
+    compoundId = `${system.id}`;
   }
   output += `${'\t'.repeat(tabIndex)}`;
   output += `package "${system.name}" as ${compoundId} <<System>>`;
