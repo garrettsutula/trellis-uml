@@ -6,6 +6,8 @@ export class Uses extends ComponentRelationship {
 
   diagramFragmentAfter: string = 'down->';
 
+  stereotype = '<<Uses>>';
+
   source: Actor;
 
   target: UI;

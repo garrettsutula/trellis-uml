@@ -6,7 +6,11 @@ import { SystemRelationship, SystemRelationshipConfiguration } from './SystemRel
 export class SystemUses extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
-  diagramFragmentAfter: string = 'down-(';
+  diagramFragmentAfter: string = '->';
+
+  stereotype: string = '<<Uses>>';
+
+  thickness = 2;
 
   source: System | Actor;
 

@@ -8,6 +8,8 @@ export class Requires extends ComponentRelationship {
 
   diagramFragmentAfter: string = 'down-(';
 
+  stereotype = '<<Requires>>';
+
   source: Service | UI | Processor | Database;
 
   target: API;

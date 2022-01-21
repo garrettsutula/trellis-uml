@@ -10,6 +10,10 @@ export class SystemCommunicationPath extends SystemRelationship {
 
   diagramFragmentAfter: string = 'down-(';
 
+  stereotype: string = '<<Connects To>>';
+
+  thickness = 2;
+
   ports?: string | string[];
 
   appProtocols?: AppProtocol | AppProtocol[];
