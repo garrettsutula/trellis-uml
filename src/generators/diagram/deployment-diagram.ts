@@ -52,6 +52,7 @@ export function buildDeploymentDiagram(input: System | Solution): string {
 
   if (input instanceof Solution) {
     const solution = input;
+    allComponentRelationships.push(...solution.componentRelationships);
     Object.values(solution.systems).forEach((system) => {
       Object.values(system.components)
         .forEach((component) => allComponents.add(component));
