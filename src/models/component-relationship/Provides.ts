@@ -6,6 +6,8 @@ export class Provides extends ComponentRelationship {
 
   diagramFragmentAfter: string = 'up-';
 
+  stereotype = '<<Provides>>';
+
   source: Service;
 
   target: API;

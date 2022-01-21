@@ -1,4 +1,3 @@
-import { escapeString } from '../../common/utils';
 import { Component } from '../../models';
 import { ComponentType } from '../../models/base/enums';
 
@@ -12,8 +11,9 @@ const buildComponentMarkup = (
   let output = '';
   if (renderTypes.length === 0 || renderTypes.includes(component.type)) {
     const componentString = getComponentDiagramType(component.type);
+    const componentId = component.system ? `${component.system.id}_${component.id}` : component.id;
     output += `${'\t'.repeat(tabIndex)}`;
-    output += `${componentString} "${component.label}" as ${escapeString(component.id)}`;
+    output += `${componentString} "${component.label}" as ${componentId}`;
     if (component.stereotype) output += ` <<${component.stereotype}>>`;
     if (component.color) output += ` #${component.color}`;
 

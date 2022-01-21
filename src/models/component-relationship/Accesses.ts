@@ -9,6 +9,8 @@ export class Accesses extends ComponentRelationship {
 
   diagramFragmentAfter: string = 'down->';
 
+  stereotype = '<<Accesses>>';
+
   source: Service | Database | Processor | UI | Cache;
 
   target: Service | Database | Cache;

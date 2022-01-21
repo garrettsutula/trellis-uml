@@ -5,7 +5,7 @@ import chalk from 'chalk';
 
 import { escapeString } from '../common/utils';
 import { DiagramRoot } from '../models';
-import { build as buildSystemDiagrams } from '../generators/diagram';
+import { build as buildDiagrams } from '../generators/diagram';
 
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
@@ -47,8 +47,18 @@ export async function buildProject() {
     await Promise.all(Object.values(diagramRoot.systems)
       .map((system) => {
         const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`);
-        return buildSystemDiagrams(system, diagramOutputPath);
+        return buildDiagrams(system, diagramOutputPath);
       }));
+  } catch (e) {
+    throw new Error(e);
+  }
+  console.log(chalk.dim('Successfully built "system" diagrams!'));
+  try {
+    await Promise.all((Object.values(diagramRoot.solutions)
+      .map((solution) => {
+        const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/solutions/${escapeString(solution.name)}.puml`);
+        return buildDiagrams(solution, diagramOutputPath);
+      })));
   } catch (e) {
     throw new Error(e);
   }

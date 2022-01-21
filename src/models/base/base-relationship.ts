@@ -4,8 +4,11 @@ export interface BaseRelationshipConfiguration {
   source: any;
   target: any;
   lifecycleState?: LifecycleState;
+  stereotype?: string;
   description?: string;
   color?: string;
+  thickness?: number;
+  direction?: string;
 }
 
 export class BaseRelationship implements BaseRelationshipConfiguration {
@@ -15,9 +18,15 @@ export class BaseRelationship implements BaseRelationshipConfiguration {
 
   lifecycleState?: LifecycleState;
 
+  stereotype?: string;
+
   description?: string;
 
   color?: string;
+
+  thickness?: number;
+
+  direction?: string;
 
   diagramFragmentBefore: string;
 

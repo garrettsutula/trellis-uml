@@ -4,7 +4,11 @@ import { SystemRelationship, SystemRelationshipConfiguration } from './SystemRel
 export class SystemFlowsInto extends SystemRelationship {
   diagramFragmentBefore: string = '-';
 
-  diagramFragmentAfter: string = 'down-(';
+  diagramFragmentAfter: string = '.>';
+
+  stereotype: string = '<<Data Flow>>';
+
+  thickness = 3;
 
   entities?: Entity[];
 
