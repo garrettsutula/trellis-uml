@@ -111,7 +111,6 @@ WIP: implement this, write docs.
 WIP: implement this, write docs.
 
 ## Work in Progress/To-do List
-- Namespace component alias generation
 - Solution Diagram Support
 - Roadmap syntax
 - Use Case Diagram Support
