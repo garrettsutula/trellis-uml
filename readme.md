@@ -111,15 +111,14 @@ WIP: implement this, write docs.
 WIP: implement this, write docs.
 
 ## Work in Progress/To-do List
-- Solution Diagram Support
-- Roadmap syntax
-- Use Case Diagram Support
 - Sequence Diagram Support
 - Roadmap Diagram Support
   - `lifecycleState` support
     - Change color
     - Append state to stereotype
 - Generator features
+  - Use case line stereotypes
+  - System diagram relationship description details
   - Use `description` to generate notes
   - Annotations support (add to component, relationship, system models?)
   - Hypertext Linking - Link to system, entity, etc.
