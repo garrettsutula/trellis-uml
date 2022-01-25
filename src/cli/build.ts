@@ -62,4 +62,5 @@ export async function buildProject() {
   } catch (e) {
     throw new Error(e);
   }
+  console.log(chalk.dim('Successfully built "solution" diagrams!'));
 }
