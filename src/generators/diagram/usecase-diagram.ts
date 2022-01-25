@@ -1,8 +1,9 @@
-import { escapeString } from '../../common/utils';
+/* eslint-disable no-param-reassign */
+/* eslint-disable max-len */
 import { Entity, UseCaseModel } from '../../models';
 import { titleAndHeader, startUml, endUml } from '../diagram-fragment/chrome';
 
-function buildTableMarkup(entities: Entity[]): string {
+function buildTableMarkup(entities: Entity[] = []): string {
   return entities.reduce((acc, entity) => `${`${acc
   }| ${entity.entity.name} |${
     ['c', 'r', 'u', 'd']
@@ -15,21 +16,30 @@ export const buildUseCaseDiagram = (name: string, usecaseModel: UseCaseModel): s
 
   output += titleAndHeader(name, 'Usecase Model');
   output += usecaseModel.actors.reduce((acc, actor): string => `${acc}:${actor.label}: as ${actor.id}\n`, '');
-  output += Object.values(usecaseModel.useCases).reduce((acc, usecase) => `${acc}usecase ${escapeString(usecase.title)} as "
-  **${usecase.title}**
+  output += Object.values(usecaseModel.useCases).reduce(
+    (acc, usecase) => {
+      acc += `usecase ${usecase.id} as "
+    **${usecase.title}**
 
-  == Description ==
+    == Description ==
+  
+    ${usecase.description}
+    
 
-  ${usecase.description}
+    `;
+      if (usecase.entities?.length) {
+        acc += `== Entities ==
 
-  ${usecase.entities?.length ? `== Entities ==
-
-  |= Type |= C |= R |= U |= D |
-  ${buildTableMarkup(usecase.entities)}` : ''}
-  "
-  `, '');
+      |= Type |= C |= R |= U |= D |
+      ${buildTableMarkup(usecase.entities)}`;
+      }
+      acc += '\n"\n\n';
+      return acc;
+    },
+    '',
+  );
   output += usecaseModel.useCaseRelationships
-    .reduce((acc, relationship) => `${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter}`, '');
+    .reduce((acc, relationship) => `${acc}${relationship.source.id} ${relationship.diagramFragmentBefore}${relationship.diagramFragmentAfter} ${relationship.target.id}\n`, '');
   output += endUml();
   return output;
 };
