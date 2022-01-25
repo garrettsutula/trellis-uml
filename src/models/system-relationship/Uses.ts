@@ -15,6 +15,12 @@ export class SystemUses extends SystemRelationship {
   source: System | Actor;
 
   entities?: Entity[];
+
+  constructor(config: SystemUsesConfiguration) {
+    super(config);
+
+    this.entities = config.entities;
+  }
 }
 
 export interface SystemUsesConfiguration extends SystemRelationshipConfiguration {
