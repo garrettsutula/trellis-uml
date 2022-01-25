@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { System, SystemRelationship } from '../../models';
 import { startUml, titleAndHeader, endUml } from '../diagram-fragment/chrome';
 import buildRelationshipMarkup from '../diagram-fragment/relationship';
@@ -7,6 +8,11 @@ function buildComponentRelationships(relationships: Array<SystemRelationship>): 
   const relationshipsAlreadyAdded = [];
   return relationships
     .reduce((output, relationship): string => {
+      if (relationship.entities?.length) {
+        const entitiesMarkup = relationship.entities.map((entity) => `**${entity.entity.name}**`).join('\\n');
+        if (relationship.description) relationship.description += `\\n${entitiesMarkup}`;
+        else relationship.description = entitiesMarkup;
+      }
       const newLine = buildRelationshipMarkup(relationship);
       // eslint-disable-next-line no-param-reassign
       if (!relationshipsAlreadyAdded.includes(newLine)) output += newLine;
