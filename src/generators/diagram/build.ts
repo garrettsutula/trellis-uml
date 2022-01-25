@@ -4,6 +4,7 @@ import { buildComponentDiagram } from './component-diagram';
 import { buildNetworkDiagram } from './network-diagram';
 import { buildDeploymentDiagram } from './deployment-diagram';
 import { buildSystemDiagram } from './system-diagram';
+import { buildUseCaseDiagram } from './usecase-diagram';
 
 export function build(input: Solution, path: string);
 export function build(input: System, path: string);
@@ -32,6 +33,13 @@ export function build(input: any, path:string) {
       diagrams.push(buildSystemDiagram(input));
     } catch (e) {
       throw new Error('Error generating system diagram.');
+    }
+    try {
+      if (input.useCaseModel) {
+        diagrams.push(buildUseCaseDiagram(input.name, input.useCaseModel));
+      }
+    } catch (e) {
+      throw new Error('Error generating use case model.');
     }
   }
 
