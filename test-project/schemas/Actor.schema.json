@@ -1,0 +1,12 @@
+{
+  "$id": "Actor.schema.json",
+  "title": "Actor",
+  "description": "A person who performs a use case.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": ["name"]
+}

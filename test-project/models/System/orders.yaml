@@ -1,0 +1,20 @@
+id: orders
+name: Orders
+components:
+  service:
+    id: ordersService
+    name: Orders Service
+    type: Service
+  db:
+    id: ordersDb
+    name: Orders Database
+    type: Database
+relationships:
+  - source:
+      $ref: "#/components/service" 
+    target:
+      $ref: "#/components/db"
+  - source:
+      $ref: "master-config.yaml#/components/service" 
+    target:
+      $ref: "#/components/db" 

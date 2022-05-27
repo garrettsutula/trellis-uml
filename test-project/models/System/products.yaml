@@ -1,0 +1,20 @@
+id: products
+name: Products
+components:
+  service:
+    id: productsService
+    name: Products Service
+    type: Service
+  db:
+    id: productsDb
+    name: Products Database
+    type: Database
+relationships:
+  - source:
+      $ref: "#/components/service" 
+    target:
+      $ref: "#/components/db"
+  - source:
+      $ref: "master-config.yaml#/components/service" 
+    target:
+      $ref: "#/components/db" 

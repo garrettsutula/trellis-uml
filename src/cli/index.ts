@@ -4,17 +4,15 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import chalk from 'chalk';
 
-import { generateDiagramScaffold } from './generate';
+import build from './build';
 import { initializeProject } from './init';
-import { serveProject } from './serve';
-import { buildProject } from './build';
-import { escapeString } from '../common/utils';
+import { watchProject } from './watch';
 
 const { argv } = yargs(hideBin(process.argv))
   .usage('Usage: $0 [init|generate|serve]')
   .demandCommand(1);
 
-const { _: [command, type, name] = [] } = argv;
+const { _: [command, type] = [] } = argv;
 
 let invokedCommand;
 
@@ -22,16 +20,13 @@ console.log(chalk.bold(`Running command 'trellis ${command}'`));
 console.time(chalk.dim('Total duration'));
 switch (command) {
   case 'init':
-    invokedCommand = initializeProject();
+    invokedCommand = initializeProject(type);
     break;
   case 'build':
-    invokedCommand = buildProject();
+    invokedCommand = build();
     break;
-  case 'generate':
-    invokedCommand = generateDiagramScaffold(type, escapeString(name));
-    break;
-  case 'serve':
-    invokedCommand = serveProject();
+  case 'watch':
+    invokedCommand = watchProject();
     break;
   default:
     console.error(chalk.red(`Unrecognized command: ${command}.`));
@@ -40,9 +35,11 @@ switch (command) {
 
 invokedCommand
   .then(() => {
-    console.log(chalk.bold.underline.green(`'trellis ${command}' ran successfully!`));
-    console.timeEnd(chalk.dim('Total duration'));
-    process.exit(0);
+    if (command !== 'watch') {
+      console.log(chalk.bold.underline.green(`'trellis ${command}' ran successfully!`));
+      console.timeEnd(chalk.dim('Total duration'));
+      process.exit(0);
+    }
   })
   .catch((e) => {
     console.error(chalk.red(`Problem running 'trellis ${command}'`));

@@ -1,0 +1,16 @@
+id: config
+name: Master Configuration
+components:
+  service:
+    id: configService
+    name: Master Configuration Service
+    type: Service
+  db:
+    id: configDb
+    name: Master Configuration Database
+    type: Database
+relationships:
+  - source:
+      $ref: "#/components/service" 
+    target:
+      $ref: "#/components/db" 
