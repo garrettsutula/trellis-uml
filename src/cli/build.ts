@@ -1,66 +1,51 @@
 import * as path from 'path';
-import { access, mkdir } from 'fs/promises';
-import { execSync } from 'child_process';
+import { readFile, rm } from 'fs/promises';
+import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
 
-import { escapeString } from '../common/utils';
-import { DiagramRoot } from '../models';
-import { build as buildDiagrams } from '../generators/diagram';
+import preprocess from './preprocess';
+import generate from './generate';
+import { globAsync } from '../common/glob';
+import { extractModelType } from '../common/regex';
 
-const workingDirectoryPath = process.cwd();
-const currentFolder = path.basename(workingDirectoryPath);
+export default async function build(): Promise<void> {
+  console.time(chalk.dim('Build duration'));
+  // Load project files from filesystem.
+  const [modelFilePaths, schemaPaths, preprocessingScriptPaths, templatePaths, partialsPaths] = await Promise.all([
+    globAsync('./models/**/*.yaml'),
+    globAsync('./schemas/*.json'),
+    globAsync('./preprocessors/*.js'),
+    globAsync('./templates/*.hbs'),
+    globAsync('./templates/partials/*.hbs'),
+  ]);
 
-export async function buildProject() {
-  // Make sure current diagram code is compiled.
-  console.log(chalk.dim(`Running 'npm run build' on current directory ${currentFolder}.`));
-  try {
-    execSync('npm run build');
-  } catch (e) {
-    throw new Error('Failed to build using project\'s build script.');
-  }
+  const modelTypes = Array.from((new Set(modelFilePaths.map((filePath) => filePath.match(extractModelType)[1]))).values());
 
-  // Test for output directory structure & create if needed.
-  console.log(chalk.dim(`Test presence of: ${currentFolder}/diagrams`));
-  try {
-    await access('./diagrams');
-  } catch (e) {
-    console.warn(`Directory '${currentFolder}/diagrams' not present, attempting to create it & child directories.`);
-    await mkdir(path.join(workingDirectoryPath, './diagrams'));
-    await mkdir(path.join(workingDirectoryPath, './diagrams/systems'), { recursive: true });
-    await mkdir(path.join(workingDirectoryPath, './diagrams/services'), { recursive: true });
-    await mkdir(path.join(workingDirectoryPath, './diagrams/solutions'), { recursive: true });
-    await mkdir(path.join(workingDirectoryPath, './diagrams/domains'), { recursive: true });
-  }
-  // Load compiled diagram source code as diagram root
-  console.log(chalk.dim(`Loading diagram root: ${currentFolder}/dist/app.js`));
-  const diagramPath = path.join(workingDirectoryPath, './dist/app.js');
-  const diagramRoot: DiagramRoot = await import(diagramPath);
-  // Default export not intended/used here but may be present in diagramRoom.systems.
-  delete diagramRoot.systems.default;
+  // Register partials in project for use in any template.
+  const partials = await Promise.all(partialsPaths.map((filePath) => readFile(filePath)));
+  partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
 
-  console.table(Object
-    .values(diagramRoot.systems)
-    // eslint-disable-next-line max-len
-    .map(({ name, components, componentRelationships }) => ({ name, componentCount: Object.values(components).length, relationshipCount: componentRelationships.length })));
-  console.log(chalk.dim('Building digrams from source code.'));
-  try {
-    await Promise.all(Object.values(diagramRoot.systems)
-      .map((system) => {
-        const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/systems/${escapeString(system.name)}.puml`);
-        return buildDiagrams(system, diagramOutputPath);
-      }));
-  } catch (e) {
-    throw new Error(e);
-  }
-  console.log(chalk.dim('Successfully built "system" diagrams!'));
-  try {
-    await Promise.all((Object.values(diagramRoot.solutions)
-      .map((solution) => {
-        const diagramOutputPath = path.join(workingDirectoryPath, `./diagrams/solutions/${escapeString(solution.name)}.puml`);
-        return buildDiagrams(solution, diagramOutputPath);
-      })));
-  } catch (e) {
-    throw new Error(e);
-  }
-  console.log(chalk.dim('Successfully built "solution" diagrams!'));
+  await Promise.all(
+    modelTypes.map(async (type) => {
+      const schemaPath = schemaPaths.find((filePath) => filePath.includes(`${type}.json`));
+      const templatePath = templatePaths.find((filePath) => filePath.includes(`${type}.hbs`));
+      const filePaths = modelFilePaths.filter((filePath) => filePath.includes(`./models/${type}/`));
+      const scriptPath = preprocessingScriptPaths.find((filePath) => filePath.includes(`${type}.js`));
+
+      if (filePaths.length && templatePath) {
+        // Pre-processing step.
+        let preprocessFn;
+        if (scriptPath) preprocessFn = (await import(`${path.join(process.cwd(), scriptPath)}`)).default;
+        const preprocessedFilePaths = await Promise.all(filePaths.map((filePath) => preprocess(filePath, preprocessFn)));
+        // Generate output step.
+        const templateStr = await (await readFile(templatePath)).toString();
+        const template = Handlebars.compile(templateStr);
+        return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template)));
+      }
+      return [];
+    }),
+  );
+  console.timeEnd(chalk.dim('Build duration'));
+  // Clean up temporary workspace.
+  await rm('./temp', { recursive: true, force: true });
 }
