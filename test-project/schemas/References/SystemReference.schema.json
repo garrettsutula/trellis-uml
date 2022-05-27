@@ -1,0 +1,13 @@
+{
+  "$id": "SystemReference.schema.json",
+  "title": "System Reference",
+  "description": "A reference to a system.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}

@@ -1,0 +1,34 @@
+{
+  "$id": "Component.schema.json",
+  "title": "Component",
+  "type": "object",
+  "if": {"required": ["$ref"]},
+  "then": {
+    "$ref": "References/ComponentReference.schema.json"
+  },
+  "else": {  
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["UI", "Service", "Database"]
+      },
+      "description": {
+        "type": "string",
+        "description": "A brief description of the component and its purpose in this system."
+      },
+      "parent": {
+        "description": "A back reference to the parent system, this is set programmatically when pre-processing the models prior to being fed into templates for output generation.",
+        "$ref": "References/SystemReference.schema.json"
+      }
+    },
+    "required": ["id", "name", "type"],
+    "additionalProperties": false
+  }
+
+}
