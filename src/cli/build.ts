@@ -2,6 +2,7 @@ import * as path from 'path';
 import { readFile, rm } from 'fs/promises';
 import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
+import { validate } from 'jsonschema';
 
 import preprocess from './preprocess';
 import generate from './generate';
@@ -11,7 +12,7 @@ import { extractModelType } from '../common/regex';
 export default async function build(): Promise<void> {
   console.time(chalk.dim('Build duration'));
   // Load project files from filesystem.
-  const [modelFilePaths, schemaPaths, preprocessingScriptPaths, templatePaths, partialsPaths] = await Promise.all([
+  const [modelFilePaths, jsonSchemaPaths, preprocessingScriptPaths, templatePaths, partialsPaths] = await Promise.all([
     globAsync('./models/**/*.yaml'),
     globAsync('./schemas/*.json'),
     globAsync('./preprocessors/*.js'),
@@ -27,16 +28,17 @@ export default async function build(): Promise<void> {
 
   await Promise.all(
     modelTypes.map(async (type) => {
-      const schemaPath = schemaPaths.find((filePath) => filePath.includes(`${type}.json`));
+      const jsonSchemaPath = jsonSchemaPaths.find((filePath) => filePath.includes(`${type}.schema.json`));
       const templatePath = templatePaths.find((filePath) => filePath.includes(`${type}.hbs`));
       const filePaths = modelFilePaths.filter((filePath) => filePath.includes(`./models/${type}/`));
       const scriptPath = preprocessingScriptPaths.find((filePath) => filePath.includes(`${type}.js`));
 
-      if (filePaths.length && templatePath) {
+      if (filePaths.length && templatePath && jsonSchemaPath) {
         // Pre-processing step.
         let preprocessFn;
         if (scriptPath) preprocessFn = (await import(`${path.join(process.cwd(), scriptPath)}`)).default;
-        const preprocessedFilePaths = await Promise.all(filePaths.map((filePath) => preprocess(filePath, preprocessFn)));
+        const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
+        const preprocessedFilePaths = await Promise.all(filePaths.map((filePath) => preprocess(filePath, preprocessFn, typeSchema)));
         // Generate output step.
         const templateStr = await (await readFile(templatePath)).toString();
         const template = Handlebars.compile(templateStr);
