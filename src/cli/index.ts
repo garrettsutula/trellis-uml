@@ -37,7 +37,7 @@ invokedCommand
   .then(() => {
     if (command !== 'watch') {
       console.log(chalk.bold.underline.green(`✅\t'trellis ${command}' ran successfully!`));
-      console.timeEnd(chalk.dim('⏱ Total duration'));
+      console.timeEnd(chalk.dim('⏱\tTotal duration'));
       process.exit(0);
     }
   })
