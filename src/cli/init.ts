@@ -20,17 +20,7 @@ export async function initializeProject(type) {
     } catch (err) {
       throw new Error(`⛔️ Error installing project dependencies from latest available on npm:\n${JSON.stringify(err)}`);
     }
-
-    // copy base template
-    // copy template for project type, just do default for now.
-
-    console.log(chalk.bold('⚙️ Copying base project template...'));
-    try {
-      await cp(path.join(__dirname, './project-templates/base/'), './', { recursive: true });
-    } catch (err) {
-      throw new Error(`⛔️ Error copying base project template:\n${JSON.stringify(e)}`);
-    }
-    console.log(chalk.bold('⚙️ Initializing typescript and eslint config.'));
+    console.log(chalk.bold(`⚙️ Copying project template '${type || 'default'}'...`));
     try {
       await cp(path.join(__dirname, `./project-templates/project-types/${type || 'default'}/`), './', { recursive: true });
     } catch (err) {
