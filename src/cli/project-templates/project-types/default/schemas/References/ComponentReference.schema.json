@@ -1,0 +1,13 @@
+{
+  "$id": "ComponentReference.schema.json",
+  "title": "Reference",
+  "description": "A reference to a component.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}

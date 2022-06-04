@@ -1,0 +1,25 @@
+id: example
+name: Example
+# All the components that are deployed as part of the system, NOT its dependencies.
+# Components are namespaced, so the key values "service" and "db" below become part of the id for that component. 
+components:
+  service:
+    name: Example Service
+    type: Service
+  db:
+    name: Example Database
+    type: Database
+  queue:
+    name: Example Queue
+    type: Queue
+# Relationships can be outside of the current file using the standard, relative file path syntax
+# Circular references aren't a big deal, the schema parser resolves them correctly without infinite recursion.
+relationships:
+  - source:
+      $ref: "#/components/service" 
+    target:
+      $ref: "#/components/db" 
+  - source:
+      $ref: "#/components/db" 
+    target:
+      $ref: "#/components/queue"

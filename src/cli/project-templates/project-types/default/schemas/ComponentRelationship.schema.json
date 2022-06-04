@@ -1,0 +1,18 @@
+{
+  "$id": "ComponentRelationship.schema.json",
+  "title": "Component Relationship",
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "References/ComponentReference.schema.json"
+    },
+    "target": {
+      "$ref": "References/ComponentReference.schema.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Requires", "Accesses"]
+    }
+  },
+  "required": ["source", "target"]
+}
