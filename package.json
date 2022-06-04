@@ -44,6 +44,7 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "chalk": "^4.0.1",
     "chokidar": "^3.5.3",
+    "glob": "^8.0.3",
     "handlebars": "^4.7.7",
     "jsonschema": "^1.4.1",
     "yaml": "^2.1.0",
