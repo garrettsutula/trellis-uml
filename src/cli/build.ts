@@ -2,7 +2,6 @@ import * as path from 'path';
 import { readFile, rm } from 'fs/promises';
 import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
-import { validate } from 'jsonschema';
 
 import preprocess from './preprocess';
 import generate from './generate';
