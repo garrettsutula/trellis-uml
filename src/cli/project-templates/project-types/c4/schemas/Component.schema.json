@@ -1,0 +1,31 @@
+{
+  "$id": "Component.schema.json",
+  "title": "Component",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type":"string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    },
+    "elements": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "CodeElement.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "ComponentRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name"]
+}

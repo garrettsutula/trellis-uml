@@ -1,0 +1,18 @@
+{
+  "$id": "CodeElement.schema.json",
+  "title": "Code Element",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type":"string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["class", "interface", "enum", "entity"]
+    }
+  },
+  "required": ["name"]
+}

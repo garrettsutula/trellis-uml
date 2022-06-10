@@ -1,0 +1,21 @@
+{
+  "$id": "ContainerRelationship.schema.json",
+  "title": "Container Relationship",
+  "description": "A relationship between a Container and another Container in a Software System.",
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "Container.schema.json"
+    },
+    "target": {
+      "$ref": "Container.schema.json"
+    },
+    "description": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    }
+  },
+  "required": ["source", "target"]
+}
