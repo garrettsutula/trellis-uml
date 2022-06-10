@@ -1,0 +1,43 @@
+{
+  "$id": "TableRelationship.schema.json",
+  "title": "Table Relationship",
+  "type": "object",
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "References/ColumnReference.schema.json"
+      }
+    },
+    "source": {
+      "$ref": "References/ColumnReference.schema.json"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "References/ColumnReference.schema.json"
+      }
+    },
+    "target": {
+      "$ref": "References/ColumnReference.schema.json"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": ["name"],
+  "oneOf": [
+    {
+      "required": ["source", "target"]
+    },
+    {
+      "required": ["source", "targets"]
+    },
+    {
+      "required": ["sources", "target"]
+    },
+    {
+      "required": ["sources", "targets"]
+    }
+  ]
+}

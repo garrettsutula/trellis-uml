@@ -1,0 +1,22 @@
+{
+  "$id": "Environment.schema.json",
+  "title": "Environment",
+  "description": "An instance of physical topology supporting a component.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "enum": ["DEV", "QA", "UAT", "STG", "PROD"]
+    },
+    "hosts": {
+      "type": "object",
+      "description": "\"hostname: ip address\" combination for each host in this environment.",
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["hosts"]
+}

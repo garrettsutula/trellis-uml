@@ -1,0 +1,42 @@
+{
+  "$id": "Column.schema.json",
+  "title": "Column",
+  "description": "A reference to a table column.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "defaultValue": {
+      "type":"string"
+    },
+    "isNullable": {
+      "type": "boolean"
+    },
+    "isPrimaryKey": {
+      "type": "boolean"
+    },
+    "length": {
+      "type": "number"
+    },
+    "precision": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string",
+      "enum": []
+    },
+    "relationships": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Column.schema.json"
+        }
+      }
+    }
+  },
+  "required": ["type"]
+}

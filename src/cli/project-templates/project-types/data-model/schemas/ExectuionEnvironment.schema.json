@@ -1,0 +1,30 @@
+{
+  "$id": "ExecutionEnvironment.schema.json",
+  "title": "Execution Environment",
+  "description": "A logical representation of the runtime environment for this component, optionally includes physical representations of environments.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    },
+    "environments": {
+      "type": "array",
+      "items": {
+        "$ref": "ExecutionEnvironment.schema.json"
+      }
+    }
+  },
+  "required": ["name", "environments"]
+}

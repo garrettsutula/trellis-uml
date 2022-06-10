@@ -1,0 +1,13 @@
+{
+  "$id": "Table.schema.json",
+  "title": "Table",
+  "description": "A reference to a table.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}

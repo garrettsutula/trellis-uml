@@ -1,0 +1,27 @@
+{
+  "$id": "ERD.schema.json",
+  "title": "Entity Relationship Diagram",
+  "description": "An entity relationship diagram",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "schemas": {
+      "type": "array",
+      "items": {
+        "$ref": "Table.schema.json"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "TableRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name", "description", "relationships"]
+}

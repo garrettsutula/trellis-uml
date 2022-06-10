@@ -1,0 +1,32 @@
+{
+  "$id": "System.schema.json",
+  "title": "System",
+  "description": "A logical representation of components and relationships between them that comprise a software system.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "components": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Database.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "DatabaseRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name", "description", "relationships"]
+}

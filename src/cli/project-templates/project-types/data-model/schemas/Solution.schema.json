@@ -1,0 +1,13 @@
+{
+  "$id": "Solution.schema.json",
+  "title": "Solution",
+  "description": "A combination of databases and relationships that support a software system.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}

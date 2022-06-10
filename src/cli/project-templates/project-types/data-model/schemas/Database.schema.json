@@ -1,0 +1,42 @@
+{
+  "$id": "Database.schema.json",
+  "title": "Database",
+  "description": "A reference to a database.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Relational", "NoSQL", "Graph", "Queue", "Cache", "File"]
+    },
+    "tables": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Column.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "DatabaseRelationship.schema.json"
+      }
+    },
+    "executionEnvironments": {
+      "type": "array",
+      "items": {
+        "$ref": "ExecutionEnvironment.schema.json"
+      }
+    }
+  },
+  "required": ["name"]
+}
