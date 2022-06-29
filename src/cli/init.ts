@@ -22,6 +22,11 @@ export async function initializeProject(type) {
     }
     console.log(chalk.bold(`⚙️\tCopying project template '${type || 'default'}'...`));
     try {
+      await access(`./project-templates/project-types/${type || 'default'}/`);
+    } catch (err) {
+      throw new Error(`Project template type: '${type || 'default'}' does not exist.`);
+    }
+    try {
       await cp(path.join(__dirname, `./project-templates/project-types/${type || 'default'}/`), './', { recursive: true });
     } catch (err) {
       throw new Error(`⛔️\tError copying configuration template files into project:\n${JSON.stringify(err)}`);
