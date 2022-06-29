@@ -1,5 +1,5 @@
 {
-  "$id": "SoftwareSystem.schema.json",
+  "$id": "System.schema.json",
   "title": "Software System",
   "type": "object",
   "properties": {
@@ -19,6 +19,12 @@
         ".*": {
           "$ref": "Container.schema.json"
         }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "ContainerReplationship.schema.json"
       }
     }
   },

@@ -23,7 +23,7 @@
     "relationships": {
       "type": "array",
       "items": {
-        "$ref": "ComponentRelationship.schema.json"
+        "$ref": "CodeElementRelationship.schema.json"
       }
     }
   },

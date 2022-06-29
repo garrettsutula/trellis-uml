@@ -1,6 +1,6 @@
 {
-  "$id": "SystemContext.schema.json",
-  "title": "System Context Model",
+  "$id": "Solution.schema.json",
+  "title": "Solution System Context Model",
   "description": "A C4 model for System Context",
   "type": "object",
   "properties": {
@@ -22,7 +22,7 @@
       "type": "object",
       "patternProperties": {
         ".*": {
-          "$ref": "SoftwareSystem.schema.json"
+          "$ref": "System.schema.json"
         }
       }
     },

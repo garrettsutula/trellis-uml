@@ -12,6 +12,12 @@
     "type": {
       "type": "string",
       "enum": ["class", "interface", "enum", "entity"]
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "CodeElementRelationship.schema.json"
+      }
     }
   },
   "required": ["name"]

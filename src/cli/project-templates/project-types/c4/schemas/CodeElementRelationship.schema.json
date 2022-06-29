@@ -1,0 +1,15 @@
+{
+  "$id": "CodeElementRelationship.schema.json",
+  "title": "Code Element Relationship",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["creates", "parses", "uses", "sends", "recives", "extends"]
+    },
+    "target": {
+      "$ref": "CodeElement.schema.json"
+    }
+  },
+  "required": ["name"]
+}
