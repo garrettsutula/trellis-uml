@@ -1,7 +1,7 @@
 {
-  "$id": "SystemReference.schema.json",
-  "title": "System Reference",
-  "description": "A reference to a system.",
+  "$id": "Reference.schema.json",
+  "title": "Reference",
+  "description": "A reference to a component.",
   "type": "object",
   "properties": {
     "$ref": {

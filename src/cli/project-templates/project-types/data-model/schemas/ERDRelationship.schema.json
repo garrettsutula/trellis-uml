@@ -1,6 +1,6 @@
 {
-  "$id": "TableRelationship.schema.json",
-  "title": "Table Relationship",
+  "$id": "ERDRelationship.schema.json",
+  "title": "ERD Attribute Relationship",
   "type": "object",
   "properties": {
     "sources": {

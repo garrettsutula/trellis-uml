@@ -1,0 +1,54 @@
+{
+  "$id": "Attribute.schema.json",
+  "title": "Attribute",
+  "description": "An attribute that is part of a schema.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Set by the preprocessor, used in templates as a unique identifier for the column."
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the purpose of the column"
+    },
+    "defaultValue": {
+      "description": "Default value of the column if not set when inserting a record.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "isNullable": {
+      "type": "boolean"
+    },
+    "isPrimaryKey": {
+      "type": "boolean"
+    },
+    "length": {
+      "type": "number"
+    },
+    "precision": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["List", "Tuple", "Set", "Map", "Primitive", "Null"]
+    },
+    "primitiveType": {
+      "type": "string",
+      "enum": ["string", "number", "boolean"]
+    }
+  },
+  "required": ["type"]
+}

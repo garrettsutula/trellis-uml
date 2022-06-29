@@ -1,0 +1,46 @@
+{
+  "$id": "Variation.schema.json",
+  "title": "Structural Variation",
+  "description": "A structural variation (i.e. physical schema) of a data schema.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Required for top-level schema, added programmatically when used in references."
+    },
+    "entity": {
+      "$ref": "Entity.schema.json"
+    },
+    "key": {
+      "$ref": "Attribute.schema.json"
+    },
+    "attributes": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Attribute.schema.json"
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Variation.schema.json"
+        }
+      }
+    },
+    "aggregates": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Variation.schema.json"
+        }
+      } 
+    },
+    "isOptional": {
+      "type": "boolean"
+    }
+  },
+  "required": ["entity"]
+}

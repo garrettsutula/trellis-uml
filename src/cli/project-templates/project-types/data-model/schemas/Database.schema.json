@@ -21,7 +21,7 @@
       "type": "object",
       "patternProperties": {
         ".*": {
-          "$ref": "Column.schema.json"
+          "$ref": "Variation.schema.json"
         }
       }
     },

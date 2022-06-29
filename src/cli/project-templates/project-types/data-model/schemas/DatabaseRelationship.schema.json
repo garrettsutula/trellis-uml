@@ -6,14 +6,14 @@
     "sources": {
       "type": "array",
       "items": {
-        "$ref": "References/DatabaseReference.schema.json"
+        "$ref": "Database.schema.json"
       }
     },
     "source": {
-      "$ref": "References/DatabaseReference.schema.json"
+      "$ref": "Database.schema.json"
     },
     "target": {
-      "$ref": "References/DatabaseReference.schema.json"
+      "$ref": "Database.schema.json"
     },
     "id": {
       "type": "string"

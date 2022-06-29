@@ -1,7 +1,7 @@
 {
-  "$id": "System.schema.json",
-  "title": "System",
-  "description": "A logical representation of components and relationships between them that comprise a software system.",
+  "$id": "Solution.schema.json",
+  "title": "Solution",
+  "description": "A logical representation of database components and relationships between them that comprise a software solution.",
   "type": "object",
   "properties": {
     "id": {

@@ -1,0 +1,18 @@
+{
+  "$id": "Entity.schema.json",
+  "title": "Schema Entity",
+  "description": "A logical entity in a schema that has one or more structural variations (i.e. physical schemas).",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "root": {
+      "type": "boolean"
+    }
+  },
+  "required": ["name"]
+}

@@ -13,13 +13,13 @@
     "schemas": {
       "type": "array",
       "items": {
-        "$ref": "Table.schema.json"
+        "$ref": "Variation.schema.json"
       }
     },
     "relationships": {
       "type": "array",
       "items": {
-        "$ref": "TableRelationship.schema.json"
+        "$ref": "ERDRelationship.schema.json"
       }
     }
   },

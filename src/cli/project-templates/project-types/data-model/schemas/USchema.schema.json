@@ -1,0 +1,23 @@
+{
+  "$id": "USchema.schema.json",
+  "title": "Universal Schema",
+  "description": "A universal data schema and all its physical schemas.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "entities": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Entity.schema.json"
+        }
+      }
+    }
+  },
+  "required": ["$ref"]
+}
