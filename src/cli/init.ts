@@ -4,6 +4,7 @@ import { execSync } from 'child_process';
 import chalk from 'chalk';
 
 export async function initializeProject(type) {
+  const templatePath = path.join(__dirname, `./project-templates/${type || 'default'}/`);
   console.log(chalk.bold("⚙️\tRunning 'npm init' to initialize project folder..."));
   try {
     await access('./package.json');
@@ -22,12 +23,12 @@ export async function initializeProject(type) {
     }
     console.log(chalk.bold(`⚙️\tCopying project template '${type || 'default'}'...`));
     try {
-      await access(`./project-templates/project-types/${type || 'default'}/`);
+      await access(templatePath);
     } catch (err) {
       throw new Error(`Project template type: '${type || 'default'}' does not exist.`);
     }
     try {
-      await cp(path.join(__dirname, `./project-templates/project-types/${type || 'default'}/`), './', { recursive: true });
+      await cp(templatePath, './', { recursive: true });
     } catch (err) {
       throw new Error(`⛔️\tError copying configuration template files into project:\n${JSON.stringify(err)}`);
     }

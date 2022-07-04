@@ -2,6 +2,15 @@
   "$id": "Container.schema.json",
   "title": "Container",
   "type": "object",
+  "if": {"required": ["$ref"]},
+  "then": {
+    "properties": {
+      "$ref": {
+        "$ref": "Reference.schema.json"
+      }
+    }
+  },
+  "else": {
   "properties": {
     "name": {
       "type":"string"
@@ -28,4 +37,5 @@
     }
   },
   "required": ["name"]
+}
 }
