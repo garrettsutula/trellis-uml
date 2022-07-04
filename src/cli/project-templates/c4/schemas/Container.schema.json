@@ -6,7 +6,8 @@
   "then": {
     "properties": {
       "$ref": {
-        "$ref": "Reference.schema.json"
+        "type": "string",
+        "format": "uri-reference"
       }
     }
   },
@@ -32,7 +33,7 @@
     "relationships": {
       "type": "array",
       "items": {
-        "$ref": "ComponentRelationship.schema.json"
+        "$ref": "ContainerRelationship.schema.json"
       }
     }
   },

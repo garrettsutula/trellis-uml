@@ -2,23 +2,34 @@
   "$id": "CodeElement.schema.json",
   "title": "Code Element",
   "type": "object",
-  "properties": {
-    "name": {
-      "type":"string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string",
-      "enum": ["class", "interface", "enum", "entity"]
-    },
-    "relationships": {
-      "type": "array",
-      "items": {
-        "$ref": "CodeElementRelationship.schema.json"
+  "if": {"required": ["$ref"]},
+  "then": {
+    "properties": {
+      "$ref": {
+        "type": "string",
+        "format": "uri-reference"
       }
     }
   },
-  "required": ["name"]
+  "else": {
+    "properties": {
+      "name": {
+        "type":"string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["class", "interface", "enum", "entity"]
+      },
+      "relationships": {
+        "type": "array",
+        "items": {
+          "$ref": "CodeElementRelationship.schema.json"
+        }
+      }
+    },
+    "required": ["type"]
+  }
 }

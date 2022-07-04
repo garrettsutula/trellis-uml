@@ -1,0 +1,19 @@
+{
+  "$id": "ComponentRelationship.schema.json",
+  "title": "Component Relationship",
+  "description": "Relationships between components within a software system",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["uses", "accesses"]
+    },
+    "target": {
+      "$ref": "Component.schema.json"
+    },
+    "technology": {
+      "type": "string"
+    }
+  },
+  "required": ["target", "type"]
+}

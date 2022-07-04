@@ -5,11 +5,14 @@
   "properties": {
     "type": {
       "type": "string",
-      "enum": ["creates", "parses", "uses", "sends", "recives", "extends"]
+      "enum": ["creates", "parses", "uses", "sends", "recives", "extends", "throws", "provides"]
     },
     "target": {
       "$ref": "CodeElement.schema.json"
+    },
+    "technology":{
+      "type": "string"
     }
   },
-  "required": ["name"]
+  "required": ["target", "type"]
 }
