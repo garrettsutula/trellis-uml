@@ -29,24 +29,26 @@ To get started using this project locally, follow these instructions:
 
 ```
 .
-├── models - conform to a matching json schema in the 'schemas' directory.
-│     └── subfolders for each model type
-│          └── *.json/*.yaml
-├── preprocessors - (Optional) scripts that enhance models prior to generating Output Artifacts using templates.
-│     └── *.js - matching model type
-├── schemas - json schema files that validate and structure models
-│     └── *.schema.json - matching model type
-├── templates - handlebars templates that generate Output Artifacts from templates.
-│     ├── partials
-│         └── ... *.hbs - partial templates used in parent templates
-│     └── *.hbs - matching model type
-├── output - Output Artifacts generated with the command 'trellis build' are output here.
+├── .vscode/
+│   └── settings.json - json schema config added based on init project template.
+├── models/
+│   └── ... Subfolder for each schema/template type
+├── preprocessors/
+│   └── ... .js file that exports a default with signature: function (schema: object): object, optional for transforming models prior to template step.
+├── schemas/
+│   └── ... json schema files that enforce structure on model files
+├── templates/
+│   └── ... handlebars templates that are used to generate output artifacts based on pre-processed models
 └── package.json
 ```
 
 ### Project Types
 
-> TODO: add C4, UML and Database project templates, "default" is a simple system modeling template for now.
+#### C4
+
+#### Data Modeling
+
+### UML
 
 ## Work in Progress/To-do List
 - TODO: full cross-compatibility of json/yaml file types
@@ -54,3 +56,5 @@ To get started using this project locally, follow these instructions:
   - UML
   - C4
   - Database
+- Start a hybrid markup/ui editor project.
+- Start a backend project for tenant-based project storage and management
