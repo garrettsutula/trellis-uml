@@ -1,0 +1,6 @@
+name: Single-Page Application
+description: Provides all of the internet banking functionality to the customers via their web browser.
+technology: JavaScript and Angular
+components:
+  webApp:
+    name: Banking SPA
