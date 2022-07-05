@@ -1,1 +1,1 @@
-export const extractModelType = /(?:\.\/models\/)(.*)\//;
+export const extractModelType = /(?:\.\/models\/(\w*)\/).*(?:.yaml)/;

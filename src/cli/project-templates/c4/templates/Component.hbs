@@ -1,7 +1,7 @@
 @startuml
 title {{name}} Class Diagram
 
-package {{name}} {
+package "{{name}}" as {{id}} {
   {{#each elements}}{{! Render each class in main model}}
     {{type}} {{parent.id}}.{{id}} {
 
@@ -10,14 +10,15 @@ package {{name}} {
   {{! Render each class in relationships to other Components}}
   {{#each elements}}{{#each relationships}}
   {{#if isExternalRef}}
-    {{type}} {{parent.id}}.{{id}} {
+    {{target.type}} {{target.parent.id}}.{{target.id}} {
 
     }
   {{/if}}
   {{/each}}{{/each}}
   {{! Render the relationships between classes}}
-  {{#each elements}}{{#each relationships source=.}}
-    {{source.parent.id}}.{{source.id}} --> {{relationship.target.parent.id}}.{{relationship.target.id}}: {{type}}
+  {{#each elements as |element|}}{{#each relationships}}
+    {{element.parent.id}}.{{element.id}} --> {{target.parent.id}}.{{target.id}}: {{type}}
   {{/each}}
   {{/each}}
+}
 @enduml
