@@ -1,5 +1,5 @@
 name: Mainframe Facade
-description: Abstracts the connection & integration details to the legacy mainframe system.
+description: Abstracts the connection and integration details \nto the legacy mainframe system.
 technology: Spring Bean
 elements:
   AbstractRequest:
@@ -14,7 +14,7 @@ elements:
         type: sends
       - target:
           $ref: '#/elements/AbstractResponse'
-        type: recives
+        type: receives
   GetBalanceRequest:
     type: class
     relationships:
