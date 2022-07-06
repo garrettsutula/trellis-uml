@@ -17,6 +17,7 @@ module.exports = {
       'max-len': [2, 140],
       'import/prefer-default-export': [0],
       'import/no-cycle': [0],
+      'no-param-reassign': [0],
     },
     ignorePatterns: ["dist/**/*", ".eslintrc.js"]
   }

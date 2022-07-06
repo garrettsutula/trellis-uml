@@ -1,0 +1,6 @@
+name: Database
+description: Stores user registration information, hashed auth credentials, access logs, etc.
+technology: Oracle Database
+components:
+  UserSchema:
+    name: User Schema

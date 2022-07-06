@@ -1,0 +1,42 @@
+{
+  "$id": "Container.schema.json",
+  "title": "Container",
+  "type": "object",
+  "if": {"required": ["$ref"]},
+  "then": {
+    "properties": {
+      "$ref": {
+        "type": "string",
+        "format": "uri-reference"
+      }
+    }
+  },
+  "else": {
+  "properties": {
+    "name": {
+      "type":"string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    },
+    "components": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Component.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "ContainerRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name"]
+}
+}

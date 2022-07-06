@@ -1,0 +1,6 @@
+name: Internet Banking System Common
+description: Provides common functionality like exceptions and shared entities
+technology: Unknown
+elements:
+  InternetBankingSystemException:
+    type: class

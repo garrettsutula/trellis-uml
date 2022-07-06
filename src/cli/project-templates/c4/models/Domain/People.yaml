@@ -1,0 +1,3 @@
+# Actors should be defined once here & re-used across all other models.
+user:
+  name: Example User

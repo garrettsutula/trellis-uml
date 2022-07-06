@@ -1,0 +1,13 @@
+{
+  "$id": "Reference.schema.json",
+  "title": "Reference",
+  "description": "A reference to an object in another file.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}

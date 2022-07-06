@@ -1,0 +1,25 @@
+@startuml
+title {{name}} Class Diagram
+{{#if description}}
+
+note left of {{id}}: {{description}}
+
+{{/if}}
+package "{{name}}" as {{id}} {
+  {{~#each elements}}{{! Render each class in main model}}
+  {{> Class}}
+  {{/each~}}
+}
+
+{{#each elements}}{{#each relationships}}{{! Render each class in relationships to other Components}}
+{{~#if isExternalRef ~}}
+package "{{target.parent.name}}" as {{target.parent.id}} {
+  {{> Class target ~}}
+}
+{{~/if ~}}
+{{/each}}{{/each}}
+
+{{#each elements as |element|}}{{#each relationships}}{{! Render the relationships between classes ~}}
+{{> ClassRelationship element=element}}
+{{/each}}{{/each~}}
+@enduml

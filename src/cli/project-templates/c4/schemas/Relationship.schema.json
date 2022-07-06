@@ -1,0 +1,20 @@
+{
+  "$id": "Relationship.schema.json",
+  "title": "Software System",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type":"string"
+    },
+    "target": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "technology": {
+      "type": "string"
+    }
+  },
+  "required": ["name"]
+}
