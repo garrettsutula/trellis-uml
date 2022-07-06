@@ -24,7 +24,7 @@
     "relationships": {
       "type": "array",
       "items": {
-        "$ref": "ContainerReplationship.schema.json"
+        "$ref": "ContainerRelationship.schema.json"
       }
     }
   },

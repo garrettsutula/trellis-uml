@@ -2,23 +2,20 @@
 title {{name}} Class Diagram
 
 package "{{name}}" as {{id}} {
-  {{#each elements}}{{! Render each class in main model}}
-    {{type}} {{parent.id}}.{{id}} {
-
-    }
-  {{/each}}
-  {{! Render each class in relationships to other Components}}
-  {{#each elements}}{{#each relationships}}
-  {{#if isExternalRef}}
-    {{target.type}} {{target.parent.id}}.{{target.id}} {
-
-    }
-  {{/if}}
-  {{/each}}{{/each}}
-  {{! Render the relationships between classes}}
-  {{#each elements as |element|}}{{#each relationships}}
-    {{element.parent.id}}.{{element.id}} --> {{target.parent.id}}.{{target.id}}: {{type}}
-  {{/each}}
-  {{/each}}
+  {{~#each elements}}{{! Render each class in main model}}
+  {{> Class}}
+  {{/each~}}
 }
+
+{{#each elements}}{{#each relationships}}{{! Render each class in relationships to other Components}}
+{{~#if isExternalRef ~}}
+package "{{target.parent.name}}" as {{target.parent.id}} {
+  {{> Class target ~}}
+}
+{{~/if ~}}
+{{/each}}{{/each}}
+
+{{#each elements as |element|}}{{#each relationships}}{{! Render the relationships between classes ~}}
+{{element.parent.id}}.{{element.id}} --> {{target.parent.id}}.{{target.id}}: {{type}}
+{{/each}}{{/each~}}
 @enduml
