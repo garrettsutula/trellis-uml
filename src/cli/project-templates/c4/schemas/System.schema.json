@@ -21,6 +21,14 @@
         }
       }
     },
+    "users": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Person.schema.json"
+        }
+      }
+    },
     "relationships": {
       "type": "array",
       "items": {
