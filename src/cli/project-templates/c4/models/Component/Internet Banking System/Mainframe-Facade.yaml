@@ -15,6 +15,9 @@ elements:
       - target:
           $ref: '#/elements/AbstractResponse'
         type: receives
+      - target:
+          $ref: "../System/Mainframe.yaml"
+        type: uses
   GetBalanceRequest:
     type: class
     relationships:
