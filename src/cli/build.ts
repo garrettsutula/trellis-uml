@@ -25,6 +25,34 @@ export default async function build(): Promise<void> {
   const partials = await Promise.all(partialsPaths.map((filePath) => readFile(filePath)));
   partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
 
+  // Register conditional logic helper
+  Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
+    switch (operator) {
+      case '==':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '===':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '!=':
+        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '!==':
+        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '<':
+        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      case '<=':
+        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      case '>':
+        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      case '>=':
+        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      case '&&':
+        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      case '||':
+        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      default:
+        return options.inverse(this);
+    }
+  });
+
   await Promise.all(
     modelTypes.map(async (type) => {
       const jsonSchemaPath = jsonSchemaPaths.find((filePath) => filePath.includes(`${type}.schema.json`));

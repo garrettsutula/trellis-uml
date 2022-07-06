@@ -1,6 +1,10 @@
 @startuml
 title {{name}} Class Diagram
+{{#if description}}
 
+note left of {{id}}: {{description}}
+
+{{/if}}
 package "{{name}}" as {{id}} {
   {{~#each elements}}{{! Render each class in main model}}
   {{> Class}}
@@ -16,6 +20,6 @@ package "{{target.parent.name}}" as {{target.parent.id}} {
 {{/each}}{{/each}}
 
 {{#each elements as |element|}}{{#each relationships}}{{! Render the relationships between classes ~}}
-{{element.parent.id}}.{{element.id}} --> {{target.parent.id}}.{{target.id}}: {{type}}
+{{> ClassRelationship element=element}}
 {{/each}}{{/each~}}
 @enduml

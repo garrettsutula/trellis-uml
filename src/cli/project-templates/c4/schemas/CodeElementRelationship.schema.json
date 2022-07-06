@@ -5,7 +5,7 @@
   "properties": {
     "type": {
       "type": "string",
-      "enum": ["creates", "parses", "uses", "sends", "recives", "extends", "throws", "provides"]
+      "enum": ["creates", "parses", "uses", "sends", "receives", "extends", "throws", "provides"]
     },
     "target": {
       "$ref": "CodeElement.schema.json"
