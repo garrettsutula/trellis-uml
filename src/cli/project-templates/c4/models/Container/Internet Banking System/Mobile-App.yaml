@@ -7,10 +7,10 @@ components:
     relationships:
       - type: uses 
         target:
-          $ref: "../Component/Internet Banking System/Sign-In-Controller.yaml"
+          $ref: "../../Component/Internet Banking System/Sign-In-Controller.yaml"
       - type: uses 
         target:
-          $ref: "../Component/Internet Banking System/Reset-Password-Controller.yaml"
+          $ref: "../../Component/Internet Banking System/Reset-Password-Controller.yaml"
       - type: uses 
         target:
-          $ref: "../Component/Internet Banking System/Accounts-Summary-Controller.yaml"
+          $ref: "../../Component/Internet Banking System/Accounts-Summary-Controller.yaml"

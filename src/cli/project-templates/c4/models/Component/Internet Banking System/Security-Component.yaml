@@ -4,4 +4,4 @@ technology: Spring Bean
 relationships:
   - type: uses
     target:
-      $ref: "../Container/Database.yaml#/components/UserSchema"
+      $ref: "../../Container/Internet Banking System/Database.yaml#/components/UserSchema"

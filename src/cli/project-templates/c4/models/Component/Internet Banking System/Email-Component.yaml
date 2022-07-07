@@ -4,4 +4,4 @@ technology: Spring Bean
 relationships:
   - type: uses
     target:
-      $ref: "../System/Email.yaml"
+      $ref: "../../System/Email.yaml"
