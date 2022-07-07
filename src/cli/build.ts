@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { readFile, rm } from 'fs/promises';
+import { readFile, rm, cp } from 'fs/promises';
 import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
 
@@ -18,6 +18,9 @@ export default async function build(): Promise<void> {
     globAsync('./templates/*.hbs'),
     globAsync('./templates/partials/*.hbs'),
   ]);
+
+  // Copy project files to temp, any that are preprocessed below are overwritten later.
+  await cp('./models/', './temp/models/', { recursive: true });
 
   const modelTypes = Array.from((new Set(modelFilePaths.map((filePath) => filePath.match(extractModelType)[1]))).values());
 

@@ -1,6 +1,6 @@
 {
-  "$id": "Person.schema.json",
-  "title": "Person",
+  "$id": "People.schema.json",
+  "title": "People",
   "type": "object",
   "patternProperties": {
     ".*": {
@@ -18,6 +18,5 @@
         }
       }
     }
-  },
-  "required": ["name"]
+  }
 }
