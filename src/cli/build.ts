@@ -29,7 +29,7 @@ export default async function build(): Promise<void> {
   partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
 
   // Register conditional logic helper
-  Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
+  Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
     switch (operator) {
       case '==':
         return (v1 === v2) ? options.fn(this) : options.inverse(this);
