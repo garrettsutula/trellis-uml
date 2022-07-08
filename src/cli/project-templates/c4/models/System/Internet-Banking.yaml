@@ -1,0 +1,41 @@
+name: Internet Banking System
+# All the components that are deployed as part of the system, NOT its dependencies.
+# Components are namespaced, so the key values "service" and "db" below become part of the id for that component. 
+containers:
+  webApplication:
+    $ref: "../Container/Internet Banking System/Web-Application.yaml"
+  singlePageApplication:
+    $ref: "../Container/Internet Banking System/Single-Page-Application.yaml"
+  mobileApplication:
+    $ref: "../Container/Internet Banking System/Mobile-App.yaml"
+  database:
+    $ref: "../Container/Internet Banking System/Database.yaml"
+  apiApplication:
+    $ref: "../Container/Internet Banking System/API-Application.yaml"
+# Relationships can be outside of the current file using the standard, relative file path syntax
+# Circular references aren't a big deal, the schema parser resolves them correctly without infinite recursion.
+relationships:
+  - source:
+      $ref: "./Email.yaml"
+    target:
+      $ref: "../Domain/People.yaml#/user"
+    description: Send email to
+    technology: smtp
+  - source:
+      $ref: "../Domain/People.yaml#/user"
+    target:
+      $ref: "#/containers/webApplication"
+    description: Visits bigbank.com
+    technology: HTTPS
+  - source:
+      $ref: "../Domain/People.yaml#/user"
+    target:
+      $ref: "#/containers/mobileApplication"
+    description: Views account balances and makes payments
+    technology: HTTPS
+  - source:
+      $ref: "../Domain/People.yaml#/user"
+    target:
+      $ref: "#/containers/singlePageApplication"
+    description: Views account balances and makes payments
+    technology: HTTPS

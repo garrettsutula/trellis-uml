@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { readFile, rm } from 'fs/promises';
+import { readFile, rm, cp } from 'fs/promises';
 import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
 
@@ -19,11 +19,42 @@ export default async function build(): Promise<void> {
     globAsync('./templates/partials/*.hbs'),
   ]);
 
+  // Copy project files to temp, any that are preprocessed below are overwritten later.
+  await cp('./models/', './temp/models/', { recursive: true });
+
   const modelTypes = Array.from((new Set(modelFilePaths.map((filePath) => filePath.match(extractModelType)[1]))).values());
 
   // Register partials in project for use in any template.
   const partials = await Promise.all(partialsPaths.map((filePath) => readFile(filePath)));
   partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
+
+  // Register conditional logic helper
+  Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
+    switch (operator) {
+      case '==':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '===':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '!=':
+        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '!==':
+        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '<':
+        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      case '<=':
+        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      case '>':
+        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      case '>=':
+        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      case '&&':
+        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      case '||':
+        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      default:
+        return options.inverse(this);
+    }
+  });
 
   await Promise.all(
     modelTypes.map(async (type) => {

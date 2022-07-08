@@ -1,0 +1,7 @@
+name: Sign-In Controller
+description: Provides functionality related to signing in, changing passwords, etc.
+technology: Spring Bean
+relationships:
+  - type: uses
+    target:
+      $ref: "../../Container/Internet Banking System/Database.yaml#/components/UserSchema"

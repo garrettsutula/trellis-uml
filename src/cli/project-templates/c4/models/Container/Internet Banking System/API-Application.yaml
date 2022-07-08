@@ -1,0 +1,16 @@
+name: Internet Banking API
+description: Provides Internet banking functionality via a JSON/HTTPS API.
+technology: Java and Spring MVC
+components:
+  MainframeFacade:
+    $ref: "../../Component/Internet Banking System/Mainframe-Facade.yaml"
+  AccountsController:
+    $ref: "../../Component/Internet Banking System/Accounts-Summary-Controller.yaml"
+  ResetPasswordController:
+    $ref: "../../Component/Internet Banking System/Reset-Password-Controller.yaml"
+  SignInController:
+    $ref: "../../Component/Internet Banking System/Sign-In-Controller.yaml"
+  SecurityComponent:
+    $ref: "../../Component/Internet Banking System/Security-Component.yaml"
+  EmailComponent:
+    $ref: "../../Component/Internet Banking System/Email-Component.yaml"

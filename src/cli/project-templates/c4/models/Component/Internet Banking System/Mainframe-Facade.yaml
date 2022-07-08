@@ -1,0 +1,59 @@
+name: Mainframe Facade
+description: Abstracts the connection and integration details \nto the legacy mainframe system.
+technology: Spring Bean
+elements:
+  AbstractRequest:
+    type: class
+  AbstractResponse:
+    type: class
+  BankingSystemConnection:
+    type: class
+    relationships:
+      - target: 
+          $ref: '#/elements/AbstractRequest'
+        type: sends
+      - target:
+          $ref: '#/elements/AbstractResponse'
+        type: receives
+      - target:
+          $ref: "../../System/Mainframe.yaml"
+        type: uses
+  GetBalanceRequest:
+    type: class
+    relationships:
+      - type: extends
+        target:
+          $ref: '#/elements/AbstractRequest'
+  GetBalanceResponse:
+    type: class
+    relationships:
+      - type: extends
+        target:
+          $ref: '#/elements/AbstractResponse'
+  ManframeBankingSystemException:
+    type: class
+    relationships:
+      - type: extends
+        target:
+          $ref: './Internet-Banking-System-Common.yaml#/elements/InternetBankingSystemException'
+  MainframeBankingSystemFacade:
+    type: interface
+  MainframeBankingSystemFacadeImpl:
+    type: class
+    relationships:
+      - type: throws
+        target:
+          $ref: '#/elements/ManframeBankingSystemException'
+      - type: creates
+        target:
+          $ref: '#/elements/GetBalanceRequest'
+      - type: parses
+        target:
+          $ref: '#/elements/GetBalanceResponse'
+      - type: uses
+        target:
+          $ref: '#/elements/BankingSystemConnection'
+      - type: provides
+        target:
+          $ref: '#/elements/MainframeBankingSystemFacade'
+

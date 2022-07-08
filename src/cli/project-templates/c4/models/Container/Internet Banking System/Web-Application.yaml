@@ -1,0 +1,9 @@
+name: Web Application
+description: The main static website for the bank, allows users to navigate to the Internet Banking System.
+components:
+  webApplication:
+    name: Web Application
+    relationships:
+      - type: provides
+        target:
+          $ref: "./Single-Page-Application.yaml"

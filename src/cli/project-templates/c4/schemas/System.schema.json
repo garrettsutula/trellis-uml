@@ -1,0 +1,40 @@
+{
+  "$id": "System.schema.json",
+  "title": "Software System",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type":"string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "enum": ["internal", "external"]
+    },
+    "containers": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Container.schema.json"
+        }
+      }
+    },
+    "users": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Person.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "ContainerRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name"]
+}

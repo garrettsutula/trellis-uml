@@ -1,0 +1,37 @@
+{
+  "$id": "Solution.schema.json",
+  "title": "Solution System Context Model",
+  "description": "A C4 model for System Context",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "people": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Person.schema.json"
+        }
+      }
+    },
+    "systems": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "System.schema.json"
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "SystemContextRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name", "people", "systems", "relationship"]
+}

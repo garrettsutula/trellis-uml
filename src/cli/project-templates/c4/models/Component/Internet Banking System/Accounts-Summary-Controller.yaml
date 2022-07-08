@@ -1,0 +1,10 @@
+name: Accounts Summary Controller
+description: Provides customers with a summary of their bank accounts.
+technology: Spring MVC Rest Contoller
+elements:
+  BankingService:
+    type: class
+    relationships:
+      - type: uses
+        target:
+          $ref: './Mainframe-Facade.yaml#/elements/MainframeBankingSystemFacade'

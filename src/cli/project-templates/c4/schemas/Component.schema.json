@@ -1,0 +1,42 @@
+{
+  "$id": "Component.schema.json",
+  "title": "Component",
+  "type": "object",
+  "if": {"required": ["$ref"]},
+  "then": {
+    "properties": {
+      "$ref": {
+        "type": "string",
+        "format": "uri-reference"
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "name": {
+        "type":"string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "technology": {
+        "type": "string"
+      },
+      "elements": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "$ref": "CodeElement.schema.json"
+          }
+        }
+      },
+      "relationships": {
+        "type": "array",
+        "items": {
+          "$ref": "CodeElementRelationship.schema.json"
+        }
+      }
+    },
+    "required": ["name"]
+  }
+}

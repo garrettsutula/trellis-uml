@@ -1,0 +1,22 @@
+{
+  "$id": "People.schema.json",
+  "title": "People",
+  "type": "object",
+  "patternProperties": {
+    ".*": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type":"string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string",
+          "enum": ["internal", "external"]
+        }
+      }
+    }
+  }
+}
