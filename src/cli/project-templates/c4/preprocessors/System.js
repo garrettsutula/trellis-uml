@@ -7,9 +7,9 @@ module.exports = async (schema) => {
     // Adds a back-reference to each component so system name is easily accessible from {component}.parent.name
     component.parent = { $ref: '#' };
     component.id = nameToId(component.name);
-    component.type = 'component';
+    component.modelType = 'component';
   });
   schema.id = nameToId(schema.name);
-  schema.type = 'system';
+  schema.modelType = 'system';
   return schema;
 };

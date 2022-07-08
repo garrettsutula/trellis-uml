@@ -7,7 +7,7 @@ module.exports = async (schema) => {
     // Adds a back-reference to each component so system name is easily accessible from {component}.parent.name
     element.parent = { $ref: '#' };
     element.id = nameToId(elementKey);
-    element.type = 'codeElement';
+    element.modelType = 'codeElement';
     const { relationships = [] } = element;
     relationships.forEach((relationship) => {
       // Indicate if the reference is external, useful for conditional output in templates.
@@ -16,6 +16,6 @@ module.exports = async (schema) => {
   });
   schema.parent = { $ref: '#' };
   schema.id = nameToId(schema.name);
-  schema.type = 'component';
+  schema.modelType = 'component';
   return schema;
 };
