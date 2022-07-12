@@ -13,20 +13,12 @@
     "description": {
       "type": "string"
     },
-    "performedBy": {
+    "users": {
       "type": "array",
       "items": {
-        "$ref": "References/SystemReference.schema.json"
-      }
-    },
-    "performedWith": {
-      "type": "object",
-      "patternProperties": {
-        ".*": {
-          "$ref": "Component.schema.json"
-        }
+        "$ref": "User.schema.json"
       }
     }
   },
-  "required": ["name"]
+  "required": ["name", "users"]
 }

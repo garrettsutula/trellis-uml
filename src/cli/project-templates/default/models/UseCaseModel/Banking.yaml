@@ -1,0 +1,37 @@
+name: Customer Banking
+description: Supports all customer activities related to personal banking.
+users:
+  customer:
+    actor:
+      $ref: "../Domain/actors.yaml#/bankCustomer"
+    uses:
+    - $ref: "../System/Internet-Banking-System.yaml#/components/ui"
+usecases:
+  - name: Log In
+    description: From the main banking website, authenticate a user and redirect them to the banking application.
+    users:
+      - $ref: "#/users/customer"
+  - name: View Accounts
+    description: View users' account summary including account numbers and current balances.
+    users:
+      - $ref: "#/users/customer"
+  - name: View Account Transaction History
+    description: View previous and pending account transactions.
+    users:
+      - $ref: "#/users/customer"
+  - name: Deposit
+    description: Deposit funds (cash, check, etc.) into an account.
+    users:
+      - $ref: "#/users/customer"
+  - name: Withdrawl
+    description: Withdraw available cash balance from an account.
+    users:
+      - $ref: "#/users/customer"
+  - name: Internal Transfer
+    description: Transfer available cash balance between accounts.
+    users:
+      - $ref: "#/users/customer"
+  - name: External Transfer
+    description: Transfer available cash balance between accounts using Automated Clearing House (ACH).
+    users:
+      - $ref: "#/users/customer"

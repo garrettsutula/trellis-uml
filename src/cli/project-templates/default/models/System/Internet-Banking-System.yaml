@@ -3,6 +3,8 @@ name: Example
 # All the components that are deployed as part of the system, NOT its dependencies.
 # Components are namespaced, so the key values "service" and "db" below become part of the id for that component. 
 components:
+  ui:
+    name: Banking UI
   service:
     name: Example Service
     type: Service

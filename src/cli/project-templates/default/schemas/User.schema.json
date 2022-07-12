@@ -1,0 +1,25 @@
+{
+  "$id": "User.schema.json",
+  "title": "User",
+  "description": "An actor and the systems they use to perform one or more use cases.",
+  "type": "object",
+  "if": {"required": ["$ref"]},
+  "then": {
+    "$ref": "References/UserReference.schema.json"
+  },
+  "else": {
+    "properties": {
+      "actor": {
+        "$ref": "Actor.schema.json"
+      },
+      "uses": {
+        "type": "array",
+        "items": {
+          "$ref": "Component.schema.json"
+        }
+      }
+    },
+    "required": ["actor", "uses"]
+  }
+}
+

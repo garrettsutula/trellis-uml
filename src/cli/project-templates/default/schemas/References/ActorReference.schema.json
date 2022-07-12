@@ -1,7 +1,7 @@
 {
   "$id": "UserReference.schema.json",
-  "title": "User Reference",
-  "description": "A reference to an user.",
+  "title": "Actor Reference",
+  "description": "A reference to an actor.",
   "type": "object",
   "properties": {
     "$ref": {

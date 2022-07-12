@@ -3,10 +3,16 @@
   "title": "Actor",
   "description": "A person who performs a use case.",
   "type": "object",
-  "properties": {
-    "name": {
-      "type": "string"
-    }
+  "if": {"required": ["$ref"]},
+  "then": {
+    "$ref": "References/ActorReference.schema.json"
   },
-  "required": ["name"]
+  "else": {
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    },
+    "required": ["name"]
+  }
 }

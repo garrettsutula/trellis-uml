@@ -16,7 +16,15 @@
     "usecases": {
       "type": "array",
       "items": {
-        "$ref": "References/SystemReference.schema.json"
+        "$ref": "UseCase.schema.json"
+      }
+    },
+    "users": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "User.schema.json"
+        }
       }
     }
   },
