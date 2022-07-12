@@ -3,15 +3,9 @@
   "title": "Actors",
   "description": "A group of Actors, users that perform use cases.",
   "type": "object",
-  "properties": {
-    "actors": {
-      "type": "object",
-      "patternProperties": {
-        ".*": {
-          "$ref": "Actor.schema.json"
-        }
-      }
+  "patternProperties": {
+    ".*": {
+      "$ref": "Actor.schema.json"
     }
-  },
-  "required": ["actors"]
+  }
 }

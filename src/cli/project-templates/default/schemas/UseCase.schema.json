@@ -1,0 +1,32 @@
+{
+  "$id": "UseCase.schema.json",
+  "title": "Use Case",
+  "description": "An activity or process performed by one or more users, typically using a UI application.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "performedBy": {
+      "type": "array",
+      "items": {
+        "$ref": "References/SystemReference.schema.json"
+      }
+    },
+    "performedWith": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "Component.schema.json"
+        }
+      }
+    }
+  },
+  "required": ["name"]
+}

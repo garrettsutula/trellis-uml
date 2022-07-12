@@ -16,7 +16,7 @@
       },
       "type": {
         "type": "string",
-        "enum": ["UI", "Service", "Database"]
+        "enum": ["UI", "Service", "Database", "Processor", "Queue", "File"]
       },
       "description": {
         "type": "string",

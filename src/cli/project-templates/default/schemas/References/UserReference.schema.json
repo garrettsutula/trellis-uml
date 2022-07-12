@@ -1,0 +1,13 @@
+{
+  "$id": "UserReference.schema.json",
+  "title": "User Reference",
+  "description": "A reference to a user.",
+  "type": "object",
+  "properties": {
+    "$ref": {
+      "type": "string",
+      "format": "uri-reference"
+    }
+  },
+  "required": ["$ref"]
+}
