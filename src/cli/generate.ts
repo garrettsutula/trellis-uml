@@ -1,9 +1,10 @@
 import * as path from 'path';
 import { mkdir, writeFile } from 'fs/promises';
+import postProcess from './postprocess';
 
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
-export default async (schemaFilePath, template) => {
+export default async (schemaFilePath, template, postprocessFn) => {
   const outputPath = path
     .normalize(schemaFilePath)
     .replace(`temp${path.sep}models${path.sep}`, `output${path.sep}`)
@@ -11,7 +12,7 @@ export default async (schemaFilePath, template) => {
   const schema = await $RefParser.dereference(schemaFilePath);
   let output;
   try {
-    output = template(schema);
+    output = template(postProcess(schema, postprocessFn));
   } catch (e) {
     throw new Error(`
     Error generating ${path.basename(schemaFilePath)} output!

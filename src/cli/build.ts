@@ -64,15 +64,20 @@ export default async function build(): Promise<void> {
       const scriptPath = preprocessingScriptPaths.find((filePath) => filePath.includes(`${type}.js`));
 
       if (filePaths.length && templatePath && jsonSchemaPath) {
-        // Pre-processing step.
         let preprocessFn;
-        if (scriptPath) preprocessFn = (await import(`${path.join(process.cwd(), scriptPath)}`)).default;
-        const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
-        const preprocessedFilePaths = await Promise.all(filePaths.map((filePath) => preprocess(filePath, preprocessFn, typeSchema)));
+        let postprocessFn;
+        // Pre-processing step.
+        if (scriptPath) {
+          const preprocessingFns = await import(`${path.join(process.cwd(), scriptPath)}`);
+          preprocessFn = preprocessingFns.preprocessFn;
+          postprocessFn = preprocessingFns.postprocessFn;
+        }
+        // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
+        const preprocessedFilePaths = await Promise.all(filePaths.map((filePath) => preprocess(filePath, preprocessFn)));
         // Generate output step.
         const templateStr = await (await readFile(templatePath)).toString();
         const template = Handlebars.compile(templateStr);
-        return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template)));
+        return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
       }
       return [];
     }),

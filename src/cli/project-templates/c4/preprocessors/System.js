@@ -1,6 +1,6 @@
 const nameToId = require('./lib/nameToId');
 
-module.exports = async (schema) => {
+function preprocessingFn(schema) {
   const { components = [] } = schema;
   Object.keys(components).forEach((componentKey) => {
     const component = schema.components[componentKey];
@@ -12,4 +12,13 @@ module.exports = async (schema) => {
   schema.id = nameToId(schema.name);
   schema.modelType = 'system';
   return schema;
+}
+
+function postprocessingFn(schema) {
+  return schema;
+}
+
+module.exports = {
+  preprocessingFn,
+  postprocessingFn,
 };
