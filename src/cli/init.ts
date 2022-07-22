@@ -36,7 +36,7 @@ export async function initializeProject(type) {
     } catch (err) {
       throw new Error(`⛔️\tError running 'npm init'.\n${JSON.stringify(err)}`);
     }
-    console.log(chalk.bold("⚙️ Running 'npm install' to install project dependencies."));
+    console.log(chalk.bold("⚙️\tRunning 'npm install' to install project dependencies."));
     try {
       execSync('npm install --save trellisuml');
     } catch (err) {
