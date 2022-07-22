@@ -1,11 +1,10 @@
 import * as path from 'path';
 import { mkdir, writeFile, copyFile } from 'fs/promises';
-import { validate } from 'jsonschema';
 
 const YAML = require('yaml');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
-async function preprocessSchema(schemaFilePath: string, preprocessingFn: any, typeSchema: any): Promise<string> {
+async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): Promise<string> {
   let schema = await $RefParser.parse(schemaFilePath);
   /*
   try {
@@ -32,9 +31,9 @@ async function justCopySchema(filePath): Promise<string> {
   return outputPath;
 }
 
-export default (filePath, preprocessFn, typeSchema): Promise<string> => {
+export default (filePath, preprocessFn): Promise<string> => {
   if (preprocessFn) {
-    return preprocessSchema(filePath, preprocessFn, typeSchema);
+    return preprocessSchema(filePath, preprocessFn);
   }
   return justCopySchema(filePath);
 };
