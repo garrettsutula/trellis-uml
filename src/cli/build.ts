@@ -32,11 +32,9 @@ export default async function build(): Promise<void> {
   Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
     switch (operator) {
       case '==':
-        return (v1 === v2) ? options.fn(this) : options.inverse(this);
       case '===':
         return (v1 === v2) ? options.fn(this) : options.inverse(this);
       case '!=':
-        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
       case '!==':
         return (v1 !== v2) ? options.fn(this) : options.inverse(this);
       case '<':
@@ -54,6 +52,13 @@ export default async function build(): Promise<void> {
       default:
         return options.inverse(this);
     }
+  });
+
+  Handlebars.registerHelper('includes', function (collection, value, options) {
+    if (Array.isArray(collection)) {
+      return collection.includes(value) ? options.fn(this) : options.inverse(this);
+    }
+    return options.inverse(this);
   });
 
   await Promise.all(
