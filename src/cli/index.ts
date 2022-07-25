@@ -46,3 +46,5 @@ invokedCommand
     console.dir(e);
     process.exit(1);
   });
+
+  // TODO: add index.ts in root that exports utils like nameToId

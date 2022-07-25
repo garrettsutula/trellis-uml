@@ -3,6 +3,9 @@ import chalk from 'chalk';
 import * as chokidar from 'chokidar';
 import build from './build';
 
+// TODO: gracefully handle SIGTERM
+// TODO: watch each folder type and trigger more efficient build process
+
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 

@@ -8,6 +8,8 @@ import generate from './generate';
 import { globAsync } from '../common/glob';
 import { extractModelType } from '../common/regex';
 
+// TODO: create a class from the data we instantiate here
+
 export default async function build(): Promise<void> {
   console.time(chalk.dim('Build duration'));
   // Load project files from filesystem.
@@ -23,12 +25,13 @@ export default async function build(): Promise<void> {
   await cp('./models/', './temp/models/', { recursive: true });
 
   const modelTypes = Array.from((new Set(modelFilePaths.map((filePath) => filePath.match(extractModelType)[1]))).values());
-
+  // TODO: split into loader function
   // Register partials in project for use in any template.
   const partials = await Promise.all(partialsPaths.map((filePath) => readFile(filePath)));
   partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
 
   // Register conditional logic helper
+  // TODO: refactor to use helpers folder
   Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
     switch (operator) {
       case '==':
@@ -53,7 +56,7 @@ export default async function build(): Promise<void> {
         return options.inverse(this);
     }
   });
-
+  // TODO: refactor to use helpers folder
   Handlebars.registerHelper('includes', function (collection, value, options) {
     if (Array.isArray(collection)) {
       return collection.includes(value) ? options.fn(this) : options.inverse(this);
