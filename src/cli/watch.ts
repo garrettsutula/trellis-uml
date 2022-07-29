@@ -18,7 +18,7 @@ export async function watchProject() {
   let updateDebounce;
 
   console.log(chalk.dim(`Watching current directory ${currentFolder}.`));
-  chokidar.watch([
+  const watcher = chokidar.watch([
     './models/**/*.yaml',
     './schemas/*.json',
     './preprocessors/*.js',
@@ -33,15 +33,9 @@ export async function watchProject() {
 
   process.stdin.resume();
 
-  process.on('SIGINT', () => {
-    console.log('Received SIGINT. Press Control-D to exit.');
+  process.on('SIGINT', async () => {
+    console.log('\n', '👋\tTerminating trellis watch...');
+    await watcher.close();
+    process.exit();
   });
-
-  // Using a single function to handle multiple signals
-  function handle(signal) {
-    console.log(`Received ${signal}`);
-  }
-
-  process.on('SIGINT', handle);
-  process.on('SIGTERM', handle);
 }
