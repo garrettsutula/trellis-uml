@@ -9,14 +9,14 @@ const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
 async function buildProject(filePath) {
-  console.log(chalk.dim(`Changes detected on: ${filePath}`));
+  console.log(chalk.dim(`ℹ️\tChanges detected on: ${filePath}`));
   await build();
 }
 
 export async function watchProject() {
   let updateDebounce;
 
-  console.log(chalk.dim(`Watching current directory ${currentFolder}.`));
+  console.log(chalk.dim(`ℹ️\tWatching current directory ${currentFolder}.`));
   const watcher = chokidar.watch([
     './models/**/*.yaml',
     './schemas/*.json',
@@ -27,13 +27,13 @@ export async function watchProject() {
     updateDebounce = setTimeout(buildProject, 500, filePath);
   });
 
-  console.log(chalk.dim('Running initial project build...'));
+  console.log(chalk.dim('ℹ️\tRunning initial project build...'));
   await build();
 
   process.stdin.resume();
 
   process.on('SIGINT', async () => {
-    console.log('\n', '👋\tTerminating trellis watch...');
+    console.log('\n', 'ℹ️\tTerminating trellis watch...');
     await watcher.close();
     process.exit();
   });
