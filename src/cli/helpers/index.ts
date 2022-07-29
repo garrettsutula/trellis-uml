@@ -1,4 +1,4 @@
-import * as ifCond from './ifCond';
-import * as includes from './includes';
+import ifCond from './ifCond';
+import includes from './includes';
 
 export default [ ifCond, includes ];
