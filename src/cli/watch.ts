@@ -9,14 +9,14 @@ const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
 async function buildProject(filePath) {
-  console.log(chalk.dim(`ℹ️\tChanges detected on: ${filePath}`));
+  console.log(chalk.dim(`ℹ👀\tChanges detected on: ${filePath}`));
   await build();
 }
 
 export async function watchProject() {
   let updateDebounce;
 
-  console.log(chalk.dim(`ℹ️\tWatching current directory ${currentFolder}.`));
+  console.log(chalk.dim(`👀\tWatching current directory ${currentFolder}.`));
   const watcher = chokidar.watch([
     './models/**/*.yaml',
     './schemas/*.json',
