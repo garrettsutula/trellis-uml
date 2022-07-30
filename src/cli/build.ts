@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { rm, cp } from 'fs/promises';
 import * as Handlebars from 'handlebars';
 import chalk from 'chalk';
@@ -21,9 +20,6 @@ export type BuilderContext = {
   templates: { [key: string]: Handlebars.Template},
   scripts: { [key: string]: any },
 }
-
-// TODO: create a class from the data we instantiate here
-
 
 async function init(): Promise<BuilderContext> {
   const [
