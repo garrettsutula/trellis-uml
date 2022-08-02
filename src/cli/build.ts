@@ -45,7 +45,7 @@ async function init(): Promise<BuilderContext> {
   }
 }
 
-export default async function build(updatedBuilderContext?: BuilderContext): Promise<void> {
+export default async function build(updatedBuilderContext?: BuilderContext, singleRun = false): Promise<void> {
   console.time(chalk.dim('Build duration'));
   // Load project files from filesystem.
 
@@ -76,6 +76,6 @@ export default async function build(updatedBuilderContext?: BuilderContext): Pro
     }),
   );
   console.timeEnd(chalk.dim('Build duration'));
-  // Clean up temporary workspace.
-  await rm('./temp', { recursive: true, force: true });
+  // Clean up temporary workspace if single run.
+  if (singleRun) await rm('./temp', { recursive: true, force: true });
 }
