@@ -16,7 +16,8 @@ async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): P
   try {
     schema = await preprocessingFn(schema);
   } catch (e) {
-    throw new Error(`Error pre-processing schema: ${path.basename(schemaFilePath)}\n${JSON.stringify(e)}`);
+    e.message = `Error pre-processing schema: ${path.basename(schemaFilePath)}\n` + e.message;
+    throw e
   }
   const outputPath = path.join('./temp', schemaFilePath);
   await mkdir(path.dirname(outputPath), { recursive: true });

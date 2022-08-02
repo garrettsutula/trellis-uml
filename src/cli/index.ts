@@ -23,7 +23,7 @@ switch (command) {
     invokedCommand = initializeProject(type);
     break;
   case 'build':
-    invokedCommand = build();
+    invokedCommand = build(undefined, true);
     break;
   case 'watch':
     invokedCommand = watchProject();
