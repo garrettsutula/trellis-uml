@@ -9,7 +9,7 @@ const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
 async function buildProject(filePath) {
-  console.log(chalk.dim(`ℹ👀\tChanges detected on: ${filePath}`));
+  console.log(chalk.dim(`👀\tChanges detected on: ${filePath}`));
   await build();
 }
 
