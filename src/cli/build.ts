@@ -10,12 +10,8 @@ import { getSchemaPaths } from '../schemas';
 import { getScripts } from '../processors';
 let builderContext;
 
-type GenericObject = {
-  [key: string]: string | number | boolean | GenericObject | GenericObject[]
-};
-
 export type BuilderContext = {
-  modelPaths: { [key: string]: GenericObject[]},
+  modelPaths: { [key: string]: string[]},
   schemaPaths: { [key: string]: string },
   templates: { [key: string]: Handlebars.Template},
   scripts: { [key: string]: any },
@@ -57,25 +53,32 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
   }
   // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
   if (updatedBuilderContext) builderContext = updatedBuilderContext;
-
-  await Promise.all(
-    Object.keys(builderContext.modelPaths).map(async (type) => {
-      const modelPaths = builderContext.modelPaths[type];
-      const schemaPath = builderContext.schemaPaths[type];
-      const template = builderContext.templates[type];
-      const {preprocessFn = schema => schema, postprocessFn = schema => schema} = builderContext.scripts[type] || {};
-
-      if (modelPaths.length && template && schemaPath) {
-        // TODO: schema check prior to processing
-        // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
-        const preprocessedFilePaths = await Promise.all(modelPaths.map((filePath) => preprocess(filePath, preprocessFn)));
-        // Generate output step.
-        return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
-      }
-      return [];
-    }),
-  );
+  try {
+    await Promise.all(
+      Object.keys(builderContext.modelPaths).map(async (type) => {
+        const modelPaths = builderContext.modelPaths[type];
+        const schemaPath = builderContext.schemaPaths[type];
+        const template = builderContext.templates[type];
+        const {preprocessFn = schema => schema, postprocessFn = schema => schema} = builderContext.scripts[type] || {};
+  
+        if (modelPaths.length && template && schemaPath) {
+          // TODO: schema check prior to processing
+          // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
+          const preprocessedFilePaths = await Promise.all(modelPaths.map((filePath) => preprocess(filePath, preprocessFn)));
+          // Generate output step.
+          return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
+        }
+        return [];
+      }),
+    );
+    console.log(chalk.green('✅\tBuild SUCCESSFUL!'))
+  } catch (e) {
+    console.error(chalk.red('⛔️\tBuild FAILED due to one or more errors in the project.'));
+    console.error(chalk.red(e));
+    if (singleRun) throw new Error(e);
+  }
   console.timeEnd(chalk.dim('Build duration'));
   // Clean up temporary workspace if single run.
   if (singleRun) await rm('./temp', { recursive: true, force: true });
+  return builderContext;
 }
