@@ -17,39 +17,45 @@ const currentFolder = path.basename(workingDirectoryPath);
 async function buildProject(evt, filePath) {
   const [, fileType, type, fileName] = filePath.match(filePathRegex);
   console.log(chalk.dim(`👀 ${evt === 'unlink' ? 'DELETE': evt.toUpperCase()} detected on: ${filePath}`));
-  switch(`${evt}-${fileType}`) {
-    case 'add-models':
-      currentBuilderContext.modelPaths[type].push(filePath);
-      break;
-    case 'add-preprocessors':
-    case 'change-preprocessors':
-      const newScripts = await getScripts([filePath]);
-      currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
-      break;
-    case 'add-schemas':
-      currentBuilderContext.schemaPaths[fileName] = filePath;
-      break;
-    case 'add-templates':
-    case 'change-templates':
-      const newTemplates = await getTemplates('1', [ filePath ]);
-      currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
-      break;
-    case 'unlink-models':
-      currentBuilderContext.modelPaths[type] = currentBuilderContext.modelPaths[type].filter((modelPath) => !modelPath.includes(filePath));
-      break;
-    case 'unlink-preprocessors':
-      delete currentBuilderContext.scripts[fileName];
-      break;
-    case 'unlink-schemas':
-      delete currentBuilderContext.schemaPaths[fileName];
-      break;
-    case 'unlink-templates':
-      delete currentBuilderContext.templates[fileName];
-      break;
-    default:
-      console.info(chalk.dim(`No action needed for this change, running build step...`))
+  if (currentBuilderContext) {
+    switch(`${evt}-${fileType}`) {
+      case 'add-models':
+        currentBuilderContext.modelPaths[type].push(filePath);
+        break;
+      case 'add-preprocessors':
+      case 'change-preprocessors':
+        const newScripts = await getScripts([filePath]);
+        currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
+        break;
+      case 'add-schemas':
+        currentBuilderContext.schemaPaths[fileName] = filePath;
+        break;
+      case 'add-templates':
+      case 'change-templates':
+        const newTemplates = await getTemplates('1', [ filePath ]);
+        currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
+        break;
+      case 'unlink-models':
+        currentBuilderContext.modelPaths[type] = currentBuilderContext.modelPaths[type].filter((modelPath) => !modelPath.includes(filePath));
+        break;
+      case 'unlink-preprocessors':
+        delete currentBuilderContext.scripts[fileName];
+        break;
+      case 'unlink-schemas':
+        delete currentBuilderContext.schemaPaths[fileName];
+        break;
+      case 'unlink-templates':
+        delete currentBuilderContext.templates[fileName];
+        break;
+      default:
+        console.info(chalk.dim(`No action needed for this change, running build step...`));
+    }  
   }
-  await build(currentBuilderContext);
+  try {
+    await build(currentBuilderContext, false);
+  } catch(e) {
+    console.info(chalk.dim(`Build step errored, the last change likely caused this problem...`));
+  }
 }
 
 export async function watchProject() {
@@ -66,8 +72,13 @@ export async function watchProject() {
     updateDebounce = setTimeout(buildProject, 500, evt, filePath);
   });
 
-  console.log(chalk.dim('ℹ️ Running initial project build...'));
-  currentBuilderContext = await build();
+  try {
+    console.log(chalk.dim('ℹ️ Running initial project build...'));
+    currentBuilderContext = await build(undefined, false);
+  } catch(err) {
+    console.info(chalk.dim(`Initial build errored, continuing to watch project...`));
+  }
+
 
   process.stdin.resume();
 

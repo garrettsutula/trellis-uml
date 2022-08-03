@@ -42,7 +42,7 @@ async function init(): Promise<BuilderContext> {
   }
 }
 
-export default async function build(updatedBuilderContext?: BuilderContext, singleRun = false): Promise<BuilderContext> {
+export default async function build(updatedBuilderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
   console.time(chalk.dim('. Build duration'));
   // Load project files from filesystem.
 
@@ -74,8 +74,9 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
     );
     console.log(chalk.green('✅ Build SUCCESSFUL!'))
   } catch (err) {
-    logError('⛔️ Build FAILED due to one or more errors in the project.', err)
-    if (singleRun) throw err;
+    console.timeEnd(chalk.dim('. Build duration'));
+    logError('⛔️ Build FAILED due to one or more errors in the project.', err);
+    throw err;
   }
   console.timeEnd(chalk.dim('. Build duration'));
   // Clean up temporary workspace if single run.
