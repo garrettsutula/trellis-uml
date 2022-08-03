@@ -43,14 +43,14 @@ async function init(): Promise<BuilderContext> {
 }
 
 export default async function build(updatedBuilderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
-  console.time(chalk.dim('. Build duration'));
+  console.time(chalk.dim('⏱Build duration'));
   // Load project files from filesystem.
 
   // If needed, perform initial full load of project files.
   if (!builderContext) {
-    console.time(chalk.dim('. Initial load duration'));
+    console.time(chalk.dim('⏱Initial load duration'));
     builderContext = await init();
-    console.timeEnd(chalk.dim('. Initial load duration'));
+    console.timeEnd(chalk.dim('⏱Initial load duration'));
   }
   // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
   if (updatedBuilderContext) builderContext = updatedBuilderContext;
@@ -74,11 +74,11 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
     );
     console.log(chalk.green('✅ Build SUCCESSFUL!'))
   } catch (err) {
-    console.timeEnd(chalk.dim('. Build duration'));
+    console.timeEnd(chalk.dim('⏱Build duration'));
     logError('⛔️ Build FAILED due to one or more errors in the project.', err);
     throw err;
   }
-  console.timeEnd(chalk.dim('. Build duration'));
+  console.timeEnd(chalk.dim('⏱Build duration'));
   // Clean up temporary workspace if single run.
   if (singleRun) await rm('./temp', { recursive: true, force: true });
   return builderContext;
