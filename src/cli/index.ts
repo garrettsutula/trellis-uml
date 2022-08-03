@@ -18,7 +18,7 @@ const { _: [command, type] = [] } = argv;
 let invokedCommand;
 
 console.log(chalk.bold(`⚙️ Running command 'trellis ${command}'`));
-console.time(chalk.dim('⏱ Total duration'));
+console.time(chalk.dim('⏱ Total'));
 switch (command) {
   case 'init':
     invokedCommand = initializeProject(type);
@@ -40,7 +40,7 @@ invokedCommand
   .then(() => {
     if (command !== 'watch') {
       console.log(chalk.bold.underline.green(`✅ 'trellis ${command}' ran successfully!`));
-      console.timeEnd(chalk.dim('⏱ Total duration'));
+      console.timeEnd(chalk.dim('⏱ Total'));
       process.exit(0);
     }
   })
