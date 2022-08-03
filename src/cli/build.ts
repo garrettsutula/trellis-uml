@@ -54,7 +54,7 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
       console.timeEnd(chalk.dim('⏱ Initial project load'));
     } catch(err) {
       console.timeEnd(chalk.dim('⏱ Initial project load'));
-      logError(`⛔️ Problem initializing project`, err);
+      logError(`⛔️ Problem initializing project`);
       throw err;
     }
   }
