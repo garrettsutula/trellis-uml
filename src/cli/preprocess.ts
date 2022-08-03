@@ -44,5 +44,4 @@ export default async (filePath, preprocessFn): Promise<string> => {
     logError(`⛔️ Error pre-processing schema '${filePath}'`);
     throw err;
   }
-
 };
