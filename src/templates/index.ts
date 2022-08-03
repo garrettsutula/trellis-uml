@@ -10,7 +10,7 @@ export function registerHelpers(Handlebars: any) {
 }
 
 export async function registerPartials(Handlebars: any) {
-  const partialsPaths = await globAsync('./templates/partials/*.hbs');
+  const partialsPaths = await globAsync('./templates/partials/**/*.hbs');
     // Register partials in project for use in any template.
     const partials = await Promise.all(partialsPaths.map((filePath) => readFile(filePath)));
     partialsPaths.forEach((filePath, i) => Handlebars.registerPartial(path.basename(filePath).replace('.hbs', ''), partials[i].toString()));
