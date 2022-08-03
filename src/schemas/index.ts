@@ -10,7 +10,7 @@ export async function getSchemaPaths(onlyPaths?: string[]) {
         const type = schemaPath.match(schemaType)[1];
         schemaPaths[type] = schemaPath;
       } catch (err) {
-        logError(`Problem getting schema paths for '${schemaPath}'`, err);
+        logError(`Problem getting schema paths for '${schemaPath}', likely unexpected file name/type?`, err);
         throw err;
       }
     });
