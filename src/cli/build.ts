@@ -48,9 +48,15 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
 
   // If needed, perform initial full load of project files.
   if (!builderContext) {
-    console.time(chalk.dim('⏱ Initial project load'));
-    builderContext = await init();
-    console.timeEnd(chalk.dim('⏱ Initial project load'));
+    try {
+      console.time(chalk.dim('⏱ Initial project load'));
+      builderContext = await init();
+      console.timeEnd(chalk.dim('⏱ Initial project load'));
+    } catch(err) {
+      console.timeEnd(chalk.dim('⏱ Initial project load'));
+      logError(`⛔️ Problem initializing project`, err);
+      throw err;
+    }
   }
   // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
   if (updatedBuilderContext) builderContext = updatedBuilderContext;
