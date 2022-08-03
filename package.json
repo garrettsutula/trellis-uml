@@ -1,6 +1,6 @@
 {
   "name": "trellisuml",
-  "version": "0.11.10",
+  "version": "0.11.11",
   "description": "",
   "bin": {
     "trellis": "./dist/cli/index.js"
