@@ -60,6 +60,7 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
   }
   // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
   if (updatedBuilderContext) builderContext = updatedBuilderContext;
+  let totalModelCount = 0;
   try {
     await Promise.all(
       Object.keys(builderContext.modelPaths).map(async (type) => {
@@ -67,6 +68,7 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
         const schemaPath = builderContext.schemaPaths[type];
         const template = builderContext.templates[type];
         const {preprocessFn = schema => schema, postprocessFn = schema => schema} = builderContext.scripts[type] || {};
+        totalModelCount += modelPaths.length;
   
         if (modelPaths.length && template && schemaPath) {
           // TODO: schema check prior to processing
@@ -78,7 +80,7 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
         return [];
       }),
     );
-    console.log(chalk.green('✅ Build SUCCESSFUL!'))
+    console.log(chalk.green(`✅ Build SUCCESSFUL! ${totalModelCount} models processed`))
   } catch (err) {
     console.timeEnd(chalk.dim('⏱ Project build'));
     logError('⛔️ Build FAILED due to one or more errors in the project.', err);
