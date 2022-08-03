@@ -8,6 +8,7 @@ import { getTemplates, registerHelpers, registerPartials } from '../templates';
 import { getModelPaths } from '../models';
 import { getSchemaPaths } from '../schemas';
 import { getScripts } from '../processors';
+import { logError } from '../common/logger';
 let builderContext;
 
 export type BuilderContext = {
@@ -41,15 +42,15 @@ async function init(): Promise<BuilderContext> {
   }
 }
 
-export default async function build(updatedBuilderContext?: BuilderContext, singleRun = false): Promise<void> {
-  console.time(chalk.dim('Build duration'));
+export default async function build(updatedBuilderContext?: BuilderContext, singleRun = false): Promise<BuilderContext> {
+  console.time(chalk.dim('. Build duration'));
   // Load project files from filesystem.
 
   // If needed, perform initial full load of project files.
   if (!builderContext) {
-    console.time(chalk.dim('Initial load duration'));
+    console.time(chalk.dim('. Initial load duration'));
     builderContext = await init();
-    console.timeEnd(chalk.dim('Initial load duration'));
+    console.timeEnd(chalk.dim('. Initial load duration'));
   }
   // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
   if (updatedBuilderContext) builderContext = updatedBuilderContext;
@@ -71,13 +72,12 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
         return [];
       }),
     );
-    console.log(chalk.green('✅\tBuild SUCCESSFUL!'))
-  } catch (e) {
-    console.error(chalk.red('⛔️\tBuild FAILED due to one or more errors in the project.'));
-    console.error(chalk.red(e));
-    if (singleRun) throw new Error(e);
+    console.log(chalk.green('✅ Build SUCCESSFUL!'))
+  } catch (err) {
+    logError('⛔️ Build FAILED due to one or more errors in the project.', err)
+    if (singleRun) throw err;
   }
-  console.timeEnd(chalk.dim('Build duration'));
+  console.timeEnd(chalk.dim('. Build duration'));
   // Clean up temporary workspace if single run.
   if (singleRun) await rm('./temp', { recursive: true, force: true });
   return builderContext;

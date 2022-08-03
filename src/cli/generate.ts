@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { mkdir, writeFile } from 'fs/promises';
 import postProcess from './postprocess';
+import { logError } from '../common/logger';
 
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
@@ -13,11 +14,10 @@ export default async (schemaFilePath, template, postprocessFn) => {
   let output;
   try {
     output = template(postProcess(schema, postprocessFn));
-  } catch (e) {
-    throw new Error(`
-    Error generating ${path.basename(schemaFilePath)} output!
-    Template: ${JSON.stringify(template)}
-    Error: ${JSON.stringify(e)}`);
+  } catch (err) {
+    logError(`⛔️ Error generating ${path.basename(schemaFilePath)} output!
+    Template: ${JSON.stringify(template)}`);
+    throw err;
   }
 
   await mkdir(path.dirname(outputPath), { recursive: true });
