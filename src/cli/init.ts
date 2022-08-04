@@ -34,6 +34,8 @@ export async function initializeProject(type) {
   if (!alreadyInitialized) {
     try {
       execSync('npm init -y');
+      execSync('npm pkg set scripts.build="trellis build"');
+      execSync('npm pkg set scripts.watch="trellis watch"');
     } catch (err) {
       logError('⛔️ Error running \'npm init\'', err);
       throw err;
