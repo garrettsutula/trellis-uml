@@ -5,7 +5,7 @@ import build, { BuilderContext } from './build';
 import { getScripts } from '../processors';
 import { getTemplates } from '../templates';
 
-const filePathRegex = /^(\w*)\/(?:([\w\s-]*)\/)?([\w\s-]*)\.\w*$/;
+const filePathRegex = /^(\w*)\/(?:([\w\s-]*)\/)?(?:[\w\s-]*\/)+([\w\s-]*)\.\w*$/;
 
 // TODO: watch each folder type and trigger more efficient build process
 
