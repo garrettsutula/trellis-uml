@@ -3,9 +3,7 @@ import chalk from 'chalk';
 import * as chokidar from 'chokidar';
 import build, { BuilderContext } from './build';
 import { getScripts } from '../processors';
-import { getTemplates } from '../templates';
-
-const filePathRegex = /^(\w*)\/(?:([\w\s-]*)\/)?(?:[\w\s-]*\/)+([\w\s-]*)\.\w*$/;
+import { getTemplates, registerPartials } from '../templates';
 
 // TODO: watch each folder type and trigger more efficient build process
 
@@ -15,28 +13,44 @@ const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
 async function buildProject(evt, filePath) {
-  const [, fileType, type, fileName] = filePath.match(filePathRegex);
+  const splitPath = filePath.split(path.sep);
+  const [fileType, type ] = splitPath;
+  const fileName = splitPath[splitPath.length - 1].split('.')[0];
   console.log(chalk.dim(`👀 ${evt === 'unlink' ? 'DELETE': evt.toUpperCase()} detected on: ${filePath}`));
   if (currentBuilderContext) {
+    const isKnownModelType = Object.keys(currentBuilderContext.modelPaths).includes(type);
     switch(`${evt}-${fileType}`) {
       case 'add-models':
-        currentBuilderContext.modelPaths[type].push(filePath);
+        if (isKnownModelType)
+          currentBuilderContext.modelPaths[type].push(filePath);
+        else
+          console.log(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
         break;
       case 'add-preprocessors':
-      case 'change-preprocessors':
         const newScripts = await getScripts([filePath]);
         currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
+        break;
+      case 'change-preprocessors':
+        console.log(chalk.dim(`Processor script can't be hot reloaded in this version (feature dev required).`));
         break;
       case 'add-schemas':
         currentBuilderContext.schemaPaths[fileName] = filePath;
         break;
       case 'add-templates':
       case 'change-templates':
-        const newTemplates = await getTemplates('1', [ filePath ]);
-        currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
+        if (filePath.includes('partials')) {
+          console.log(chalk.dim(`Reregistering partials...`));
+          await registerPartials();
+        } else {
+          const newTemplates = await getTemplates([ filePath ]);
+          currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
+        }
         break;
       case 'unlink-models':
-        currentBuilderContext.modelPaths[type] = currentBuilderContext.modelPaths[type].filter((modelPath) => !modelPath.includes(filePath));
+        if (isKnownModelType)
+          currentBuilderContext.modelPaths[type] = currentBuilderContext.modelPaths[type].filter((modelPath) => !modelPath.includes(filePath));
+        else
+          console.log(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
         break;
       case 'unlink-preprocessors':
         delete currentBuilderContext.scripts[fileName];
@@ -45,7 +59,12 @@ async function buildProject(evt, filePath) {
         delete currentBuilderContext.schemaPaths[fileName];
         break;
       case 'unlink-templates':
-        delete currentBuilderContext.templates[fileName];
+        if (filePath.includes('partials')) {
+          console.log(chalk.dim(`Reregistering partials...`));
+          await registerPartials();
+        } else {
+          delete currentBuilderContext.templates[fileName];
+        }
         break;
       default:
         console.info(chalk.dim(`No action needed for this change, running build step...`));

@@ -46,7 +46,7 @@ invokedCommand
   })
   .catch((e) => {
     console.error(chalk.red(`⛔️ Problem running 'trellis ${command}', see error logs above for more information.`));
+    console.timeEnd(chalk.dim('⏱ Total'));
     process.exit(1);
   });
 
-  // TODO: add index.ts in root that exports utils like nameToId
