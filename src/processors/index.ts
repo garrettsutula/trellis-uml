@@ -6,7 +6,7 @@ import { scriptType } from "../common/regex";
 export async function getScripts(onlyPaths?: string[]) {
   const scriptPaths = {};
 
-  const preprocessingScriptPaths = await globAsync('./preprocessors/*.js');
+  const preprocessingScriptPaths = await globAsync('./processors/*.js');
   const preprocessingScripts = await Promise.all(preprocessingScriptPaths.map(async (scriptPath) => {
     const scripts = await import(`${path.join(process.cwd(), scriptPath)}`);
     return {

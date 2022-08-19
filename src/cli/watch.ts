@@ -31,11 +31,11 @@ async function buildProject(evt, filePath) {
         else
           logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
         break;
-      case 'add-preprocessors':
+      case 'add-processors':
         const newScripts = await getScripts([filePath]);
         currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
         break;
-      case 'change-preprocessors':
+      case 'change-processors':
         logger.warn(chalk.dim(`Processor script can't be hot reloaded in this version (feature dev required).`));
         break;
       case 'add-schemas':
@@ -57,7 +57,7 @@ async function buildProject(evt, filePath) {
         else
           logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
         break;
-      case 'unlink-preprocessors':
+      case 'unlink-processors':
         delete currentBuilderContext.scripts[fileName];
         break;
       case 'unlink-schemas':
@@ -89,7 +89,7 @@ export async function watchProject() {
   const watcher = chokidar.watch([
     './models/**/*.yaml',
     './schemas/*.json',
-    './preprocessors/*.js',
+    './processors/*.js',
     './templates/**/*.hbs',
   ], { ignoreInitial: true }).on('all', (evt, filePath) => {
     if (updateDebounce) clearTimeout(updateDebounce);
