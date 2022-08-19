@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { mkdir, writeFile, copyFile } from 'fs/promises';
-import { logError } from '../common/logger';
+import logger from '../common/logger';
 
 const YAML = require('yaml');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
@@ -41,7 +41,7 @@ export default async (filePath, preprocessFn): Promise<string> => {
     }
     return justCopySchema(filePath);
   } catch (err) {
-    logError(`⛔️ Error pre-processing schema '${filePath}'`);
+    logger.error(`⛔️ Error pre-processing schema '${filePath}'`);
     throw err;
   }
 };

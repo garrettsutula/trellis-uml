@@ -3,18 +3,18 @@ import { access, cp, readFile } from 'fs/promises';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
 import * as prompt from 'prompt';
-import { logError } from '../common/logger';
+import logger from '../common/logger';
 
 export async function initializeProject(type) {
   const templatePath = path.join(__dirname, `./project-templates/${type || 'default'}/`);
-  console.log(chalk.bold("⚙️ Running 'npm init' to initialize project folder..."));
+  logger.info(chalk.bold("⚙️ Running 'npm init' to initialize project folder..."));
   let alreadyInitialized = false;
 
   // Test for project template path, early return for bad cli arg.
   try {
     await access(templatePath);
   } catch (err) {
-    logError(`⛔️ Project template type: '${type || 'default'}' does not exist.`, err);
+    logger.error(`⛔️ Project template type: '${type || 'default'}' does not exist.`, err);
   }
 
   // Test for presence of package.json (i.e. project already initialized or possible wrong folder), init if needed.
@@ -23,9 +23,9 @@ export async function initializeProject(type) {
     const packageInfo = await JSON.parse((await readFile('./package.json')).toString());
     if (packageInfo?.dependencies?.trellisuml) alreadyInitialized = true;
     else {
-      console.log('⛔️ package.json already exists but "trellisuml" isn\'t a listed dependency, wrong folder?');
+      logger.error('⛔️ package.json already exists but "trellisuml" isn\'t a listed dependency, wrong folder?');
     }
-    console.log('⚠️ trellis project already exists, skipping initialization.');
+    logger.info('⚠️ trellis project already exists, skipping initialization.');
   } catch (e) {
     // Noop, alreadyInitialized is already set to 'false'
   }
@@ -37,14 +37,14 @@ export async function initializeProject(type) {
       execSync('npm pkg set scripts.build="trellis build"');
       execSync('npm pkg set scripts.watch="trellis watch"');
     } catch (err) {
-      logError('⛔️ Error running \'npm init\'', err);
+      logger.error('⛔️ Error running \'npm init\'', err);
       throw err;
     }
-    console.log(chalk.bold("⚙️ Running 'npm install' to install project dependencies."));
+    logger.info(chalk.bold("⚙️ Running 'npm install' to install project dependencies."));
     try {
       execSync('npm install --save trellisuml');
     } catch (err) {
-      logError('⛔️ Error installing project dependencies from latest available on npm', err);
+      logger.error('⛔️ Error installing project dependencies from latest available on npm', err);
       throw err;
     }
   }
@@ -64,7 +64,7 @@ export async function initializeProject(type) {
     });
 
     if (userConfirmation) {
-      console.log(chalk.bold(`⚙️ Updating project from latest template files '${type || 'default'}'...`));
+      logger.info(chalk.bold(`⚙️ Updating project from latest template files '${type || 'default'}'...`));
       try {
         await Promise.all([
           cp(path.join(templatePath, './preprocessors/'), './preprocessors/', { recursive: true }),
@@ -72,21 +72,21 @@ export async function initializeProject(type) {
           cp(path.join(templatePath, './templates/'), './templates/', { recursive: true }),
         ]);
       } catch (err) {
-        logError('⛔️ Error updating template files in existing project.', err);
+        logger.error('⛔️ Error updating template files in existing project.', err);
         throw err;
       }
-    } else console.log('⚠️ trellis project already exists, user chose not to update from project template.');
+    } else logger.info('⚠️ trellis project already exists, user chose not to update from project template.');
   } else {
     // Just copy project files from template folder.
-    console.log(chalk.bold(`⚙️ Copying project template '${type || 'default'}'...`));
+    logger.info(chalk.bold(`⚙️ Copying project template '${type || 'default'}'...`));
     try {
       await cp(templatePath, './', {
         recursive: true,
       });
     } catch (err) {
-      logError('⛔️ Error copying configuration template files into project.', err);
+      logger.error('⛔️ Error copying configuration template files into project.', err);
       throw err;
     }
   }
-  console.log(chalk.bold.green('✅ Project Initialization Successful!'));
+  logger.info(chalk.bold.green('✅ Project Initialization Successful!'));
 }

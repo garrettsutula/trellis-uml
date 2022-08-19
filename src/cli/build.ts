@@ -1,68 +1,24 @@
-import { rm, cp } from 'fs/promises';
+import { rm } from 'fs/promises';
 import chalk from 'chalk';
 import preprocess from './preprocess';
 import generate from './generate';
-import { getTemplates, registerHelpers, registerPartials } from '../templates';
-import { getModelPaths } from '../models';
-import { getSchemaPaths } from '../schemas';
-import { getScripts } from '../processors';
-import { logError } from '../common/logger';
+import { BuilderContext, firstRunInit, rmTempFiles } from '../project';
+
+import logger from '../common/logger';
 let builderContext;
 
-export type BuilderContext = {
-  modelPaths: { [key: string]: string[]},
-  schemaPaths: { [key: string]: string },
-  templates: { [key: string]: Handlebars.Template},
-  scripts: { [key: string]: any },
-}
-
-async function firstRunInit(): Promise<BuilderContext> {
-  const [
-    modelPaths,
-    templates,
-    schemaPaths,
-    scripts
-  ] = await Promise.all([
-    getModelPaths(),
-    getTemplates(),
-    getSchemaPaths(),
-    getScripts(),
-    cp('./models/', './temp/models/', { recursive: true }),
-    registerHelpers(),
-    registerPartials(),
-  ])
-
-  return {
-    modelPaths,
-    templates,
-    schemaPaths,
-    scripts,
-  }
-}
-
 export default async function build(updatedBuilderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
-  console.time(chalk.dim('⏱ Project build'));
-  // Load project files from filesystem.
-
-  // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
-  if (updatedBuilderContext) builderContext = updatedBuilderContext;
-
-  // If needed, perform initial full load of project files.
-  if (!builderContext) {
-    try {
-      console.time(chalk.dim('⏱ Initial project load'));
-      builderContext = await firstRunInit();
-    } catch(err) {
-      logError(`⛔️ Problem initializing project`);
-      console.timeEnd(chalk.dim('⏱ Project build'));
-      throw err;
-    } finally {
-      console.timeEnd(chalk.dim('⏱ Initial project load'));
-    }
-  }
-
-  let totalModelCount = 0;
   try {
+    let totalModelCount = 0;
+    logger.time(chalk.dim('⏱ Project build'));
+
+    // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
+    if (updatedBuilderContext) builderContext = updatedBuilderContext;
+
+    // If needed, perform initial full load of project files.
+    if (!builderContext)
+      builderContext = await firstRunInit();
+
     await Promise.all(
       Object.keys(builderContext.modelPaths).map(async (type) => {
         const modelPaths = builderContext.modelPaths[type];
@@ -81,15 +37,14 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
         return [];
       }),
     );
-    console.log(chalk.green(`✅ Build SUCCESSFUL! ${totalModelCount} models processed`))
+    logger.info(chalk.green(`✅ Build SUCCESSFUL! ${totalModelCount} models processed`))
   } catch (err) {
-    logError('⛔️ Build FAILED due to one or more errors in the project.', err);
+    logger.error('⛔️ Build FAILED due to one or more errors in the project.', err);
     throw err;
   } finally {
-    console.timeEnd(chalk.dim('⏱ Project build'));
+    logger.timeEnd(chalk.dim('⏱ Project build'));
+    if (singleRun) await rm('./temp', { recursive: true, force: true });
   }
   
-  // Clean up temporary workspace if single run.
-  if (singleRun) await rm('./temp', { recursive: true, force: true });
   return builderContext;
 }

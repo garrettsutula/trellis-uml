@@ -7,18 +7,20 @@ import chalk from 'chalk';
 import build from './build';
 import { initializeProject } from './init';
 import { watchProject } from './watch';
-import { logError } from '../common/logger';
+import logger from '../common/logger';
 
 const { argv } = yargs(hideBin(process.argv))
   .usage('⚠️ Usage: $0 [init|build|watch]')
+  .alias('v', 'verbose')
   .demandCommand(1);
 
 const { _: [command, type] = [] } = argv;
+global.verbose_level = argv.verbose;
 
 let invokedCommand;
 
-console.log(chalk.bold(`⚙️ Running command 'trellis ${command}'`));
-console.time(chalk.dim('⏱ Total'));
+logger.info(chalk.bold(`⚙️ Running command 'trellis ${command}'`));
+logger.time(chalk.dim('⏱ Total'));
 switch (command) {
   case 'init':
     invokedCommand = initializeProject(type);
@@ -32,21 +34,21 @@ switch (command) {
   default:
     const message = `⛔️ Unrecognized command: ${command}.`;
     const err = new Error(`⛔️ Unrecognized command: ${command}.`);
-    logError(message, err);
+    logger.error(message, err);
     throw err;
 }
 
 invokedCommand
   .then(() => {
     if (command !== 'watch') {
-      console.log(chalk.bold.underline.green(`✅ 'trellis ${command}' ran successfully!`));
-      console.timeEnd(chalk.dim('⏱ Total'));
+      logger.info(chalk.bold.underline.green(`✅ 'trellis ${command}' ran successfully!`));
+      logger.timeEnd(chalk.dim('⏱ Total'));
       process.exit(0);
     }
   })
   .catch((e) => {
-    console.error(chalk.red(`⛔️ Problem running 'trellis ${command}', see error logs above for more information.`));
-    console.timeEnd(chalk.dim('⏱ Total'));
+    logger.error(chalk.red(`⛔️ Problem running 'trellis ${command}', see error logs above for more information.`));
+    logger.timeEnd(chalk.dim('⏱ Total'));
     process.exit(1);
   });
 

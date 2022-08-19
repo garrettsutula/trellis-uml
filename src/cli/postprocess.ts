@@ -1,4 +1,4 @@
-import { logError } from "../common/logger";
+import logger from "../common/logger";
 
 export default (schema, postprocessFn) => {
   if (postprocessFn) {
@@ -6,7 +6,7 @@ export default (schema, postprocessFn) => {
       const processedSchema = postprocessFn(schema);
       return processedSchema;
     } catch(err) {
-      logError(`⛔️ Error running post-processing script on schema\n${JSON.stringify(schema)}`);
+      logger.error(`⛔️ Error running post-processing script on schema\n${JSON.stringify(schema)}`);
       throw err;
     }
     
