@@ -6,7 +6,6 @@ import * as prompt from 'prompt';
 import logger from '../common/logger';
 
 export async function initializeProject(type) {
-  if (type === 'uml')type = 'default';
   const templatePath = path.join(__dirname, `./project-templates/${type || 'default'}/`);
   logger.info(chalk.bold("⚙️ Running 'npm init' to initialize project folder..."));
   let alreadyInitialized = false;
