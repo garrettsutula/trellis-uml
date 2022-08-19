@@ -6,7 +6,8 @@ import * as prompt from 'prompt';
 import logger from '../common/logger';
 
 export async function initializeProject(type) {
-  const templatePath = path.join(__dirname, `./project-templates/${type || 'default'}/`);
+  type = type || 'uml';
+  const templatePath = path.join(__dirname, `./project-templates/${type}/`);
   logger.info(chalk.bold("⚙️ Running 'npm init' to initialize project folder..."));
   let alreadyInitialized = false;
 
@@ -14,7 +15,7 @@ export async function initializeProject(type) {
   try {
     await access(templatePath);
   } catch (err) {
-    logger.error(`⛔️ Project template type: '${type || 'default'}' does not exist.`, err);
+    logger.error(`⛔️ Project template type: '${type}' does not exist.`, err);
   }
 
   // Test for presence of package.json (i.e. project already initialized or possible wrong folder), init if needed.
@@ -64,7 +65,7 @@ export async function initializeProject(type) {
     });
 
     if (userConfirmation) {
-      logger.info(chalk.bold(`⚙️ Updating project from latest template files '${type || 'default'}'...`));
+      logger.info(chalk.bold(`⚙️ Updating project from latest template files '${type}'...`));
       try {
         await Promise.all([
           cp(path.join(templatePath, './processors/'), './processors/', { recursive: true }),
@@ -78,7 +79,7 @@ export async function initializeProject(type) {
     } else logger.info('⚠️ trellis project already exists, user chose not to update from project template.');
   } else {
     // Just copy project files from template folder.
-    logger.info(chalk.bold(`⚙️ Copying project template '${type || 'default'}'...`));
+    logger.info(chalk.bold(`⚙️ Copying project template '${type}'...`));
     try {
       await cp(templatePath, './', {
         recursive: true,
