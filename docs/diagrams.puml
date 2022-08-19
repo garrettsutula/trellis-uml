@@ -1,0 +1,79 @@
+@startuml App Architecture
+header Made by Garrett Sutula
+title __Trellis CLI__ - Application Architecture
+
+actor "User" as user
+control "Trellis CLI" as trellis <<CLI Tool>>
+package "Trellis Project" as project <<Folder>> {
+  package "./models/..." as modelFolder <<Folder>> {
+      collections "Models" as models <<YAML/JSON>>
+  }
+  package "./schemas/..." as schemaFolder {
+      collections "Schemas" as schema <<JSON Schema>>
+  }
+  package "./templates/..." as templatesFolder <<Folder>> {
+    collections "Templates" as template <<Handlebars Template>>
+  }
+  package "./processing/..." as scriptsFolder <<Folder>> {
+    collections "Processing Scripts" as script <<JavaScript Module>>
+  }
+  package "./output/..." as outputFolder <<Folder>> {
+    collections "Model Output Files" as output
+  }
+  file "package.json" <<File>>
+}
+
+
+user --> trellis: User\n**<<Uses>>**\nCLI
+trellis -> project: CLI\n**<<Loads>>**\nProject
+schema --> models: Schema\n**<<Validates>>**\nModels
+script --> models: Script\n**<<Enriches>>**\nModels
+models --> template: Models\n**<<Fed Into>>**\nTemplate
+template -> output: Template\n**<<Generates>>**\nOutput Files
+
+@enduml
+
+@startuml Sequence Diagram
+header Made by Garrett Sutula
+title __Trellis CLI__ - Build Sequence Diagram
+
+actor "User" as user
+control "Trellis CLI" as trellis <<CLI Tool>>
+collections "Models" as models <<YAML/JSON>>
+participant "Schema" as schema <<JSON Schema>>
+participant "Template" as template <<Handlebars Template>>
+participant "Processing Script" as script <<Javascript Module>>
+collections "Model Output Files" as output
+
+user -> trellis ++: **Build Project**
+loop "For Each Model Type (subdirectory of /models)"
+  trellis -> models ++: **Load Model Files**\n./models/**/*.yaml
+  trellis <-- models --: **Model** [0..*]
+  trellis -> schema ++: **Load Model Schema**\n./schemas/*.json
+  trellis <-- schema --: **Schema** [0..1]
+  trellis -> template ++: **Load Template**\n./templates/**/*.hbs
+  trellis <-- template --: **Template** [0..1]
+  trellis -> script ++: **Load Processing Script**\n./processing/*.js
+  trellis <-- script --: **Script** [0..1]
+  opt models.length && schema && template
+    loop For Each Model File
+      trellis -> trellis: **Import Script**\nimport(scriptPath)
+      trellis -> trellis: **Validate Model**\nvalidate(schema, model)
+      break If Validation Failed
+        user <-- trellis: **❌  Error**\n"Model {x} failed validation"
+      end
+      opt Processing Script Exists
+        trellis -> trellis: **Pre-Process Model**\npreprocess(preprocessFn, model)
+      end
+      trellis -> trellis: **De-Reference Model**\ndereference(schema)
+      opt Processing Script Exists
+        trellis -> trellis: **Post-Process Model**\npostprocess(postprocessFn, model)
+      end
+      trellis -> trellis: **Generate Output from Teplate**\ngenerate(template, model)
+      trellis -> output ++: **Save File**\n./output/...original model dir structure.../{modelFileName}.yaml
+      trellis <-- output --
+    end
+  end
+end
+user <-- trellis --: **✅  Success**
+@enduml
