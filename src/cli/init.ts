@@ -50,7 +50,7 @@ export async function initializeProject(type) {
   }
 
   if (alreadyInitialized) {
-    // Prompt user to overwrite schemas, templates, preprocessors from trellisuml templates.
+    // Prompt user to overwrite schemas, templates, processors from trellisuml templates.
     // Used for updating projects in-place to add features.
     // TODO: Examine how ng-cli does this including code refactors.
     prompt.start();
@@ -67,7 +67,7 @@ export async function initializeProject(type) {
       logger.info(chalk.bold(`⚙️ Updating project from latest template files '${type || 'default'}'...`));
       try {
         await Promise.all([
-          cp(path.join(templatePath, './preprocessors/'), './preprocessors/', { recursive: true }),
+          cp(path.join(templatePath, './processors/'), './processors/', { recursive: true }),
           cp(path.join(templatePath, './schemas/'), './schemas/', { recursive: true }),
           cp(path.join(templatePath, './templates/'), './templates/', { recursive: true }),
         ]);
