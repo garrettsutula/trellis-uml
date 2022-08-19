@@ -2,6 +2,8 @@ import * as path from 'path';
 import { mkdir, writeFile } from 'fs/promises';
 import postProcess from './postprocess';
 import logger from '../common/logger';
+import { getCircularReplacer } from '../common/json';
+
 
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
@@ -16,7 +18,7 @@ export default async (schemaFilePath, template, postprocessFn) => {
     output = template(postProcess(schema, postprocessFn));
   } catch (err) {
     logger.error(`⛔️ Error generating ${path.basename(schemaFilePath)} output!
-    Template: ${JSON.stringify(template)}`);
+    Template: ${JSON.stringify(template, getCircularReplacer())}`);
     throw err;
   }
 

@@ -1,17 +1,5 @@
 import chalk from 'chalk';
-
-function getCircularReplacer() {
-  const seen = new WeakSet();
-  return (key, value) => {
-    if (typeof value === 'object' && value !== null) {
-      if (seen.has(value)) {
-        return;
-      }
-      seen.add(value);
-    }
-    return value;
-  };
-};
+import { getCircularReplacer } from './json';
 
 export default {
   info: (message) => {
