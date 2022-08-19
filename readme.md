@@ -45,22 +45,13 @@ To get started using this project locally, follow these instructions:
 │   └── ... json schema files that enforce structure on model files
 ├── templates/
 │   └── ... handlebars templates that are used to generate output artifacts based on pre-processed models
-└── package.json
+└── package.json - provides scripts for dev and ci/cd, used to pin workspace trellis version
 ```
 
 ### Project Types
-
+> TODO: Complete project type templates and docs.
 #### C4
 
 #### Data Modeling
 
 ### UML
-
-## Work in Progress/To-do List
-- TODO: full cross-compatibility of json/yaml file types
-- Add project types
-  - UML
-  - C4
-  - Database
-- Start a hybrid markup/ui editor project.
-- Start a backend project for tenant-based project storage and management
