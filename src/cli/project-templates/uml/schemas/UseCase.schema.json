@@ -13,12 +13,12 @@
     "description": {
       "type": "string"
     },
-    "users": {
+    "actors": {
       "type": "array",
       "items": {
         "$ref": "User.schema.json"
       }
     }
   },
-  "required": ["name", "users"]
+  "required": ["name", "actors"]
 }

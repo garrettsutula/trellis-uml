@@ -16,7 +16,7 @@
       },
       "type": {
         "type": "string",
-        "enum": ["UI", "Service", "Database", "Processor", "Queue", "File"]
+        "enum": ["UI", "Service", "Database", "Processor", "Queue", "File", "Folder"]
       },
       "description": {
         "type": "string",
@@ -27,7 +27,7 @@
         "$ref": "References/SystemReference.schema.json"
       }
     },
-    "required": ["id", "name", "type"],
+    "required": ["name", "type"],
     "additionalProperties": false
   }
 

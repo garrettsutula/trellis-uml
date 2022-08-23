@@ -25,5 +25,5 @@
       }
     }
   },
-  "required": ["id", "name", "components"]
+  "required": ["name", "components"]
 }

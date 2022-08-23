@@ -1,1 +1,35 @@
-{{ name }}
+@startuml {{name}} System Diagram
+title {{name}} System Diagram
+
+{{#each systems}}
+  {{>System }}
+
+{{/each}}
+
+{{#each relationships.system}}
+{{#if source.system}}
+  {{source.system.id}} --> {{target.system.id}}
+{{else}}
+  {{source.id}} --> {{target.system.id}}
+{{/if}}
+{{/each}}
+
+@enduml
+
+
+@startuml {{name}} Component Diagram
+title {{name}} System Diagram
+
+{{#each systems}}
+  {{>System }} {
+{{#each components}}
+    {{>Component }}
+{{/each}}
+  }
+{{/each}}
+
+{{#each relationships.component}}
+  {{>ComponentRelationship }}
+{{/each}}
+
+@enduml

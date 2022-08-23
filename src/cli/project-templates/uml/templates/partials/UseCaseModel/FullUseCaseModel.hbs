@@ -1,0 +1,19 @@
+@startuml Detail-Level Use Case Model - {{name}}
+title {{name}} Use Case Model - Detail Level
+left to right direction
+
+{{#each usecases}}
+  {{>FullUseCase}}
+{{/each}}
+
+{{#each actors}}
+  {{>UseCaseActor }}
+{{/each}}
+
+{{#each usecases as |usecase|}}
+  {{#each actors }}
+  {{actor.id}} --> {{usecase.id}}
+  {{/each}}
+{{/each}}
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml High-Level Use Case Model - {{name}}
+title {{name}} Use Case Model - High Level
+left to right direction
+
+{{#each usecases}}
+  {{>BasicUseCase }}
+{{/each}}
+
+{{#each actors}}
+  {{>UseCaseActor }}
+{{/each}}
+
+{{#each usecases as |usecase|}}
+  {{#each actors}}
+  {{actor.id}} --> {{usecase.id}}
+  {{/each}}
+{{/each}}
+
+@enduml
