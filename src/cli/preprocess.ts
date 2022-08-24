@@ -6,7 +6,20 @@ const YAML = require('yaml');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
 async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): Promise<string> {
-  let schema = await $RefParser.parse(schemaFilePath);
+  let schema;
+  try {
+    schema = await $RefParser.parse(schemaFilePath, {
+      continueOnError: true, 
+      parse: {
+        yaml: {
+          allowEmpty: true
+        }
+      },
+    });
+  } catch(err) {
+    logger.error(`Error parsing model: ${schemaFilePath}`, err);
+    throw err;
+  }
   /*
   try {
     const result = validate(schema, typeSchema);
@@ -14,16 +27,20 @@ async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): P
     throw new Error(`Error validating schema:\n${JSON.stringify(e)}`);
   }
   */
+ if (schema !== null) {
   try {
     schema = await preprocessingFn(schema);
-  } catch (e) {
-    e.message = `Error pre-processing schema: ${path.basename(schemaFilePath)}\n` + e.message;
-    throw e
+  } catch (err) {
+    logger.error(`Error pre-processing schema: ${path.basename(schemaFilePath)}`, err);
+    throw err;
   }
   const outputPath = path.join('./temp', schemaFilePath);
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, YAML.stringify(schema));
   return outputPath;
+ } else {
+  return justCopySchema(schemaFilePath);
+ }
 }
 
 async function justCopySchema(filePath): Promise<string> {

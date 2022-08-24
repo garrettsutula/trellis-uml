@@ -20,7 +20,17 @@ export default {
   },
   error: (message, err?) => {
     console.error(chalk.red(message));
-    if (err) console.error(chalk.red((`⛔️ ${err.stack || err.message || JSON.stringify(err, getCircularReplacer())}`).replaceAll('\n', '\n⛔️ ')));  
+
+    if (err) {
+      let errDetailStr = (`⛔️ ${err.stack || err.message || JSON.stringify(err, getCircularReplacer())}`);
+      const lineCount = (errDetailStr.match(/\n/g) || []).length;
+      if (global.verbose_level || lineCount < 2) {
+        errDetailStr = errDetailStr.replaceAll('\n', '\n⛔️ ');
+      } else {
+        errDetailStr = errDetailStr.split('\n').slice(0,2).join('\n⛔️') + '\n⛔️    ... view full error using -v to enable verbose logs ...'
+      }
+      console.error(chalk.red((errDetailStr)));
+    }
   },
   time: (message) => {
     if (global.verbose_level)

@@ -12,7 +12,13 @@ export default async (schemaFilePath, template, postprocessFn) => {
     .normalize(schemaFilePath)
     .replace(`temp${path.sep}models${path.sep}`, `output${path.sep}`)
     .replace('.yaml', '.puml');
-  const schema = await $RefParser.dereference(schemaFilePath);
+  let schema;
+  try {
+    schema = await $RefParser.dereference(schemaFilePath);
+  } catch (err) {
+    logger.error(`⛔️ Error de-referencing '${path.basename(schemaFilePath)}', check model "$ref"s`, err);
+    throw err;
+  }
   let output;
   try {
     output = template(postProcess(schema, postprocessFn));
