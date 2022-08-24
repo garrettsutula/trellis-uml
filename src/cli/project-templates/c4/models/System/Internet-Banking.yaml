@@ -18,23 +18,23 @@ relationships:
   - source:
       $ref: "./Email.yaml"
     target:
-      $ref: "../Domain/People.yaml#/user"
+      $ref: "../Person/People.yaml#/user"
     description: Send email to
     technology: smtp
   - source:
-      $ref: "../Domain/People.yaml#/user"
+      $ref: "../Person/People.yaml#/user"
     target:
       $ref: "#/containers/webApplication"
     description: Visits bigbank.com
     technology: HTTPS
   - source:
-      $ref: "../Domain/People.yaml#/user"
+      $ref: "../Person/People.yaml#/user"
     target:
       $ref: "#/containers/mobileApplication"
     description: Views account balances and makes payments
     technology: HTTPS
   - source:
-      $ref: "../Domain/People.yaml#/user"
+      $ref: "../Person/People.yaml#/user"
     target:
       $ref: "#/containers/singlePageApplication"
     description: Views account balances and makes payments

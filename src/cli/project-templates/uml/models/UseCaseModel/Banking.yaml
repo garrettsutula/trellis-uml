@@ -3,7 +3,7 @@ description: Supports all customer activities related to personal banking.
 users:
   customer:
     actor:
-      $ref: "../Domain/actors.yaml#/bankCustomer"
+      $ref: "../Person/People.yaml#/bankCustomer"
     uses:
     - $ref: "../System/Internet-Banking-System.yaml#/components/ui"
 usecases:
