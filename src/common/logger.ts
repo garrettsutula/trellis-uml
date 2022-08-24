@@ -27,7 +27,7 @@ export default {
       if (global.verbose_level || lineCount < 2) {
         errDetailStr = errDetailStr.replaceAll('\n', '\n⛔️ ');
       } else {
-        errDetailStr = errDetailStr.split('\n').slice(0,2).join('\n⛔️') + '\n⛔️    ... view full error using -v to enable verbose logs ...'
+        errDetailStr = errDetailStr.split('\n')[0] + '\n⛔️    ... view full error using -v to enable verbose logs ...'
       }
       console.error(chalk.red((errDetailStr)));
     }
