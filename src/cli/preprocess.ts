@@ -8,26 +8,11 @@ const $RefParser = require('@apidevtools/json-schema-ref-parser');
 async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): Promise<string> {
   let schema;
   try {
-    schema = await $RefParser.parse(schemaFilePath, {
-      continueOnError: true, 
-      parse: {
-        yaml: {
-          allowEmpty: true
-        }
-      },
-    });
+    schema = await $RefParser.parse(schemaFilePath);
   } catch(err) {
     logger.error(`Error parsing model: ${schemaFilePath}`, err);
     throw err;
   }
-  /*
-  try {
-    const result = validate(schema, typeSchema);
-  } catch (e) {
-    throw new Error(`Error validating schema:\n${JSON.stringify(e)}`);
-  }
-  */
- if (schema !== null) {
   try {
     schema = await preprocessingFn(schema);
   } catch (err) {
@@ -38,9 +23,6 @@ async function preprocessSchema(schemaFilePath: string, preprocessingFn: any): P
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, YAML.stringify(schema));
   return outputPath;
- } else {
-  return justCopySchema(schemaFilePath);
- }
 }
 
 async function justCopySchema(filePath): Promise<string> {
