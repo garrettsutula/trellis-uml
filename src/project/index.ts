@@ -27,7 +27,6 @@ export async function firstRunInit(): Promise<BuilderContext> {
       getTemplates(),
       getSchemaPaths(),
       getScripts(),
-      cp('./models/', './temp/models/', { recursive: true }),
       registerHelpers(),
       registerPartials(),
     ])

@@ -2,18 +2,14 @@ import { rm } from 'fs/promises';
 import chalk from 'chalk';
 import preprocess from './preprocess';
 import generate from './generate';
-import { BuilderContext, firstRunInit, rmTempFiles } from '../project';
+import { BuilderContext, firstRunInit } from '../project';
 
 import logger from '../common/logger';
-let builderContext;
 
-export default async function build(updatedBuilderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
+export default async function build(builderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
   try {
     let totalModelCount = 0;
     logger.time(chalk.dim('⏱ Project build'));
-
-    // If context was updated (e.g. from watch trigger), replace instantiated context with one passed in by caller.
-    if (updatedBuilderContext) builderContext = updatedBuilderContext;
 
     // If needed, perform initial full load of project files.
     if (!builderContext)
@@ -27,12 +23,12 @@ export default async function build(updatedBuilderContext?: BuilderContext, sing
         const {preprocessFn = schema => schema, postprocessFn = schema => schema} = builderContext.scripts[type] || {};
         totalModelCount += modelPaths.length;
   
-        if (modelPaths.length && template && schemaPath) {
+        if (modelPaths.length) {
           // TODO: schema check prior to processing
           // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
           const preprocessedFilePaths = await Promise.all(modelPaths.map((filePath) => preprocess(filePath, preprocessFn)));
           // Generate output step.
-          return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
+           if (template) return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
         }
         return [];
       }),

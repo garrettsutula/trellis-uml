@@ -10,73 +10,88 @@ import logger from '../common/logger';
 
 import {BuilderContext} from '../project';
 
-// TODO: watch each folder type and trigger more efficient build process
-
 let currentBuilderContext: BuilderContext;
 
 const workingDirectoryPath = process.cwd();
 const currentFolder = path.basename(workingDirectoryPath);
 
-async function buildProject(evt, filePath) {
-  const splitPath = filePath.split(path.sep);
-  const [fileType, type ] = splitPath;
-  const fileName = splitPath[splitPath.length - 1].split('.')[0];
-  logger.info(chalk.dim(`👀 ${evt === 'unlink' ? 'DELETE': evt.toUpperCase()} detected on: ${filePath}`));
-  if (currentBuilderContext) {
-    const isKnownModelType = Object.keys(currentBuilderContext.modelPaths).includes(type);
-    switch(`${evt}-${fileType}`) {
-      case 'add-models':
-        if (isKnownModelType)
-          currentBuilderContext.modelPaths[type].push(filePath);
-        else
-          logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
-        break;
-      case 'add-processors':
-        const newScripts = await getScripts([filePath]);
-        currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
-        break;
-      case 'change-processors':
-        logger.warn(chalk.dim(`Processor script can't be hot reloaded in this version (feature dev required).`));
-        break;
-      case 'add-schemas':
-        currentBuilderContext.schemaPaths[fileName] = filePath;
-        break;
-      case 'add-templates':
-      case 'change-templates':
-        if (filePath.includes('partials')) {
-          logger.debug(chalk.dim(`Reregistering partials...`));
-          await registerPartials();
-        } else {
-          const newTemplates = await getTemplates([ filePath ]);
-          currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
-        }
-        break;
-      case 'unlink-models':
-        if (isKnownModelType)
-          currentBuilderContext.modelPaths[type] = currentBuilderContext.modelPaths[type].filter((modelPath) => !modelPath.includes(filePath));
-        else
-          logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
-        break;
-      case 'unlink-processors':
-        delete currentBuilderContext.scripts[fileName];
-        break;
-      case 'unlink-schemas':
-        delete currentBuilderContext.schemaPaths[fileName];
-        break;
-      case 'unlink-templates':
-        if (filePath.includes('partials')) {
-          logger.debug(chalk.dim(`Reregistering partials...`));
-          await registerPartials();
-        } else {
-          delete currentBuilderContext.templates[fileName];
-        }
-        break;
-      default:
-        logger.info(chalk.dim(`No action needed for this change, running build step...`));
+async function buildProject(events, filePaths) {
+  if (events.length === 1) {
+    const evt = events[0];
+    const filePath = filePaths[0];
+    const fileName = path.parse(filePath).name;
+    const [ projectFileType, firstSubfolder ] = filePath.split(path.sep);
+    logger.info(chalk.dim(`👀 ${evt.toUpperCase()} detected on: ${filePath}`));
+    logger.verbose(`Change event '${`${evt}-${projectFileType}`}'`)
+    if (currentBuilderContext) {
+      const isKnownModelType = Object.keys(currentBuilderContext.modelPaths).includes(firstSubfolder);
+      switch(`${evt}-${projectFileType}`) {
+        case 'addDir-models':
+          currentBuilderContext.modelPaths[firstSubfolder] = [];
+          break;
+        case 'add-models':
+          if (isKnownModelType)
+            currentBuilderContext.modelPaths[firstSubfolder].push(filePath);
+          else
+            logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
+          break;
+        case 'add-processors':
+          const newScripts = await getScripts([filePath]);
+          currentBuilderContext.scripts = Object.assign(currentBuilderContext.scripts, newScripts);
+          break;
+        case 'change-processors':
+          logger.warn(chalk.dim(`Processor script can't be hot reloaded in this version (feature dev required).`));
+          break;
+        case 'add-schemas':
+          currentBuilderContext.schemaPaths[fileName] = filePath;
+          break;
+        case 'add-templates':
+        case 'change-templates':
+          if (filePath.includes('partials')) {
+            logger.debug(chalk.dim(`Reregistering partials...`));
+            await registerPartials();
+          } else {
+            const newTemplates = await getTemplates([ filePath ]);
+            currentBuilderContext.templates = Object.assign(currentBuilderContext.templates, newTemplates);
+          }
+          break;
+        case 'unlinkDir-models':
+          if(isKnownModelType)
+            delete currentBuilderContext.modelPaths[firstSubfolder];
+          break;
+        case 'unlink-models':
+          if (isKnownModelType)
+            currentBuilderContext.modelPaths[firstSubfolder] = currentBuilderContext.modelPaths[firstSubfolder].filter((modelPath) => !modelPath.includes(filePath));
+          else
+            logger.warn(chalk.dim(`File ${filePath} not in one of the model type subfolders, skipping processing this file...`));
+          break;
+        case 'unlink-processors':
+          delete currentBuilderContext.scripts[fileName];
+          break;
+        case 'unlink-schemas':
+          delete currentBuilderContext.schemaPaths[fileName];
+          break;
+        case 'unlink-templates':
+          if (filePath.includes('partials')) {
+            logger.debug(chalk.dim(`Reregistering partials...`));
+            await registerPartials();
+          } else {
+            delete currentBuilderContext.templates[fileName];
+          }
+          break;
+        default:
+          logger.debug(`Change event '${`${evt}-${projectFileType}`}' not handled by watch command.`)
+          logger.info(chalk.dim(`No action needed for this change, running build step...`));
+      }  
     }  
+  } else {
+    logger.info(`‼️ ${events.length} changes detected at once, reloading project workspace.`)
+    currentBuilderContext = undefined;
   }
+  events.length = 0;
+  filePaths.length = 0;
   try {
-    await build(currentBuilderContext, false);
+    currentBuilderContext = await build(currentBuilderContext, false);
   } catch(e) {
     logger.info(chalk.dim(`Build step errored, the last change likely caused this problem...`));
   }
@@ -84,16 +99,20 @@ async function buildProject(evt, filePath) {
 
 export async function watchProject() {
   let updateDebounce;
+  const events = [];
+  const filePaths = [];
 
   logger.info(chalk.dim(`👀 Watching current directory ${currentFolder}.`));
   const watcher = chokidar.watch([
-    './models/**/*.yaml',
-    './schemas/*.json',
+    './models/**',
+    './schemas/**/*.json',
     './processors/*.js',
     './templates/**/*.hbs',
   ], { ignoreInitial: true }).on('all', (evt, filePath) => {
+    events.push(evt);
+    filePaths.push(filePath);
     if (updateDebounce) clearTimeout(updateDebounce);
-    updateDebounce = setTimeout(buildProject, 500, evt, filePath);
+    updateDebounce = setTimeout(buildProject, 500, events, filePaths);
   });
 
   try {
