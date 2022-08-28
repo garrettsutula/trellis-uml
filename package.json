@@ -14,7 +14,7 @@
     "make-executable:win32": "echo \"Skipping 'make executable' script, likely already fine on windows\"",
     "make-executable:nix": "chmod 755 dist/cli/index.js",
     "build": "npm run clean && npm run copy-files && tsc && npm run make-executable",
-    "watch": "chokidar \"src/**\" -c \"npm run build\"",
+    "watch": "chokidar \"src/**\" --initial --silent -c \"npm run build\"",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prepublish": "npm run build"
