@@ -12,7 +12,7 @@ To get started using this project locally, follow these instructions:
 1. Make sure you have Node 16 LTS or higher installed.
 3. `cd` into your preferred working directory run the command `npx trellisuml init` to initialize a new project folder.
    1. (Optional) Provide a project type, one of: `uml, c4, data`. Default: `uml`
-4. Create models in the sub-folders of the `Models` directory.
+4. Create models in the sub-folders of the `models` directory.
   > Note: use sub-folders as needed to organize your workspace.
 5. Run the command `trellis build` to create Output Artifacts based on your models (saved to the `output` directory).
 
