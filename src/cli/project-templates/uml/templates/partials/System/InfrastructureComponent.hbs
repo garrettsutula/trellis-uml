@@ -1,0 +1,16 @@
+cloud "{{name}}" as {{id}} {
+{{#each ports}}
+  port "{{@key}}{{#if protocol}}\n({{protocol}}){{/if}}" as {{../id}}.{{@key}}
+{{/each}}
+{{#each runs}}
+  {{>InfrastructureComponent }}
+{{/each}}
+{{#each systems}}
+  {{>SystemWithDeploymentComponents }}
+{{/each}}
+{{#if runsIn}}
+{{#each ports}}
+  {{../runsIn.id}}.{{@key}} --> {{../id}}.{{@key}}
+{{/each}}
+{{/if}}
+}

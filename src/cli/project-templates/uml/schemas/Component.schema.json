@@ -2,33 +2,63 @@
   "$id": "Component.schema.json",
   "title": "Component",
   "type": "object",
-  "if": {"required": ["$ref"]},
-  "then": {
-    "$ref": "References/ComponentReference.schema.json"
-  },
-  "else": {  
-    "properties": {
-      "id": {
-        "type": "string"
-      },
-      "name": {
-        "type": "string"
-      },
-      "type": {
-        "type": "string",
-        "enum": ["UI", "Service", "Database", "Processor", "Queue", "File", "Folder"]
-      },
-      "description": {
-        "type": "string",
-        "description": "A brief description of the component and its purpose in this system."
-      },
-      "parent": {
-        "description": "A back reference to the parent system, this is set programmatically when pre-processing the models prior to being fed into templates for output generation.",
-        "$ref": "References/SystemReference.schema.json"
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["UI", "Service", "Database", "Processor", "Queue", "File", "Folder"]
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the component and its purpose in this system."
+    },
+    "ports": {
+      "type": "object",
+      "patternProperties": {
+        "\\d*": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
-    "required": ["name", "type"],
-    "additionalProperties": false
-  }
-
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "$ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "description": "Child components of the component. E.g. files in a folder",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "items": {
+            "$ref": "Component.schema.json"
+          }
+        }
+      }
+    },
+    "system": {
+      "description": "A back reference to the parent system, this is set programmatically when pre-processing the models prior to being fed into templates for output generation.",
+      "$ref": "References/SystemReference.schema.json"
+    }
+  },
+  "required": ["name", "type"],
+  "additionalProperties": false
 }
