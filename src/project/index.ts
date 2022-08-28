@@ -9,6 +9,7 @@ import logger from '../common/logger';
 
 export type BuilderContext = {
   modelPaths: { [key: string]: string[]},
+  tempModelPaths: { [key: string]: string[]},
   schemaPaths: { [key: string]: string },
   templates: { [key: string]: Handlebars.Template},
   scripts: { [key: string]: any },
@@ -27,12 +28,14 @@ export async function firstRunInit(): Promise<BuilderContext> {
       getTemplates(),
       getSchemaPaths(),
       getScripts(),
+      cp('./models/', './temp/models/', { recursive: true }),
       registerHelpers(),
       registerPartials(),
     ])
   
     return {
       modelPaths,
+      tempModelPaths: {},
       templates,
       schemaPaths,
       scripts,

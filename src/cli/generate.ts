@@ -4,26 +4,18 @@ import postProcess from './postprocess';
 import logger from '../common/logger';
 import { getCircularReplacer } from '../common/json';
 
-
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
-export default async (schemaFilePath, template, postprocessFn) => {
+export default async (processedModel, modelPath, template) => {
   const outputPath = path
-    .normalize(schemaFilePath)
-    .replace(`temp${path.sep}models${path.sep}`, `output${path.sep}`)
-    .replace('.yaml', '.puml');
-  let schema;
-  try {
-    schema = await $RefParser.dereference(schemaFilePath);
-  } catch (err) {
-    logger.error(`⛔️ Error de-referencing '${path.basename(schemaFilePath)}', check model "$ref"s`, err);
-    throw err;
-  }
+  .normalize(modelPath)
+  .replace(`temp${path.sep}models${path.sep}`, `output${path.sep}`)
+  .replace('.yaml', '.puml');
   let output;
   try {
-    output = template(postProcess(schema, postprocessFn));
+    output = template(processedModel);
   } catch (err) {
-    logger.error(`⛔️ Error generating ${path.basename(schemaFilePath)} output!
+    logger.error(`⛔️ Error generating "${processedModel.id}" output!
     Template: ${JSON.stringify(template, getCircularReplacer())}`);
     throw err;
   }
