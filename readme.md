@@ -49,9 +49,16 @@ To get started using this project locally, follow these instructions:
 ```
 
 ### Project Types
-> TODO: Complete project type templates and docs.
-#### C4
 
-#### Data Modeling
+#### UML
+Refer to the UML model type documentation for more information:
+- [**System**](./docs/uml//System.md) - models a Software System `Package`
+- [**Use Case Model**](./docs/uml/UseCaseModel.md) - models one or more `Use Cases` that support a Business Process.
+- [**Project**](./docs/uml//Project.md) - models one or more `Use Cases` that change as part of a software development project and the Solution `Options` supporting that change.
 
-### UML
+#### C4 (🚧 WIP)
+Refer to the C4 model type documentation for more information:
+- **Component**
+- **Container**
+- **System**
+- **Solution**
