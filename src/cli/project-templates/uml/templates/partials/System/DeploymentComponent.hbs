@@ -1,0 +1,12 @@
+folder "{{name}}" as {{id}}{{#if ports}} {
+{{#each ports}}
+  port "{{@key}}{{#if protocol}}\n({{protocol}}){{/if}}" as {{../id}}.{{@key}}
+{{/each}}
+{{#if runtime}}
+{{#each ports}}
+  {{../runtime.id}}.{{@key}} --> {{../id}}.{{@key}}
+{{/each}}
+{{/if}}
+}
+{{/if}}
+

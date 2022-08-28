@@ -1,0 +1,5 @@
+package "{{name}}" as {{id}} <<System>> {
+{{#each components}}
+  {{>DeploymentComponent }}
+{{/each}}
+}

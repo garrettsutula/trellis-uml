@@ -1,0 +1,24 @@
+{
+  "$id": "Infrastructure.schema.json",
+  "title": "Infrastructure",
+  "description": "A logical representation of an infrastructure component that application components are deployed into.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "runsIn": {
+      "type": "object",
+      "properties": {
+        "$ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    }
+  },
+  "required": ["name"]
+}

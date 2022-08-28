@@ -3,7 +3,6 @@ title {{name}} System Diagram
 
 {{#each systems}}
   {{>System }}
-
 {{/each}}
 
 {{#each relationships.system}}
@@ -21,15 +20,22 @@ title {{name}} System Diagram
 title {{name}} System Diagram
 
 {{#each systems}}
-  {{>System }} {
-{{#each components}}
-    {{>Component }}
-{{/each}}
-  }
+  {{>SystemWithComponents }}
 {{/each}}
 
 {{#each relationships.component}}
   {{>ComponentRelationship }}
+{{/each}}
+
+@enduml
+
+@startuml {{name}} Deployment Diagram
+title {{name}} System Diagram
+
+{{#each infrastructures as |topLevelInfra|}}
+{{#unless topLevelInfra.runsIn}}
+  {{>InfrastructureComponent }}
+{{/unless}}
 {{/each}}
 
 @enduml
