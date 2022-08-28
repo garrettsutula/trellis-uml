@@ -5,6 +5,7 @@ import generate from './generate';
 import { BuilderContext, firstRunInit } from '../project';
 
 import logger from '../common/logger';
+import postprocess from './postprocess';
 
 export default async function build(builderContext?: BuilderContext, singleRun = true): Promise<BuilderContext> {
   try {
@@ -15,24 +16,56 @@ export default async function build(builderContext?: BuilderContext, singleRun =
     if (!builderContext)
       builderContext = await firstRunInit();
 
-    await Promise.all(
-      Object.keys(builderContext.modelPaths).map(async (type) => {
-        const modelPaths = builderContext.modelPaths[type];
-        const schemaPath = builderContext.schemaPaths[type];
-        const template = builderContext.templates[type];
-        const {preprocessFn = schema => schema, postprocessFn = schema => schema} = builderContext.scripts[type] || {};
-        totalModelCount += modelPaths.length;
-  
-        if (modelPaths.length) {
-          // TODO: schema check prior to processing
-          // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
-          const preprocessedFilePaths = await Promise.all(modelPaths.map((filePath) => preprocess(filePath, preprocessFn)));
-          // Generate output step.
-           if (template) return Promise.all(preprocessedFilePaths.map((filePath) => generate(filePath, template, postprocessFn)));
-        }
-        return [];
-      }),
-    );
+    const modelTypes = Object.keys(builderContext.modelPaths);
+
+    // Pre-processing step to enhance models with additional $refs prior to de-referencing.
+    //
+    // If a pre-processing script is not present for the model type, the model is simply
+    // passed through and saved to the './temp/...' directory to be used in later build steps.
+    logger.time(chalk.dim('⏱ Pre-processing'));
+    const allPreprocessedModelPaths = await Promise.all(modelTypes.map(async (type) =>{
+      const modelPaths = builderContext.modelPaths[type];
+      const { preprocessFn } = builderContext.scripts[type] || {};
+
+      if (modelPaths.length) {
+        // TODO: schema check prior to processing
+        // const typeSchema = JSON.parse((await readFile(jsonSchemaPath)).toString());
+        const preprocessedFilePaths = await Promise.all(modelPaths.map((filePath) => preprocess(filePath, preprocessFn)));
+        return preprocessedFilePaths;
+      }
+      return [];
+    }));
+    logger.timeEnd(chalk.dim('⏱ Pre-processing'));
+
+    // Enhance models typically by iterating over the contents and setting higher-order collections 
+    // of objects to make writing output templates as simple as possible.
+    logger.time(chalk.dim('⏱ De-Reference and Post-Processing'));
+    const allProcessedModels = await Promise.all(allPreprocessedModelPaths.map(async (modelPaths, i) => {
+      const type = modelTypes[i];
+      const template = builderContext.templates[type];
+      const { postprocessFn } = builderContext.scripts[type] || {};
+
+      if (template) return Promise.all(
+        modelPaths
+          .map((modelPath) => postprocess(modelPath, postprocessFn))
+      );
+    }));
+    logger.timeEnd(chalk.dim('⏱ De-Reference and Post-Processing'));
+
+    // Apply model template to each model and save the output artifact to the './output/...' folder.
+    logger.time(chalk.dim('⏱ Generate output artifacts'));
+    await Promise.all(allProcessedModels.map(async (models, typeIndex) => {
+      const type = modelTypes[typeIndex];
+      const tempModelPaths = allPreprocessedModelPaths[typeIndex];
+      const template = builderContext.templates[type];
+
+      if (template) return Promise.all(
+        models
+          .map((model, i) => generate(model, tempModelPaths[i], template))
+        );
+    }));
+    logger.timeEnd(chalk.dim('⏱ Generate output artifacts'));
+
     logger.info(chalk.green(`✅ Build SUCCESSFUL! ${totalModelCount} models processed`))
   } catch (err) {
     logger.error('⛔️ Build FAILED due to one or more errors in the project.');
