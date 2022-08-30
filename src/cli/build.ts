@@ -55,6 +55,7 @@ export default async function build(builderContext?: BuilderContext, singleRun =
     // Apply model template to each model and save the output artifact to the './output/...' folder.
     logger.time(chalk.dim('⏱ Generate output artifacts'));
     await Promise.all(allProcessedModels.map(async (models, typeIndex) => {
+      totalModelCount += (models && models.length) || 0;
       const type = modelTypes[typeIndex];
       const tempModelPaths = allPreprocessedModelPaths[typeIndex];
       const template = builderContext.templates[type];
