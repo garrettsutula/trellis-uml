@@ -1,5 +1,5 @@
 # Trellis
-Trellis is a framework & cli tool for making UML diagrams (and other types!) with [PlantUML](https://plantuml.com/). 
+Trellis is a framework & cli tool for making UML diagrams (and other types!) with [PlantUML](https://plantuml.com/), using this tool you create swagger-spec like models of Software Systems. These models are processed into outpur artifacts like diagrams, configuration files, and documentation.
 
 This project was made with main goals of: 
 - establishing good separation of concerns between Modeling & generating Output Artifacts
