@@ -1,0 +1,9 @@
+{
+  "yaml.schemas": {
+    "./schemas/Component.schema.json": "models/Component/**/*.yaml",
+    "./schemas/Container.schema.json": "models/Container/**/*.yaml",
+    "./schemas/Solution.schema.json": "models/Solution/**/*.yaml",
+    "./schemas/System.schema.json": "models/System/**/*.yaml",
+    "./schemas/People.schema.json": "models/Person/**/*.yaml"
+  }
+}
