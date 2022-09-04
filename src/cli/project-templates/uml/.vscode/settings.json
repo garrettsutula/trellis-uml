@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "./schemas/Actors.schema.json": "models/Actors/**/*.yaml",
+    "./schemas/Infrastructure.schema.json": "models/Infrastructure/**/*.yaml",
+    "./schemas/System.schema.json": "models/System/**/*.yaml",
+    "./schemas/UseCaseModel.schema.json": "models/UseCaseModel/**/*.yaml"
+  }
+}
