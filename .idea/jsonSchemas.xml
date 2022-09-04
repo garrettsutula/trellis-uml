@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsonSchemaMappingsProjectConfiguration">
+    <state>
+      <map>
+        <entry key="c4/Component.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Component" />
+              <option name="name" value="Component.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/c4/schemas/Component.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/c4/models/Component" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="c4/Container.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Container" />
+              <option name="name" value="Container.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/c4/schemas/Container.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/c4/models/Container" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="c4/People.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="People" />
+              <option name="name" value="People.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/c4/schemas/People.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/c4/models/People" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="c4/Solution.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Solution" />
+              <option name="name" value="Solution.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/c4/schemas/Solution.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/c4/models/Solution" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="c4/System.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="System" />
+              <option name="name" value="System.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/c4/schemas/System.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/c4/models/System" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="uml/Actors.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Actors" />
+              <option name="name" value="Actors.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/uml/schemas/Actors.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/uml/models/Actors" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="uml/Infrastructure.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Infrastructure" />
+              <option name="name" value="Infrastructure.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/uml/schemas/Infrastructure.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/uml/models/Infrastructure" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="uml/System.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="System" />
+              <option name="name" value="System.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/uml/schemas/System.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/uml/models/System" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="uml/UseCaseModel.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="UseCaseModel" />
+              <option name="name" value="UseCaseModel.schema" />
+              <option name="relativePathToSchema" value="src/cli/project-templates/uml/schemas/UseCaseModel.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/cli/project-templates/uml/models/UseCaseModel" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+      </map>
+    </state>
+  </component>
+</project>
