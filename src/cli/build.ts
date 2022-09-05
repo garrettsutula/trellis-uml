@@ -69,7 +69,7 @@ export default async function build(builderContext?: BuilderContext, singleRun =
 
     logger.info(chalk.green(`✅ Build SUCCESSFUL! ${totalModelCount} models processed`))
   } catch (err) {
-    logger.error('⛔️ Build FAILED due to one or more errors in the project.');
+    logger.error('⛔️ Build FAILED due to one or more errors in the project.', err);
     throw err;
   } finally {
     logger.timeEnd(chalk.dim('⏱ Project build'));

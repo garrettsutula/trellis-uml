@@ -1,7 +1,9 @@
 import { cp, rm } from 'fs/promises';
 import chalk from 'chalk';
 
-import { getTemplates, registerHelpers, registerPartials } from '../templates';
+import * as Handlebars from 'handlebars';
+
+import { getTemplates, registerPartials } from '../templates';
 import { getModelPaths } from '../models';
 import { getSchemaPaths } from '../schemas';
 import { getScripts } from '../processors';
@@ -29,7 +31,6 @@ export async function firstRunInit(): Promise<BuilderContext> {
       getSchemaPaths(),
       getScripts(),
       cp('./models/', './temp/models/', { recursive: true }),
-      registerHelpers(),
       registerPartials(),
     ])
   
