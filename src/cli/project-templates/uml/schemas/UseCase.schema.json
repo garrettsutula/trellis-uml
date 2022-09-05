@@ -20,5 +20,6 @@
       }
     }
   },
-  "required": ["name", "actors"]
+  "required": ["name", "actors"],
+  "additionalProperties": false
 }
