@@ -1,22 +1,22 @@
 const nameToId = require('./lib/nameToId');
 
-function preprocessFn(model) {
+function preprocessFn(useCaseModel) {
   const actorRefs = new Set();
-  const {usecases = []} = model;
+  const {usecases = []} = useCaseModel;
   usecases.forEach((usecase) => {
     const {actors = []} = usecase;
     usecase.id = nameToId(usecase.name);
     actors.forEach(({actor}) => actorRefs.add(actor.$ref));
   });
-  model.id = nameToId(model.name); // TODO: sanitizer util
-  model.actors = Array.from(actorRefs.values()).map((ref) => {
+  useCaseModel.id = nameToId(useCaseModel.name); // TODO: sanitizer util
+  useCaseModel.actors = Array.from(actorRefs.values()).map((ref) => {
     return {$ref: ref};
   });
-  return model;
+  return useCaseModel;
 }
 
-function postprocessFn(schema) {
-  return schema;
+function postprocessFn(useCaseModel) {
+  return useCaseModel;
 }
 
 module.exports = {

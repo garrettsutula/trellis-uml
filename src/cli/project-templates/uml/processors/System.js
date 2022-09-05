@@ -5,18 +5,16 @@ function preRecurseComponents(component, parent) {
   component.id = `${parent.id}.${nameToId(component.name)}`;
   component.system = { $ref: '#'};
   if(component.components)
-    Object.keys(component.components)
-      .forEach((childComponentKey) => preRecurseComponents(component.components[childComponentKey], component));
+    Object.values(component.components)
+      .forEach((childComponent) => preRecurseComponents(childComponent, component));
 }
 
 
 function postRecurseComponents(component, system, systemContext) {
   if (!component.system) component.system = system;
-  systemContext.systems.add(component.system);
   systemContext.components.add(component);
   if(component.components)
-    Object.keys(component.components).forEach((childComponentKey) => {
-      const childComponent = component.components[childComponentKey];
+    Object.values(component.components).forEach((childComponent) => {
       postRecurseComponents(childComponent, component.system, systemContext);
     })
 }
@@ -37,22 +35,16 @@ function recurseRunsIn(infrastructure, infrastructures) {
 
 }
 
-function preprocessFn(system) {
+function preprocessFn(system = {}) {
   const {components = {}, relationships = [], runtime: runtimes = {}} = system;
 
   system.id = nameToId(system.name);
 
-  Object.keys(components).forEach((componentKey) => {
-    const component = components[componentKey];
-
-    // Adds a back-reference to each component so system name is easily accessible from {component}.parent.name
-    component.system = { $ref: '#' };
-    component.id = `${system.id}.${nameToId(component.name)}`; // TODO: sanitizer util
-    if (component.components) preRecurseComponents(component, system);6
+  Object.values(components).forEach((component) => {
+    preRecurseComponents(component, system);
   });
 
-  Object.keys(runtimes).forEach((runtimeKey) => {
-    const runtime = runtimes[runtimeKey];
+  Object.values(runtimes).forEach((runtime) => {
     runtime.id = `${system.id}.${nameToId(runtime.name)}`;
   })
   // Adds system id
@@ -63,7 +55,6 @@ function postprocessFn(system) {
   const {components = {}, relationships = []} = system;
   const systemContext = {
     components: new Set(),
-    systems: new Set(),
     infrastructures: new Set(),
     relationships: {
       system: new Map(),
@@ -72,8 +63,7 @@ function postprocessFn(system) {
     }
   }
 
-  Object.keys(components).forEach((componentKey) => {
-    const component = components[componentKey];
+  Object.values(components).forEach((component) => {
     if(component.runtime) {
       if(!component.runtime.ports && component.ports)
         component.runtime.ports = Object.assign({}, component.ports);
@@ -96,8 +86,6 @@ function postprocessFn(system) {
     const isDifferentSystem = (source.system && source.system.id) !== target.system.id;
     systemContext.components.add(source);
     systemContext.components.add(target);
-    if (source.system) systemContext.systems.add(source.system);
-    if (target.system) systemContext.systems.add(target.system);
     if(source.runtime)
       recurseRunsIn(source.runtime, systemContext.infrastructures);
     if(target.runtime)
@@ -108,13 +96,13 @@ function postprocessFn(system) {
       systemContext.relationships.component.set(relationship.id.component, relationship);
 
   });
-  system.componentIds = Array.from(systemContext.components.values());
-  system.systems = Array.from(systemContext.systems.values());
+  system.componentIds = Array.from(systemContext.components.values()).map((component) => component.id);
+  system.systems = Array.from(new Set(Array.from(systemContext.components.values()).filter((component) => component.system).map((component) => component.system)).values());
   system.relationships = {
     system: Array.from(systemContext.relationships.system.values()),
     component: Array.from(systemContext.relationships.component.values()),
   }
-  system.infrastructures = Array.from(systemContext.infrastructures);
+  system.infrastructures = Array.from(systemContext.infrastructures.values());
   return system;
 }
 

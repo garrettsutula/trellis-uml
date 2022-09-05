@@ -19,7 +19,8 @@
         }
       }
     },
-    "required": ["actor", "uses"]
+    "required": ["actor", "uses"],
+    "additionalProperties": false
   }
 }
 
