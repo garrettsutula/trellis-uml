@@ -1,30 +1,12 @@
 import logger from "../common/logger";
-import { getCircularReplacer } from "../common/json";
-
-const $RefParser = require('@apidevtools/json-schema-ref-parser');
-
-async function dereferenceSchema(modelPath): Promise<string> {
-  let model;
-  try {
-    model = await $RefParser.dereference(modelPath);
-  } catch (err) {
-    logger.error(`⛔️ Error de-referencing model: "${modelPath}", check model "$ref"s`, err);
-    throw err;
-  }
-  return model;
-}
+import { postprocessModel } from 'trellis-core';
 
 export default async (modelPath, postprocessFn = model => model ) => {
-  if (postprocessFn) {
     try {
-      const model = await dereferenceSchema(modelPath);
-      const processedSchema = postprocessFn(model);
-      return processedSchema;
+      const model =  await postprocessModel(modelPath, postprocessFn);
+      return model;
     } catch(err) {
-      logger.error(`⛔️ Error running post-processing script on model: "${modelPath}"`);
+      logger.error(`⛔️ Error running post-processing script on model: "${modelPath}"`, err);
       throw err;
-    }
-    
-  }
-  return dereferenceSchema(modelPath);
+    }  
 };
