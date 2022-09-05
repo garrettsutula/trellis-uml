@@ -1,0 +1,13 @@
+{
+  "yaml.schemas": {
+    "./src/cli/project-templates/c4/schemas/Component.schema.json": "src/cli/project-templates/c4/models/Component/**/*.yaml",
+    "./src/cli/project-templates/c4/schemas/Container.schema.json": "src/cli/project-templates/c4/models/Container/**/*.yaml",
+    "./src/cli/project-templates/c4/schemas/Solution.schema.json": "src/cli/project-templates/c4/models/Solution/**/*.yaml",
+    "./src/cli/project-templates/c4/schemas/System.schema.json": "src/cli/project-templates/c4/models/System/**/*.yaml",
+    "./src/cli/project-templates/c4/schemas/People.schema.json": "src/cli/project-templates/c4/models/People/**/*.yaml",
+    "./src/cli/project-templates/uml/schemas/Actors.schema.json": "src/cli/project-templates/uml/models/Actors/**/*.yaml",
+    "./src/cli/project-templates/uml/schemas/Infrastructure.schema.json": "src/cli/project-templates/uml/models/Infrastructure/**/*.yaml",
+    "./src/cli/project-templates/uml/schemas/System.schema.json": "src/cli/project-templates/uml/models/System/**/*.yaml",
+    "./src/cli/project-templates/uml/schemas/UseCaseModel.schema.json": "src/cli/project-templates/uml/models/UseCaseModel/**/*.yaml"
+  }
+}

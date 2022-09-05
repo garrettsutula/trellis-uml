@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsonSchemaMappingsProjectConfiguration">
+    <state>
+      <map>
+        <entry key="Component.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Component" />
+              <option name="name" value="Component.schema" />
+              <option name="relativePathToSchema" value="schemas/Component.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="models/Component" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="Container.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Container" />
+              <option name="name" value="Container.schema" />
+              <option name="relativePathToSchema" value="schemas/Container.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="models/Container" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="People.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="People" />
+              <option name="name" value="People.schema" />
+              <option name="relativePathToSchema" value="schemas/People.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="models/Person" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="Solution.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="Solution" />
+              <option name="name" value="Solution.schema" />
+              <option name="relativePathToSchema" value="schemas/Solution.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="models/Solution" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="System.schema">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="System" />
+              <option name="name" value="System.schema" />
+              <option name="relativePathToSchema" value="schemas/System.schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="models/System" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+      </map>
+    </state>
+  </component>
+</project>
