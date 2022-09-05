@@ -6,11 +6,10 @@ import { getCircularReplacer } from '../common/json';
 
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 
-export default async (processedModel, modelPath, template) => {
-  const outputPath = path
-  .normalize(modelPath)
-  .replace(`temp${path.sep}models${path.sep}`, `output${path.sep}`)
-  .replace('.yaml', '.puml');
+async function processAndSave(processedModel, modelPath, templateObj) {
+  const { modelType, fileType, fileName, template } = templateObj;
+  const modelFileName = path.basename(modelPath, '.yaml');
+  const outputPath = `./output/${modelType}/${modelFileName}/${fileName}.${fileType}`;
   let output;
   try {
     output = template(processedModel);
@@ -22,4 +21,8 @@ export default async (processedModel, modelPath, template) => {
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   return writeFile(outputPath, output);
+}
+
+export default async (processedModel, modelPath, templates) => {
+  return Promise.all(templates.map((template) => processAndSave(processedModel, modelPath, template)));
 };

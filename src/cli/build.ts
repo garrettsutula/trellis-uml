@@ -58,11 +58,11 @@ export default async function build(builderContext?: BuilderContext, singleRun =
       totalModelCount += (models && models.length) || 0;
       const type = modelTypes[typeIndex];
       const tempModelPaths = allPreprocessedModelPaths[typeIndex];
-      const template = builderContext.templates[type];
+      const templates = builderContext.templates[type];
 
-      if (template) return Promise.all(
+      if (templates) return Promise.all(
         models
-          .map((model, i) => generate(model, tempModelPaths[i], template))
+          .map((model, i) => generate(model, tempModelPaths[i], templates))
         );
     }));
     logger.timeEnd(chalk.dim('⏱ Generate output artifacts'));

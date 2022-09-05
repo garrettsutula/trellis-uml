@@ -13,7 +13,11 @@ export type BuilderContext = {
   modelPaths: { [key: string]: string[]},
   tempModelPaths: { [key: string]: string[]},
   schemaPaths: { [key: string]: string },
-  templates: { [key: string]: Handlebars.Template},
+  templates: { [key: string]: {
+    modelType: string,
+    fileType: string,
+    template: Handlebars.Template,
+  }[]},
   scripts: { [key: string]: any },
 }
 

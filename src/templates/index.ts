@@ -4,7 +4,7 @@ import path from "path";
 import { registerPartials as register, compileTemplate as compile } from 'trellis-core';
 
 
-import { templateType } from "../common/regex";
+import { templateType, extractTemplateType } from "../common/regex";
 
 export async function registerPartials() {
   const partialsPaths = await globAsync('./templates/partials/**/*.hbs');
@@ -21,13 +21,20 @@ export async function registerPartials() {
 
 export async function getTemplates(onlyPaths?: string[]) {
   const templates = {};
-  const templatePaths = await globAsync('./templates/*.hbs');
+  const templatePaths = await globAsync('./templates/**(!partials)/*.hbs');
   const loadedTemplates = await Promise.all(templatePaths.map(async (templatePath) => {
+    const {groups: {modelType, fileName, fileType} = {}} = templatePath.match(extractTemplateType);
     return {
-      type: templatePath.match(templateType)[1],
+      modelType,
+      fileType,
+      fileName,
       template: compile((await readFile(templatePath)).toString()),
     }
   }));
-  loadedTemplates.forEach(({type, template}) => templates[type] = template);
+  loadedTemplates.forEach((template) => {
+    const { modelType } = template;
+    if (!templates[modelType]) templates[modelType] = [];
+    templates[modelType].push(template);
+  });
   return templates;
 }
