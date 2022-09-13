@@ -14,6 +14,5 @@
       "enum": ["Requires", "Accesses"]
     }
   },
-  "required": ["source", "target"],
-  "additionalProperties": false
+  "required": ["source", "target"]
 }

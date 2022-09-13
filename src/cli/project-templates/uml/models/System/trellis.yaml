@@ -1,0 +1,22 @@
+name: Trellis
+components:
+  cli:
+    name: Trellis CLI
+    type: UI
+relationships:
+  - source:
+      $ref: "#/components/cli" 
+    target:
+      $ref: "./filesystem.yaml#/components/workspace/components/models" 
+  - source:
+      $ref: "#/components/cli" 
+    target:
+      $ref: "./filesystem.yaml#/components/workspace/components/schemas" 
+  - source:
+      $ref: "#/components/cli" 
+    target:
+      $ref: "./filesystem.yaml#/components/workspace/components/templates"
+  - source:
+      $ref: "#/components/cli" 
+    target:
+      $ref: "./filesystem.yaml#/components/workspace/components/scripts"

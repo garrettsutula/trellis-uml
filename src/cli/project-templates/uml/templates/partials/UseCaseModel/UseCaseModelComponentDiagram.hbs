@@ -1,0 +1,20 @@
+@startuml Component Diagram - {{name}}
+title {{name}} System Diagram
+left to right direction
+
+{{#each systems}}
+package "{{name}}" as {{id}} <<System>> {
+{{#each components}}
+{{>Component}}
+{{/each}}  
+}
+{{/each}}
+
+{{#each actors}}
+actor "{{name}}" as {{id}}
+{{/each}}
+
+{{#each relationships.component}}
+{{source.id}} --> {{target.id}}: "**{{source.name}}**\n<<Uses>>\n**{{target.name}}**\n\n{{#each useCases}}- {{.}}\n{{/each}}"
+{{/each}}
+@enduml

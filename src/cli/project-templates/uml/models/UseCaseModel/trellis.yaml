@@ -1,0 +1,88 @@
+name: Trellis Diagram Framework
+usecases:
+  - name: Create Model Schema
+    description: |-
+      Create a JSON Schema representing a model schema, 
+      used for validation and in IDE extensions.
+
+      For intellisense, schemas are configured in 
+      './.vscode/settings.json'.
+
+      For validation, the schema matching the top-level
+      model folder name will be used. For example,
+      './models/UseCaseModel/trellis.puml' will be
+      validate by './schemas/UseCaseModel.schema.json'.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/vscode.yaml#/components/ui"
+  - name: Create Output Template
+    description: |-
+      Create an optout template, the output file extension
+      determines the final file type. For example,
+      'System.puml.hbs' will create a '.puml' file as
+      output.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/vscode.yaml#/components/ui"
+  - name: Create Model Enrichment Script
+    description: |-
+      **(Optional)** Create a javascript pre and post processing
+      script to enhance each model object to make templates as
+      simple as possible.
+
+      This is typically used to add roll-up collections of systems,
+      components and relationships so output templates can simpler
+      loops with less conditional logic.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/vscode.yaml#/components/ui"
+  - name: Model Systems, Components, Use Cases, etc.
+    description: |-
+      Use the workspace to create models of software systems that
+      produce diagrams, configuration files, and other artifacts.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/vscode.yaml#/components/ui"
+  - name: Generate Output Artifacts
+    description: |-
+      Using the cli, run 'trellis build' or 'trellis watch' to
+      generate output files from models, scripts and templates.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/trellis.yaml#/components/cli"
+  - name: Organize Project Workspace
+    description: |-
+      Using sub-folders to group similar files as needed,
+      organize the 'models', 'schemas', 'templates' and 'scripts'
+      files into subfolders.
+
+      The following rules must be followed:
+      - **models** - The first sub-folder determines the model type.
+      - **processors** - (Optional) script file matching top-level model folder will be run for each model to add/change model properties.
+      - **schemas** - schema file matching top-level model folder, used to enhance IDE and validate model
+      - **templates** - (Optional) template folder matching top-level model folder, zero or more output artifacts.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/filesystem.yaml#/components/workspace"
+  - name: Implement a New Meta-model
+    description: |-
+      Create a new type of workspace by devising your own entirely new 
+      schemas, processors and templates that implements a meta-model
+      that is different than UML or C4.
+    actors:
+      - actor:
+          $ref: "../Actor/actors.yaml#/user"
+        uses:
+          - $ref: "../System/vscode.yaml#/components/ui"

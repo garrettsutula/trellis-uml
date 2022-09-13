@@ -14,7 +14,6 @@
         }
       }
     },
-    "required": ["actor", "uses"],
-    "additionalProperties": false
+    "required": ["actor", "uses"]
 }
 

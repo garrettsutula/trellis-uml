@@ -20,6 +20,5 @@
       }
     }
   },
-  "required": ["name", "actors"],
-  "additionalProperties": false
+  "required": ["name", "actors"]
 }

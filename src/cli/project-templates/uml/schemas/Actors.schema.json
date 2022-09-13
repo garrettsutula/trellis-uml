@@ -7,6 +7,5 @@
     ".*": {
       "$ref": "Actor.schema.json"
     }
-  },
-  "additionalProperties": false
+  }
 }

@@ -1,0 +1,22 @@
+name: Visual Studio Code
+components:
+  ui:
+    name: vscode IDE
+    type: UI
+  yamlExtension:
+    name: YAML Extension
+    type: Service
+  pumlExtension:
+    name: PlantUML Extension
+    type: Service
+relationships:
+  - source:
+      $ref: "#/components/ui" 
+    target:
+      $ref: "#/components/yamlExtension"
+    type: Requires
+  - source:
+      $ref: "#/components/ui" 
+    target:
+      $ref: "#/components/pumlExtension"
+    type: Requires
