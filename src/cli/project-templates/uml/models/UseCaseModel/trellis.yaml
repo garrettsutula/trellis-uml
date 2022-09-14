@@ -1,6 +1,7 @@
 name: Trellis Diagram Framework
 usecases:
-  - name: Create Model Schema
+  createSchema:
+    name: Create Model Schema
     description: |-
       Create a JSON Schema representing a model schema, 
       used for validation and in IDE extensions.
@@ -17,7 +18,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/vscode.yaml#/components/ui"
-  - name: Create Output Template
+  createTemplate:
+    name: Create Output Template
     description: |-
       Create an optout template, the output file extension
       determines the final file type. For example,
@@ -28,7 +30,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/vscode.yaml#/components/ui"
-  - name: Create Model Enrichment Script
+  createScript:
+    name: Create Model Enrichment Script
     description: |-
       **(Optional)** Create a javascript pre and post processing
       script to enhance each model object to make templates as
@@ -42,7 +45,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/vscode.yaml#/components/ui"
-  - name: Model Systems, Components, Use Cases, etc.
+  createModels:
+    name: Model Systems, Components, Use Cases, etc.
     description: |-
       Use the workspace to create models of software systems that
       produce diagrams, configuration files, and other artifacts.
@@ -51,7 +55,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/vscode.yaml#/components/ui"
-  - name: Generate Output Artifacts
+  generateOutput:
+    name: Generate Output Artifacts
     description: |-
       Using the cli, run 'trellis build' or 'trellis watch' to
       generate output files from models, scripts and templates.
@@ -60,7 +65,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/trellis.yaml#/components/cli"
-  - name: Organize Project Workspace
+  organizeProject:
+    name: Organize Project Workspace
     description: |-
       Using sub-folders to group similar files as needed,
       organize the 'models', 'schemas', 'templates' and 'scripts'
@@ -76,7 +82,8 @@ usecases:
           $ref: "../Actor/actors.yaml#/user"
         uses:
           - $ref: "../System/filesystem.yaml#/components/workspace"
-  - name: Implement a New Meta-model
+  implementMetamodel:
+    name: Implement a New Meta-model
     description: |-
       Create a new type of workspace by devising your own entirely new 
       schemas, processors and templates that implements a meta-model

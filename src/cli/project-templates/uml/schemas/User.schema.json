@@ -15,7 +15,7 @@
       "uses": {
         "type": "array",
         "items": {
-          "$ref": "Component.schema.json"
+          "$ref": "References/ComponentReference.schema.json"
         }
       }
     },

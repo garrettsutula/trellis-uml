@@ -1,0 +1,24 @@
+{
+  "$id": "ChangedComponent.schema.json",
+  "title": "Changed Component",
+  "type": "object",
+  "properties": {
+    "component": {
+      "type": "object",
+      "properties": {
+        "$ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["component", "changes"],
+  "additionalProperties": false
+}

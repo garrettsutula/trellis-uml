@@ -3,8 +3,8 @@ const nameToId = require('./lib/nameToId');
 function preprocessFn(useCaseModel) {
   const actorRefs = new Set();
   const componentRefs = new Set();
-  const {usecases = []} = useCaseModel;
-  usecases.forEach((usecase) => {
+  const {usecases = {}} = useCaseModel;
+  Object.values(usecases).forEach((usecase) => {
     const {actors = []} = usecase;
     usecase.id = nameToId(usecase.name);
     actors.forEach(({actor, uses}) => {

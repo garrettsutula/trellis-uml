@@ -1,0 +1,52 @@
+name: Metamodel Framework Project
+usecasesChanged:
+  - usecase:
+      $ref: "../UseCaseModel/trellis.yaml#/usecases/createTemplate"
+    description: Introduce a swagger-like editing experience to create models for software systems.
+options:
+# Schema Options
+  - name: Use JSON Schema to define schemas
+    components:
+      new:
+        - component:
+            $ref: "../System/filesystem.yaml#/components/workspace/components/schemas"
+          changes:
+            - Create JSON Schemas for popular project types (UML, C4, Data)
+        - component:
+            $ref: "../System/vscode.yaml#/components/yamlExtension"
+          changes:
+            - Used with IDE to provide type-ahead suggestions.
+  - name: Use a strongly-typed programming language to define schemas
+# Templating Options
+  - name: Use Handlebars for a templating language
+    components:
+      new:
+        - component:
+            $ref: "../System/trellis.yaml#/components/cli/components/core/components/handlebars"
+          changes:
+            - Used with workspace models and templates to generate output artifacts of any file type.
+        - component:
+            $ref: "../System/filesystem.yaml#/components/workspace/components/templates"
+          changes:
+            - Created as needed to transform models into output files like diagram markup, markdown documentation, etc.
+  - name: Use golang templates
+  - name: Use puml pre-processor and includes/sub-routines.
+# Scripting Options
+  - name: Use intermediary scripts to enhance models to simplify writing templates.
+    components:
+      new:
+        - component:
+            $ref: "../System/filesystem.yaml#/components/workspace/components/scripts"
+          changes:
+            - Optional, created to enhance models typically by adding properties to the model that provide more convenient access to the model data for use in templates.
+  - name: Use template helper functions to simplify writing templates.
+  - name: Use a template language and/or extra libraries.
+# Model Options
+  - name: Use yaml or json to create models from schemas.
+    components:
+      new:
+        - component:
+            $ref: "../System/filesystem.yaml#/components/workspace/components/models"
+          changes:
+            - Created to model different aspects of software systems based on the defined workspace schemas.
+  - name: Use instantiation of classes in a strongly-typed programming language.

@@ -1,0 +1,30 @@
+{
+  "$id": "ChangedUseCase.schema.json",
+  "title": "Changed Use Case",
+  "description": "A use case that is changed (new, modified, deprecated) as part of a project.",
+  "type": "object",
+  "properties": {
+    "usecase": {
+      "type": "object",
+      "properties": {
+        "$ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    },
+    "description": {
+      "type": "string"
+    },
+    "recommendation": {
+      "type": "object",
+      "properties": {
+        "$ref": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    }
+  },
+  "required": ["usecase", "description"]
+}

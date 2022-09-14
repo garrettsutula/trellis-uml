@@ -2,7 +2,18 @@ name: Trellis
 components:
   cli:
     name: Trellis CLI
-    type: UI
+    type: CLI
+    components:
+      core:
+        name: Trellis Core
+        type: Library
+        components:
+          handlebars:
+            name: Handlebars
+            type: Library
+          refParser:
+            name: JSON Schema $Ref Parser
+            type: Library
 relationships:
   - source:
       $ref: "#/components/cli" 

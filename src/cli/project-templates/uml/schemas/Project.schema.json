@@ -1,0 +1,31 @@
+{
+  "$id": "Project.schema.json",
+  "title": "Project",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the component and its purpose in this system."
+    },
+    "usecasesChanged": {
+      "type": "array",
+      "items": {
+        "$ref": "ChangedUseCase.schema.json"
+      }
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "$ref": "ProjectOption.schema.json"
+      }
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false
+}

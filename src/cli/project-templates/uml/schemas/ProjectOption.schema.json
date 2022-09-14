@@ -1,0 +1,48 @@
+{
+  "$id": "ProjectOption.schema.json",
+  "title": "Project Solution Option",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the component and its purpose in this system."
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "new": {
+          "type": "array",
+          "items": {
+            "$ref": "ChangedComponent.schema.json"
+          }
+        },
+        "modified": {
+          "type": "array",
+          "items": {
+            "$ref": "ChangedComponent.schema.json"
+          }
+        },
+        "deprecated": {
+          "type": "array",
+          "items": {
+            "$ref": "ChangedComponent.schema.json"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "ChangedRelationship.schema.json"
+      }
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false
+}

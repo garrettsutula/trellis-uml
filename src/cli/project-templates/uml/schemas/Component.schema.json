@@ -1,6 +1,7 @@
 {
   "$id": "Component.schema.json",
   "title": "Component",
+  "description": "A component of a software system package.",
   "type": "object",
   "properties": {
     "id": {
@@ -11,7 +12,7 @@
     },
     "type": {
       "type": "string",
-      "enum": ["UI", "Service", "Database", "Processor", "Queue", "File", "Folder"]
+      "enum": ["UI", "Service", "Database", "Processor", "Queue", "File", "Folder", "Library", "CLI"]
     },
     "description": {
       "type": "string",
@@ -47,10 +48,7 @@
       "description": "Child components of the component. E.g. files in a folder",
       "patternProperties": {
         ".*": {
-          "type": "object",
-          "items": {
-            "$ref": "Component.schema.json"
-          }
+            "$ref": "#"
         }
       }
     },

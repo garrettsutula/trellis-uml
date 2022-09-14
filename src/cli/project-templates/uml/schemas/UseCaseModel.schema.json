@@ -14,9 +14,11 @@
       "type": "string"
     },
     "usecases": {
-      "type": "array",
-      "items": {
-        "$ref": "UseCase.schema.json"
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "UseCase.schema.json"
+        }
       }
     }
   },

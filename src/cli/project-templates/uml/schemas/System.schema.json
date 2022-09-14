@@ -14,14 +14,14 @@
       "type": "object",
       "patternProperties": {
         ".*": {
-          "$ref": "Component.schema.json"
+          "$ref": "./Component.schema.json"
         }
       }
     },
     "relationships": {
       "type": "array",
       "items": {
-        "$ref": "ComponentRelationship.schema.json"
+        "$ref": "./ComponentRelationship.schema.json"
       }
     }
   },
