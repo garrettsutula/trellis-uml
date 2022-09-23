@@ -9,6 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "clean": "rimraf dist/",
+    "clean:test": "rimraf test-init/",
+    "cd:test": "cd test-init",
     "copy-files": "copyfiles -a -u 1 \"./src/cli/project-templates/**/*\" dist/",
     "make-executable": "run-script-os",
     "make-executable:win32": "echo \"Skipping 'make executable' script, likely already fine on windows\"",
@@ -54,7 +56,7 @@
     "handlebars": "^4.7.7",
     "jsonschema": "^1.4.1",
     "prompt": "^1.3.0",
-    "trellis-core": "^0.1.2",
+    "trellis-core": "^0.1.3",
     "yaml": "^2.1.1",
     "yargs": "^17.5.1"
   }
