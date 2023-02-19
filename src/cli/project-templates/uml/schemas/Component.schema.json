@@ -57,6 +57,12 @@
     "system": {
       "description": "A back reference to the parent system, this is set programmatically when pre-processing the models prior to being fed into templates for output generation.",
       "$ref": "References/SystemReference.schema.json"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "ComponentDependency.schema.json"
+      }
     }
   },
   "required": ["name", "type"],

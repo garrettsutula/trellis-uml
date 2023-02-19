@@ -1,6 +1,6 @@
 {
-  "$id": "ComponentRelationship.schema.json",
-  "title": "Component Relationship",
+  "$id": "ComponentDependency.schema.json",
+  "title": "Component Dependency",
   "type": "object",
   "properties": {
     "source": {
@@ -12,7 +12,14 @@
     "type": {
       "type": "string",
       "enum": ["Requires", "Accesses"]
+    },
+    "interface": {
+      "type": "string",
+      "enum": ["publish", "subscribe", "internal", "public"]
     }
   },
-  "required": ["source", "target"]
+  "oneOf": [
+    {"required": ["source", "type"]},
+    {"required": ["target", "type"]}
+  ]
 }

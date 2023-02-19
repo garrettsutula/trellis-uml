@@ -9,29 +9,29 @@ users:
 usecases:
   - name: Log In
     description: From the main banking website, authenticate a user and redirect them to the banking application.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: View Accounts
     description: View users' account summary including account numbers and current balances.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: View Account Transaction History
     description: View previous and pending account transactions.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: Deposit
     description: Deposit funds (cash, check, etc.) into an account.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: Withdrawl
     description: Withdraw available cash balance from an account.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: Internal Transfer
     description: Transfer available cash balance between accounts.
-    users:
+    actors:
       - $ref: "#/users/customer"
   - name: External Transfer
     description: Transfer available cash balance between accounts using Automated Clearing House (ACH).
-    users:
+    actors:
       - $ref: "#/users/customer"

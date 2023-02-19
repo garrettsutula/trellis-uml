@@ -17,12 +17,6 @@
           "$ref": "Component.schema.json"
         }
       }
-    },
-    "relationships": {
-      "type": "array",
-      "items": {
-        "$ref": "ComponentRelationship.schema.json"
-      }
     }
   },
   "required": ["name", "components"]
