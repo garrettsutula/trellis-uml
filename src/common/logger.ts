@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import { getCircularReplacer } from './json';
 
+let firstErrorLoggedToConsole = false;
+
 export default {
   info: (message) => {
     console.log(message);
@@ -19,18 +21,24 @@ export default {
     console.warn(message);
   },
   error: (message, err?) => {
-    console.error(chalk.red(message));
+    if(firstErrorLoggedToConsole === false || global.verbose_level) {
+      firstErrorLoggedToConsole = true;
+      console.error(chalk.red(message));
 
-    if (err) {
-      let errDetailStr = (`⛔️ ${err.stack || err.message || JSON.stringify(err, getCircularReplacer())}`);
-      const lineCount = (errDetailStr.match(/\n/g) || []).length;
-      if (global.verbose_level || lineCount < 2) {
-        errDetailStr = errDetailStr.replaceAll('\n', '\n⛔️ ');
-      } else {
-        errDetailStr = errDetailStr.split('\n')[0] + '\n⛔️    ... view full error using -v to enable verbose logs ...'
+      if (err) {
+        let errDetailStr = (`⛔️ ${err.stack || err.message || JSON.stringify(err, getCircularReplacer())}`);
+        const lineCount = (errDetailStr.match(/\n/g) || []).length;
+        if (global.verbose_level || lineCount < 2) {
+          errDetailStr = errDetailStr.replaceAll('\n', '\n⛔️ ');
+        } else {
+          errDetailStr = errDetailStr.split('\n')[0] + '\n⛔️    ... view full error using -v to enable verbose logs ...'
+        }
+        console.error(chalk.red((errDetailStr)));
       }
-      console.error(chalk.red((errDetailStr)));
     }
+  },
+  resetErrorLogFlag: () => {
+    firstErrorLoggedToConsole = false;
   },
   time: (message) => {
     if (global.verbose_level)

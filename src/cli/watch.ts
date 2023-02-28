@@ -17,6 +17,7 @@ const currentFolder = path.basename(workingDirectoryPath);
 
 async function buildProject(events, filePaths) {
   if (events.length === 1) {
+    logger.resetErrorLogFlag();
     const evt = events[0];
     const filePath = filePaths[0];
     const fileName = path.parse(filePath).name;
