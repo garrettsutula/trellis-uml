@@ -22,15 +22,8 @@ async function buildProject(events, filePaths) {
     const filePath = filePaths[0];
     const fileName = path.parse(filePath).name;
     const [ projectFileType, firstSubfolder ] = filePath.split(path.sep);
-    const eventType = `${evt}-${projectFileType}`;
     logger.info(chalk.dim(`👀 ${evt.toUpperCase()} detected on: ${filePath}`));
-    logger.verbose(`Change event '${eventType}'`);
-    if (eventType === 'add-models' || eventType === 'change-models') {
-      logger.verbose(`Running immediate build on ${fileName}`);
-      const modelPaths = {};
-      modelPaths[firstSubfolder] = [filePath];
-      await build(Object.assign({}, currentBuilderContext, { modelPaths }), false);
-    }
+    logger.verbose(`Change event '${`${evt}-${projectFileType}`}'`)
     if (currentBuilderContext) {
       const isKnownModelType = Object.keys(currentBuilderContext.modelPaths).includes(firstSubfolder);
       switch(`${evt}-${projectFileType}`) {
